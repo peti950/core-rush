@@ -6,15 +6,23 @@ android {
         applicationId 'com.peti5.corerush'
         minSdk 24
         targetSdk 34
-        versionCode 1
-        versionName '1.0'
+        versionCode (System.getenv('GITHUB_RUN_NUMBER') ?: '1') as int
+        versionName "1.0.${System.getenv('GITHUB_RUN_NUMBER') ?: '0'}"
+    }
+    signingConfigs {
+        game {   // 테스트용 고정 서명 키 (앱 업데이트 시 같은 키로 덮어 설치되도록)
+            storeFile file('../corerush.keystore')
+            storePassword 'corerush123'
+            keyAlias 'corerush'
+            keyPassword 'corerush123'
+        }
     }
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
-            signingConfig signingConfigs.debug   // 테스트용 서명 (플레이스토어 업로드 시 정식 서명으로 교체)
+            signingConfig signingConfigs.game
         }
     }
     compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
