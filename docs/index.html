@@ -65,6 +65,7 @@ body{background:var(--void);color:var(--text);font:14px var(--f-ui);overflow:hid
 .diffsel{display:flex;gap:4px} .hardb.on{border-color:#ff4d6a!important;color:#ffb3bd!important;background:#3a1018!important}
 .hardnote b{color:#ff8a9a}
 .dimrow{opacity:.6}
+#detClose{display:none;margin-left:6px;align-self:flex-start}
 @media (orientation:landscape) and (max-height:500px){
   .craftgrid{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)!important;gap:10px}
   .cright{border-left:1px solid var(--edge)!important;padding-left:10px!important}
@@ -303,6 +304,16 @@ body{background:var(--void);color:var(--text);font:14px var(--f-ui);overflow:hid
 .tbl td{padding:6px 8px;border-bottom:1px solid #16233d;white-space:nowrap}
 .tbl td.num{font-size:20px}
 .mv{display:flex;gap:4px}
+.sthead{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:end;margin-bottom:8px}
+.stcol{display:grid;gap:4px} .stcol b{font:400 20px var(--f-head)} .stcol span{font-size:12px} .stcol.right{text-align:right;justify-items:end}
+.stmid{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.capbar{width:min(260px,100%);height:10px;background:#0c1427;border:1px solid var(--edge)} .capbar i{display:block;height:100%;background:linear-gradient(90deg,#ffa62b,#ffd27a)} .capbar.full i{background:#ff4d6a}
+.strows{display:grid;gap:6px}
+.strow{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;padding:8px 14px}
+.sside{display:flex;align-items:center;gap:10px;min-width:0} .sside.right{justify-content:flex-end}
+.sside .sname{font:400 17px var(--f-head)} .sside b{font-size:26px} .sside small{font-size:11px;white-space:nowrap}
+.sbtns{display:flex;gap:4px} .sbtns .mini{min-width:44px;font-size:15px;padding:6px 8px}
+.stcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:8px;margin-top:14px}
 .h3{font:400 19px var(--f-head);margin:16px 0 8px}
 .slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
 .slot{padding:10px 12px;min-height:64px;display:flex;flex-direction:column;gap:4px}
@@ -364,6 +375,14 @@ body{background:var(--void);color:var(--text);font:14px var(--f-ui);overflow:hid
 #bMain > h2{display:none}
 .desk{display:grid;grid-template-columns:80px minmax(0,1fr);gap:14px;align-items:end;padding:10px 12px 0;margin-bottom:14px;background:linear-gradient(180deg,#16233f,#0c1427);border:1px solid var(--edge);overflow:hidden}
 .clerk{animation:bob 2.4s ease-in-out infinite;line-height:0}
+.desk.mary{grid-template-columns:96px minmax(0,1fr)}
+.desk.mary .bubble{font-size:15px;line-height:1.5}
+.desk.talk .mmouth{animation:mtalk .18s steps(2) 8;transform-origin:44px 35px}
+.desk.talk .bubble span{animation:mpop .35s ease-out}
+.mcoin{animation:mcoin 2.2s ease-in-out infinite;transform-origin:80px 50px}
+@keyframes mtalk{0%{transform:scaleY(1)}50%{transform:scaleY(2.4)}}
+@keyframes mpop{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@keyframes mcoin{0%,70%,100%{transform:translateY(0) scaleX(1)}80%{transform:translateY(-8px) scaleX(.3)}90%{transform:translateY(-4px) scaleX(1)}}
 .bubble{position:relative;background:#e6edfb;color:#0c1427;padding:10px 12px;border-radius:10px;margin-bottom:22px;font-size:14px;display:grid;gap:2px}
 .bubble b{font:400 15px var(--f-head);color:#33415e}
 .bubble::before{content:"";position:absolute;left:-8px;bottom:14px;border:8px solid transparent;border-right-color:#e6edfb;border-left:0}
@@ -445,7 +464,7 @@ body{background:var(--void);color:var(--text);font:14px var(--f-ui);overflow:hid
 @media (max-height:540px){
   #top{padding-block:3px;gap:8px} .rescell{padding:2px 8px;gap:4px} .rescell .n{font-size:17px} .rescell .k{font-size:11px}
   .wave{padding:2px 10px 3px;min-width:170px} .wave .num{font-size:22px} .shipbox{padding:3px 10px;grid-template-columns:auto 110px auto}
-  #mid{grid-template-columns:140px minmax(0,1fr) 44px} .detail{display:none} #side{padding:6px 4px 6px max(6px,env(safe-area-inset-left,0px))}
+  #mid{grid-template-columns:140px minmax(0,1fr) 44px} .detail{display:none;position:fixed;left:calc(150px + env(safe-area-inset-left,0px));bottom:50px;width:min(300px,calc(100vw - 220px));max-height:calc(100vh - 110px);overflow:auto;z-index:15;padding:8px 10px;background:#0b1322f5;box-shadow:0 8px 24px rgba(0,0,0,.6)} .detail.show{display:block} #detClose{display:inline-flex!important} #side{padding:6px 4px 6px max(6px,env(safe-area-inset-left,0px))}
   .cmdbtn{height:32px;padding:0 8px;font-size:14px} .cmdbtn small,.hint{display:none}
   .bhead{padding-block:4px} .bhead h1{font-size:20px} .bscene .bside{width:230px;bottom:6px;max-height:calc(100% - 12px)}
   #bPanel{top:6px;bottom:6px;right:6px;width:calc(100% - 12px)!important} .phead{padding:6px 10px} .phead h2{font-size:20px} #bPanel .bmain{padding:10px 12px}
@@ -469,6 +488,7 @@ body{background:var(--void);color:var(--text);font:14px var(--f-ui);overflow:hid
   #mid{grid-template-columns:120px minmax(0,1fr)}#mini{display:none}.detail{display:none}.cmdbtn small{display:none}
 }
 @media (prefers-reduced-motion:reduce){#toast,.hot,.hp i{transition:none}}
+.volrow{display:flex;align-items:center;gap:8px;font-size:13px;padding:4px 6px;color:inherit}.volrow input{flex:1;accent-color:#ffb547}
 </style>
 
 <div id="app">
@@ -482,7 +502,7 @@ body{background:var(--void);color:var(--text);font:14px var(--f-ui);overflow:hid
     <aside id="side">
       <div class="roster" id="units"></div>
       <section class="detail frame">
-        <div class="dhead"><canvas id="portrait" class="portrait" width="56" height="56"></canvas><div style="min-width:0"><h3 id="selName">대장</h3><div class="hp sm"><i id="selHp"></i></div></div></div>
+        <div class="dhead"><canvas id="portrait" class="portrait" width="56" height="56"></canvas><div style="min-width:0;flex:1"><h3 id="selName">대장</h3><div class="hp sm"><i id="selHp"></i></div></div><button class="mini" id="detClose" aria-label="닫기">✕</button></div>
         <div id="selRows"></div>
       </section>
     </aside>
@@ -531,7 +551,7 @@ body{background:var(--void);color:var(--text);font:14px var(--f-ui);overflow:hid
     <header class="bhead">
       <div class="brand">코어 러시<span>기지 행성</span></div>
       <div class="bres" id="bRes"></div>
-      <div class="setwrap"><button class="ghost" id="bSet" aria-expanded="false">설정 ▾</button><div id="bSetPop" class="frame" hidden><button class="ghost" id="bSnd">소리 켜짐</button><button class="ghost" id="bFull">전체화면 (Alt+Enter)</button><button class="ghost" id="bDex">도감</button><button class="ghost" id="bMenu">메인 화면으로</button><div id="bSetInfo"></div></div></div>
+      <div class="setwrap"><button class="ghost" id="bSet" aria-expanded="false">설정 ▾</button><div id="bSetPop" class="frame" hidden><button class="ghost" id="bSnd">소리 켜짐</button><label class="volrow">음악 <input type="range" id="volM" min="0" max="100"></label><label class="volrow">효과음 <input type="range" id="volS" min="0" max="100"></label><button class="ghost" id="bFull">전체화면 (Alt+Enter)</button><button class="ghost" id="bDex">도감</button><button class="ghost" id="bMenu">메인 화면으로</button><div id="bSetInfo"></div></div></div>
     </header>
     <div class="bscene" id="bScene">
       <canvas id="bcv" aria-label="기지 행성 전경. 건물을 눌러 시설을 열어요"></canvas>
@@ -562,8 +582,8 @@ body{background:var(--void);color:var(--text);font:14px var(--f-ui);overflow:hid
 // ===== 밸런스 숫자는 여기서 바꾸면 돼요 =====
 const CONFIG = {
   cols: 34, rows: 80, surface: 9,
-  firstMiningTime: 80,   // 첫 웨이브까지 (초)
-  miningTime: 60,        // 웨이브 사이 채굴 시간 (초)
+  firstMiningTime: 110,  // 첫 웨이브까지 (초)
+  miningTime: 90,        // 웨이브 사이 채굴 시간 (초)
   warnTime: 15,          // 경고 시작 (초)
   liftoffTime: 25,       // 이륙 준비 시간 (초)
   shipHP: 160,
@@ -593,6 +613,7 @@ const ORE = {
   18: { key: 'ruby', name: '루비', color: '#ff4f6a', hi: '#ffd6dd', price: 60, d: [44, 70], n: 6, k: [1, 2], desc: '붉은 보석. 용암 지대에 많아요.' },
   19: { key: 'core', name: '코어석', color: '#ff9a2f', hi: '#fff0c8', price: 120, d: [58, 70], n: 4, k: [1, 2], desc: '행성 중심부의 뜨거운 결정. 매우 희귀해요.' },
 };
+const ECON = 10; for (const o of Object.values(ORE)) o.price *= ECON; // 경제 단위 10배
 const ORES = Object.values(ORE), OREKEY = Object.fromEntries(ORES.map(o => [o.key, o]));
 const amt = (o, k) => o[k] || 0;
 const sum = o => Object.values(o).reduce((a, b) => a + b, 0);
@@ -624,7 +645,7 @@ const CORES = {
 const BOSS_OF = { sand: 'sandq', frost: 'frostq', lava: 'lavaq', bog: 'bogq', rock: 'rockq', cryst: 'crystq', moth: 'mothq', acidm: 'acidq', shade: 'shadeq', volt: 'voltq' }, BOSSMAT = { sand: '여왕의 갑각', frost: '빙하 결정핵', lava: '마그마 비늘', bog: '늪의 점액샘', rock: '협곡 바위심장', cryst: '여제의 수정관', moth: '달빛 날개가루', acidm: '산성 껍질', shade: '어둠의 눈', volt: '폭풍 축전기' }, BOSS_CORE = { sand: 'acid', frost: 'shell', lava: 'magma', bog: 'acid', rock: 'shell', cryst: 'shell', moth: 'acid', acidm: 'acid', shade: 'magma', volt: 'magma' }, MAX_WAVE = 10, BOSS_WAVES = [5, 10], FINAL_T = 60, BCRAFT = { mat: 5, cr: 300 };
 const CORE_OF_BOSS = { sand: 'acid', frost: 'shell', lava: 'magma', bog: 'shield', rock: 'drill', cryst: 'aim', moth: 'dash', acidm: 'blast', shade: 'circuit', volt: 'amulet' };
 for (const [b, k] of Object.entries(CORE_OF_BOSS)) if (CORES[k]) CORES[k].boss = b;
-const CUP_P = [0, 0.5, 0.35, 0.2], CUP_MAT = [0, 4, 6, 9], CUP_CR = [0, 200, 400, 700], CMAKE = { mat: 10, cr: 300 }, RFUSE_P = [0, 0.6, 0.35];
+const CUP_P = [0, 0.5, 0.35, 0.2], CUP_MAT = [0, 4, 6, 9], CUP_CR = [0, 2000, 4000, 7000], CMAKE = { mat: 10, cr: 3000 }, RFUSE_P = [0, 0.6, 0.35];
 let rfSel = [];
 const totalMat = () => Object.values(SAVE.bossMat || {}).reduce((a, n) => a + n, 0);
 function spendMat(n) { while (n > 0) { const k = Object.keys(SAVE.bossMat).sort((a, b) => SAVE.bossMat[b] - SAVE.bossMat[a])[0]; if (!k || !SAVE.bossMat[k]) break; SAVE.bossMat[k]--; n--; } }
@@ -701,7 +722,7 @@ const PFAM = {
   biped: { slot: 'legs', names: ['두 다리', '강화 다리', '도약 다리'], e: { speed: 0.3 }, cr: 50, desc: '기본적인 보행 다리예요.' },
   tread: { slot: 'legs', names: ['무한궤도', '중궤도', '코어 궤도'], e: { speed: 0.15, hp: 10, carry: 1 }, cr: 80, desc: '느리지만 튼튼하고 짐을 더 실어요.' },
   hover: { slot: 'legs', names: ['호버 유닛', '고출력 호버', '반중력 장치'], e: { speed: 0.5, hp: -5 }, cr: 110, desc: '떠서 아주 빠르게 움직여요. 조금 약해요.' },
-  spider: { slot: 'legs', names: ['거미 다리', '강철 거미 다리', '코어 거미 다리'], e: { speed: 0.25, dig: 0.15 }, cr: 100, desc: '벽을 붙잡고 파서 채굴도 거들어요.' },
+  spider: { slot: 'legs', names: ['거미 다리', '강철 거미 다리', '코어 거미 다리'], e: { speed: 0.25, dig: 0.15 }, cr: 100, desc: '재빠르게 움직이며 주변 적에게 거미줄을 쏴서 느리게 해요.' },
   digleg: { slot: 'legs', names: ['드릴 다리', '강화 드릴 다리', '코어 드릴 다리'], e: { speed: 0.2, dig: 0.15 }, cr: 90, desc: '발밑을 파고 내려가는 속도가 빨라요.' },
   wheel: { slot: 'legs', names: ['바퀴', '고속 바퀴', '코어 바퀴'], e: { speed: 0.6 }, cr: 80, desc: '평지에서 아주 빠르지만 땅속에서는 느려요.' },
   cargo: { slot: 'back', names: ['화물팩', '대형 화물팩', '압축 화물팩'], e: { carry: 2 }, cr: 60, desc: '등에 짐을 더 실어요.' },
@@ -711,6 +732,7 @@ const PFAM = {
   flare: { slot: 'back', names: ['조명탄 발사기', '고휘도 조명탄', '코어 조명탄'], e: {}, cr: 80, desc: '땅속에서 조명탄을 떨어뜨려 주변을 밝히고 드러내요.' },
   minit: { slot: 'back', names: ['미니 포탑 백팩', '쌍포 백팩', '코어 포탑 백팩'], e: {}, cr: 130, desc: '적이 가까우면 그 자리에 작은 포탑을 잠깐 세워요.' },
 };
+for (const d of Object.values(PFAM)) d.cr *= ECON;
 const TIER_MUL = [1, 1.8, 2.8], TIER_NEED = [0, 2, 5], TIER_ORE = [['copper', 'iron'], ['silver', 'gold'], ['crystal', 'ruby']], PCOL = ['#f29a2e', '#5cc8ff', '#ff4fc0'], PTN = ['Mk.I', 'Mk.II', 'Mk.III'], PMAX = 5;
 const PARTS = {};
 for (const [f, d] of Object.entries(PFAM)) for (let t = 1; t <= (d.supply ? 1 : 3); t++) PARTS[f + t] = { fam: f, tier: t, slot: d.slot, supply: !!d.supply, name: d.names[t - 1], cr: Math.round(d.cr * [1, 3.5, 9][t - 1] * (d.slot === 'arm' && t === 1 ? 0.7 : 1)), ore: { [TIER_ORE[t - 1][0]]: [6, 4, 3][t - 1], [TIER_ORE[t - 1][1]]: [3, 3, 2][t - 1] } };
@@ -720,7 +742,8 @@ function partKit(up) {
   const l = v => 1 + Math.min(PMAX - 1, Math.floor((v || 0) / 2));
   return { head: mkP('scan1'), body: mkP('frame1', l(up && up.atk)), armR: mkP('drill1', l(up && up.dig)), armL: mkP('gun1', l(up && up.atk)), legs: mkP('biped1', l(up && up.spd)), back: up && up.bld >= 3 ? mkP('cell1', l(up.bld - 2)) : null };
 }
-function pEff(it) { const P = PARTS[it.key], o = {}; for (const [k, v] of Object.entries(PFAM[P.fam].e)) o[k] = v > 0 ? v * TIER_MUL[P.tier - 1] * (1 + 0.15 * (it.lv - 1)) : v; return o; }
+const noUp = P => P.supply || P.slot === 'back';
+function pEff(it) { const P = PARTS[it.key], o = {}, lvm = P.slot === 'back' ? 1 : 1 + 0.15 * (it.lv - 1); for (const [k, v] of Object.entries(PFAM[P.fam].e)) o[k] = v > 0 ? v * TIER_MUL[P.tier - 1] * lvm : v; return o; }
 function partMods(parts) {
   const m = { dig: 0.25, dmg: 0.5, speed: 0.7, build: 1, hp: 0, carry: 0, range: 0, armor: 0 };
   if (parts && !parts.armR && !parts.armL) m.carry += 2;
@@ -736,12 +759,12 @@ function applyParts(u, parts) {
 }
 const lookOf = parts => { const o = {}; for (const k of Object.keys(PSLOT)) { const it = parts && parts[k]; o[k] = it && PARTS[it.key] ? { fam: PARTS[it.key].fam, tier: PARTS[it.key].tier, lv: it.lv } : null; } return o; };
 const DEF_LOOK = lookOf(partKit(null));
-const UTIL = ['repair', 'hook', 'magnet', 'radar', 'cmdr', 'visor', 'reactive', 'digleg', 'wheel', 'drone', 'flare', 'minit'];
+const UTIL = ['repair', 'hook', 'magnet', 'radar', 'cmdr', 'visor', 'reactive', 'digleg', 'wheel', 'drone', 'flare', 'minit', 'spider'];
 const WPN = { sdrill: { kind: 'melee', r: 1.1, dmg: 1.3, rate: 1.1 }, gun: { kind: 'shot', dmg: 1, rate: 1 }, missile: { kind: 'missile', dmg: 1.3, rate: 1.9, splash: 1.3 }, drill: { kind: 'melee', r: 1.15, dmg: 2, rate: 1 }, claw: { kind: 'melee', r: 1.15, dmg: 0.6, rate: 0.9, kb: 1.5 },
   welder: { kind: 'cone', r: 2.6, dmg: 0.55, rate: 0.55 }, sword: { kind: 'arc', r: 1.6, dmg: 1.0, rate: 0.55 }, shield: { kind: 'melee', r: 1.1, dmg: 0.5, rate: 1, kb: 0.7 }, none: { kind: 'melee', r: 1.0, dmg: 0.4, rate: 1.2, kb: 0.3 } };
 const DIGPRI = ['drill', 'sdrill', 'welder', 'claw', 'sword', 'gun', 'missile', 'shield', 'repair', 'hook', 'magnet'];
 function unitKit(u, parts) {
-  const ft = u.feat = {}; for (const it of Object.values(parts || {})) if (it && PARTS[it.key] && UTIL.includes(PARTS[it.key].fam)) { const P = PARTS[it.key]; ft[P.fam] = Math.max(ft[P.fam] || 0, TIER_MUL[P.tier - 1] * (1 + 0.15 * (it.lv - 1))); }
+  const ft = u.feat = {}; for (const it of Object.values(parts || {})) if (it && PARTS[it.key] && UTIL.includes(PARTS[it.key].fam)) { const P = PARTS[it.key]; ft[P.fam] = Math.max(ft[P.fam] || 0, TIER_MUL[P.tier - 1]); }
   u.weapons = []; u.armAim = {};
   for (const sl of ['armR', 'armL']) { const it = parts && parts[sl]; if (!it || !PARTS[it.key]) continue; const P = PARTS[it.key], w = WPN[P.fam]; if (!w) continue;
     u.weapons.push({ ...w, slot: sl, fam: P.fam, r: w.kind === 'shot' ? u.st.range : w.kind === 'missile' ? u.st.range + 2 : w.r * (1 + 0.08 * (P.tier - 1)), kb: (w.kb || 0) * (1 + 0.3 * (P.tier - 1)) }); }
@@ -845,87 +868,183 @@ function resIcon(k, sz) {
 }
 
 // ===== 소리 (Web Audio로 합성) =====
-const SND = { ctx: null, out: null, on: true, last: {} };
-try { SND.on = localStorage.getItem('coreRush.sound') !== 'off'; } catch (e) {}
+const SND = { ctx: null, out: null, sfxBus: null, musBus: null, rev: null, on: true, last: {}, mv: 0.55, sv: 0.8 };
+try { SND.on = localStorage.getItem('coreRush.sound') !== 'off'; const m = parseFloat(localStorage.getItem('coreRush.mv')), v = parseFloat(localStorage.getItem('coreRush.sv')); if (m >= 0) SND.mv = m; if (v >= 0) SND.sv = v; } catch (e) {}
+function makeImpulse(c, sec, decay) { const n = Math.floor(c.sampleRate * sec), b = c.createBuffer(2, n, c.sampleRate); for (let ch = 0; ch < 2; ch++) { const a = b.getChannelData(ch); for (let i = 0; i < n; i++) a[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, decay); } return b; }
 function audioInit() {
   if (SND.ctx) { if (SND.ctx.state === 'suspended') SND.ctx.resume(); return; }
-  try { const A = window.AudioContext || window.webkitAudioContext; if (!A) return; SND.ctx = new A(); SND.out = SND.ctx.createGain(); SND.out.gain.value = SND.on ? 0.55 : 0; SND.out.connect(SND.ctx.destination); startMusic(); } catch (e) {}
+  try { const A = window.AudioContext || window.webkitAudioContext; if (!A) return; const c = SND.ctx = new A();
+    const comp = c.createDynamicsCompressor(); comp.threshold.value = -16; comp.knee.value = 12; comp.ratio.value = 4; comp.attack.value = 0.004; comp.release.value = 0.2;
+    SND.out = c.createGain(); SND.out.gain.value = SND.on ? 0.9 : 0; SND.out.connect(comp); comp.connect(c.destination);
+    SND.sfxBus = c.createGain(); SND.sfxBus.gain.value = SND.sv; const tame = c.createBiquadFilter(); tame.type = 'lowpass'; tame.frequency.value = 9000; SND.sfxBus.connect(tame); tame.connect(SND.out);
+    SND.musBus = c.createGain(); SND.musBus.gain.value = SND.mv; SND.musFade = c.createGain(); SND.musFade.gain.value = 1; SND.musFade.connect(SND.musBus); SND.musBus.connect(SND.out);
+    SND.rev = c.createConvolver(); SND.rev.buffer = makeImpulse(c, 2.4, 2.6); const rg = c.createGain(); rg.gain.value = 0.55; SND.rev.connect(rg); rg.connect(SND.out);
+    SND.revSend = c.createGain(); SND.revSend.gain.value = 1; SND.revSend.connect(SND.rev);
+    startMusic(); } catch (e) {}
 }
-function setSound(on) { SND.on = on; try { localStorage.setItem('coreRush.sound', on ? 'on' : 'off'); } catch (e) {} if (SND.out) SND.out.gain.value = on ? 0.55 : 0; }
-function env(g, t, a, d, v) { g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(v, t + a); g.gain.exponentialRampToValueAtTime(0.0001, t + a + d); }
-function tone(f, d, type = 'square', v = 0.15, slide = 0, delay = 0) {
+function setSound(on) { SND.on = on; try { localStorage.setItem('coreRush.sound', on ? 'on' : 'off'); } catch (e) {} if (SND.out) SND.out.gain.value = on ? 0.9 : 0; }
+function setVol(kind, v) { v = Math.max(0, Math.min(1, v)); if (kind === 'm') { SND.mv = v; if (SND.musBus) SND.musBus.gain.value = v; } else { SND.sv = v; if (SND.sfxBus) SND.sfxBus.gain.value = v; } try { localStorage.setItem(kind === 'm' ? 'coreRush.mv' : 'coreRush.sv', String(v)); } catch (e) {} }
+function env(g, t, a, d, v) { g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(Math.max(0.0002, v), t + a); g.gain.exponentialRampToValueAtTime(0.0001, t + a + d); }
+// 효과음 기본 재료: rv = 잔향 양, lp = 로우패스
+function tone(f, d, type = 'square', v = 0.15, slide = 0, delay = 0, rv = 0.12, lp = 0) {
   const c = SND.ctx; if (!c || !SND.on) return;
   const t = c.currentTime + delay, o = c.createOscillator(), g = c.createGain();
   o.type = type; o.frequency.setValueAtTime(f, t); if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(30, f + slide), t + d);
-  env(g, t, 0.005, d, v); o.connect(g); g.connect(SND.out); o.start(t); o.stop(t + d + 0.05);
+  env(g, t, 0.005, d, v); let node = o; if (lp || type === 'square' || type === 'sawtooth') { const fl = c.createBiquadFilter(); fl.type = 'lowpass'; fl.frequency.value = lp || Math.min(8000, f * 6); o.connect(fl); node = fl; }
+  node.connect(g); g.connect(SND.sfxBus); if (rv) { const s = c.createGain(); s.gain.value = rv; g.connect(s); s.connect(SND.revSend); } o.start(t); o.stop(t + d + 0.05);
 }
 let noiseBuf = null;
-function noise(d, v = 0.15, freq = 1200, delay = 0, q = 0.8) {
+function noise(d, v = 0.15, freq = 1200, delay = 0, q = 0.8, rv = 0.08, type = 'bandpass', sweep = 0) {
   const c = SND.ctx; if (!c || !SND.on) return;
-  if (!noiseBuf) { noiseBuf = c.createBuffer(1, c.sampleRate, c.sampleRate); const a = noiseBuf.getChannelData(0); for (let i = 0; i < a.length; i++) a[i] = Math.random() * 2 - 1; }
+  if (!noiseBuf) { noiseBuf = c.createBuffer(1, c.sampleRate * 2, c.sampleRate); const a = noiseBuf.getChannelData(0); for (let i = 0; i < a.length; i++) a[i] = Math.random() * 2 - 1; }
   const t = c.currentTime + Math.max(0, delay), s = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain();
-  s.buffer = noiseBuf; f.type = 'bandpass'; f.frequency.value = freq; f.Q.value = q; env(g, t, 0.004, d, v);
-  s.connect(f); f.connect(g); g.connect(SND.out); s.start(t, Math.random() * 0.4); s.stop(t + d + 0.05);
+  s.buffer = noiseBuf; f.type = type; f.frequency.setValueAtTime(freq, t); if (sweep) f.frequency.exponentialRampToValueAtTime(Math.max(40, freq + sweep), t + d); f.Q.value = q; env(g, t, 0.004, d, v);
+  s.connect(f); f.connect(g); g.connect(SND.sfxBus); if (rv) { const r = c.createGain(); r.gain.value = rv; g.connect(r); r.connect(SND.revSend); } s.start(t, Math.random() * 1.2); s.stop(t + d + 0.05);
 }
+const thump = (f, d, v, delay = 0) => tone(f, d, 'sine', v, -f * 0.6, delay, 0.1);
 function sfx(name) {
   if (!SND.ctx || !SND.on) return;
-  const now = performance.now(), gap = { dig: 70, shoot: 55, gun: 60, pop: 45, hit: 90, tick: 40, coin: 80 }[name] || 0;
+  const now = performance.now(), gap = { dig: 70, shoot: 55, gun: 60, pop: 45, hit: 90, tick: 40, coin: 80, beep: 60 }[name] || 0;
   if (gap && now - (SND.last[name] || 0) < gap) return; SND.last[name] = now;
+  const rr = () => 0.92 + Math.random() * 0.16;
   switch (name) {
-    case 'dig': noise(0.05, 0.07, 700 + Math.random() * 400); break;
-    case 'break': noise(0.12, 0.12, 500); tone(160, 0.08, 'triangle', 0.08, -60); break;
-    case 'pickup': tone(740, 0.06, 'triangle', 0.1); tone(1110, 0.08, 'triangle', 0.09, 0, 0.05); break;
-    case 'relic': [523, 659, 784, 1046].forEach((f, k) => tone(f, 0.16, 'triangle', 0.1, 0, k * 0.08)); break;
-    case 'shoot': tone(980, 0.04, 'square', 0.025, -400); break;
-    case 'gun': tone(620, 0.035, 'square', 0.03, -200); break;
-    case 'cannon': noise(0.3, 0.22, 260); tone(90, 0.25, 'sine', 0.2, -40); break;
-    case 'laser': tone(1600, 0.18, 'sawtooth', 0.04, -1200); break;
-    case 'frost': tone(1800, 0.25, 'sine', 0.04, 600); break;
-    case 'pop': noise(0.06, 0.06, 1800); break;
-    case 'hit': tone(120, 0.1, 'square', 0.1, -50); noise(0.08, 0.08, 400); break;
-    case 'boom': noise(0.5, 0.3, 300); tone(70, 0.4, 'sine', 0.25, -30); break;
-    case 'siren': tone(520, 0.45, 'sawtooth', 0.06, 260); tone(780, 0.45, 'sawtooth', 0.05, -260, 0.45); break;
-    case 'beep': tone(880, 0.08, 'square', 0.05); break;
-    case 'build': tone(392, 0.08, 'triangle', 0.1); tone(587, 0.12, 'triangle', 0.1, 0, 0.08); break;
-    case 'coin': tone(988, 0.05, 'square', 0.035); tone(1319, 0.08, 'square', 0.035, 0, 0.05); break;
-    case 'launch': noise(2.2, 0.25, 180, 0, 0.5); tone(60, 2.2, 'sawtooth', 0.08, 140); break;
-    case 'tick': tone(1200, 0.03, 'square', 0.03); break;
-    case 'win': [523, 659, 784].forEach((f, k) => tone(f, 0.22, 'triangle', 0.12, 0, k * 0.12)); break;
-    case 'lose': [392, 311, 233].forEach((f, k) => tone(f, 0.3, 'sawtooth', 0.08, 0, k * 0.18)); break;
-    case 'click': tone(660, 0.03, 'square', 0.025); break;
-    case 'alert': tone(660, 0.12, 'square', 0.06); tone(660, 0.12, 'square', 0.06, 0, 0.18); break;
-    case 'open': noise(0.9, 0.08, 900); break;
-    case 'bossroar': tone(90, 0.9, 'sawtooth', 0.12, -40); noise(0.8, 0.12, 200); tone(140, 0.6, 'square', 0.05, -80, 0.2); break;
-    case 'fuse': [262, 330, 392, 523, 659].forEach((f, k) => tone(f, 0.12, 'sine', 0.08, 0, k * 0.09)); noise(0.6, 0.05, 2400); break;
-    case 'elevator': tone(110, 1.2, 'triangle', 0.05, 30); break;
-    case 'land': noise(0.4, 0.25, 160); tone(55, 0.4, 'sine', 0.25, -20); break;
-    case 'meteor': noise(0.6, 0.2, 900, 0, 0.4); noise(0.8, 0.35, 220, 0.3); tone(60, 0.6, 'sine', 0.3, -30, 0.3); break;
-    case 'drop': tone(880, 0.12, 'triangle', 0.08, -300); tone(440, 0.2, 'triangle', 0.06, 0, 0.12); break;
-    case 'storm': noise(2.5, 0.12, 500, 0, 0.3); break;
-    case 'rain': noise(2.5, 0.08, 3000, 0, 0.3); break;
-    case 'zap': tone(1400, 0.15, 'sawtooth', 0.06, -1200); noise(0.2, 0.1, 4000); tone(900, 0.1, 'square', 0.04, -600, 0.18); break;
-    case 'quake': noise(1.6, 0.25, 90, 0, 0.6); tone(40, 1.4, 'sine', 0.25, 10); break;
-    case 'gas': noise(1.0, 0.12, 1600, 0, 0.5); break;
-    case 'count': tone(660, 0.12, 'square', 0.07); break;
-    case 'go': tone(880, 0.3, 'square', 0.08); tone(1320, 0.3, 'triangle', 0.06, 0, 0.05); break;
+    case 'dig': noise(0.06, 0.08, 500 * rr(), 0, 1.4, 0, 'bandpass', -200); tone(140 * rr(), 0.03, 'triangle', 0.03, -40, 0, 0); break;
+    case 'break': noise(0.16, 0.14, 900, 0, 0.9, 0.12, 'lowpass', -700); thump(150, 0.12, 0.14); noise(0.05, 0.06, 3000, 0.02, 1, 0); break;
+    case 'pickup': tone(880, 0.05, 'triangle', 0.09, 0, 0, 0.15); tone(1320, 0.09, 'triangle', 0.08, 0, 0.05, 0.25); break;
+    case 'relic': [523, 659, 784, 1046, 1318].forEach((f, k) => { tone(f, 0.35, 'triangle', 0.08, 0, k * 0.07, 0.5); tone(f * 2, 0.25, 'sine', 0.025, 0, k * 0.07 + 0.01, 0.6); }); break;
+    case 'shoot': tone(1300 * rr(), 0.05, 'square', 0.03, -900, 0, 0.05, 3500); noise(0.03, 0.025, 2500, 0, 1, 0); break;
+    case 'gun': tone(700 * rr(), 0.05, 'sawtooth', 0.035, -400, 0, 0.05, 2400); break;
+    case 'cannon': thump(110, 0.32, 0.3); noise(0.4, 0.22, 1400, 0, 0.7, 0.25, 'lowpass', -1200); break;
+    case 'laser': tone(1800, 0.2, 'sawtooth', 0.04, -1400, 0, 0.2, 5000); tone(2400, 0.12, 'sine', 0.025, -1600, 0.01, 0.2); break;
+    case 'frost': tone(1800, 0.3, 'sine', 0.04, 700, 0, 0.5); noise(0.25, 0.03, 6000, 0, 2, 0.3, 'highpass'); break;
+    case 'pop': noise(0.06, 0.06, 1800, 0, 1, 0.05); break;
+    case 'hit': thump(160 * rr(), 0.1, 0.13); noise(0.07, 0.08, 700, 0, 1, 0.05, 'lowpass', -400); break;
+    case 'boom': thump(90, 0.55, 0.34); noise(0.7, 0.3, 1800, 0, 0.6, 0.35, 'lowpass', -1650); noise(0.2, 0.08, 4000, 0, 1, 0.1, 'highpass'); break;
+    case 'siren': tone(520, 0.45, 'sawtooth', 0.05, 260, 0, 0.3, 2400); tone(780, 0.45, 'sawtooth', 0.045, -260, 0.45, 0.3, 2400); break;
+    case 'beep': tone(880, 0.07, 'square', 0.04, 0, 0, 0.1, 3000); break;
+    case 'build': noise(0.05, 0.12, 2200, 0, 1.2, 0.1); thump(220, 0.08, 0.1); tone(587, 0.12, 'triangle', 0.06, 0, 0.07, 0.2); break;
+    case 'coin': tone(1319, 0.05, 'square', 0.03, 0, 0, 0.1, 5000); tone(1976, 0.18, 'triangle', 0.045, 0, 0.05, 0.35); break;
+    case 'launch': noise(2.4, 0.26, 600, 0, 0.5, 0.3, 'lowpass', -450); tone(55, 2.2, 'sawtooth', 0.07, 160, 0, 0.2, 600); thump(70, 0.8, 0.25); break;
+    case 'tick': tone(1400, 0.025, 'square', 0.025, 0, 0, 0, 4000); break;
+    case 'win': [523, 659, 784, 1046].forEach((f, k) => { tone(f, 0.4, 'triangle', 0.1, 0, k * 0.13, 0.4); tone(f / 2, 0.4, 'square', 0.03, 0, k * 0.13, 0.2, 1500); }); break;
+    case 'lose': [392, 349, 311, 233].forEach((f, k) => tone(f, 0.45, 'sawtooth', 0.06, -10, k * 0.22, 0.4, 1400)); break;
+    case 'click': tone(900, 0.025, 'triangle', 0.04, -200, 0, 0); break;
+    case 'alert': tone(660, 0.12, 'square', 0.05, 0, 0, 0.2, 2500); tone(660, 0.12, 'square', 0.05, 0, 0.18, 0.2, 2500); break;
+    case 'open': noise(0.9, 0.07, 900, 0, 1, 0.3, 'bandpass', 1500); tone(330, 0.6, 'sine', 0.04, 330, 0.3, 0.5); break;
+    case 'bossroar': tone(80, 1.1, 'sawtooth', 0.12, -35, 0, 0.4, 700); noise(1.0, 0.14, 400, 0, 0.7, 0.4, 'lowpass', -250); tone(120, 0.8, 'square', 0.05, -60, 0.2, 0.3, 500); thump(60, 0.9, 0.3, 0.05); break;
+    case 'fuse': [262, 330, 392, 523, 659].forEach((f, k) => tone(f, 0.2, 'sine', 0.07, 0, k * 0.09, 0.5)); noise(0.6, 0.04, 2400, 0, 1, 0.3); break;
+    case 'elevator': tone(110, 1.2, 'triangle', 0.045, 30, 0, 0.1); noise(1.1, 0.025, 300, 0, 0.6, 0); break;
+    case 'land': thump(70, 0.5, 0.3); noise(0.5, 0.22, 900, 0, 0.6, 0.25, 'lowpass', -800); break;
+    case 'meteor': noise(0.7, 0.18, 2000, 0, 0.5, 0.2, 'bandpass', -1700); noise(0.9, 0.33, 900, 0.3, 0.6, 0.4, 'lowpass', -800); thump(60, 0.7, 0.32, 0.3); break;
+    case 'drop': tone(880, 0.14, 'triangle', 0.07, -320, 0, 0.2); tone(440, 0.22, 'triangle', 0.06, 0, 0.12, 0.3); break;
+    case 'storm': noise(2.6, 0.11, 700, 0, 0.3, 0.2, 'bandpass', -300); break;
+    case 'rain': noise(2.6, 0.07, 4500, 0, 0.3, 0.2, 'highpass'); break;
+    case 'zap': tone(1400, 0.15, 'sawtooth', 0.05, -1200, 0, 0.2, 5000); noise(0.2, 0.08, 5000, 0, 1, 0.1, 'highpass'); tone(900, 0.1, 'square', 0.035, -600, 0.18, 0.2, 3000); break;
+    case 'quake': noise(1.8, 0.26, 260, 0, 0.6, 0.2, 'lowpass', -120); tone(40, 1.5, 'sine', 0.24, 12); break;
+    case 'gas': noise(1.1, 0.1, 1600, 0, 0.5, 0.2, 'bandpass', -900); break;
+    case 'count': tone(660, 0.12, 'square', 0.06, 0, 0, 0.25, 2600); break;
+    case 'go': tone(880, 0.35, 'square', 0.07, 0, 0, 0.3, 3000); tone(1320, 0.35, 'triangle', 0.06, 0, 0.05, 0.4); thump(90, 0.3, 0.2); break;
   }
 }
-function startMusic() {
-  const c = SND.ctx; if (!c) return;
-  const bass = [55, 55, 65.4, 49], arp = [220, 261.6, 329.6, 392, 329.6, 261.6], mg = c.createGain(); mg.gain.value = 0.35; mg.connect(SND.out);
-  const note = (f, t, d, type, v) => { const o = c.createOscillator(), g = c.createGain(); o.type = type; o.frequency.value = f; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(v, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + d); o.connect(g); g.connect(mg); o.start(t); o.stop(t + d + 0.05); };
-  let next = c.currentTime + 0.1, step = 0;
-  setInterval(() => {
-    if (!SND.on || c.state !== 'running') { next = c.currentTime + 0.1; return; }
-    const intense = G && G.running && G.phase === 'wave';
-    while (next < c.currentTime + 0.6) {
-      if (step % 8 === 0) note(bass[(step / 8 | 0) % 4], next, 1.9, 'triangle', 0.12);
-      if (step % 2 === 0) note(arp[(step / 2 | 0) % arp.length] * (intense ? 2 : 1), next, 0.22, 'sine', intense ? 0.035 : 0.022);
-      if (intense && step % 2 === 1) noise(0.03, 0.02, 6000, next - c.currentTime);
-      next += intense ? 0.19 : 0.25; step++;
-    }
-  }, 150);
+// ===== 배경음악 (코드로 작곡하는 칩튠) =====
+const SCALES = { minor: [0, 2, 3, 5, 7, 8, 10], major: [0, 2, 4, 5, 7, 9, 11], dorian: [0, 2, 3, 5, 7, 9, 10], phryg: [0, 1, 3, 5, 7, 8, 10], phrydom: [0, 1, 4, 5, 7, 8, 10], lydian: [0, 2, 4, 6, 7, 9, 11], hmin: [0, 2, 3, 5, 7, 8, 11], locrian: [0, 1, 3, 5, 6, 8, 10], whole: [0, 2, 4, 6, 8, 10, 12], penta: [0, 3, 5, 7, 10, 12, 15] };
+const THEMES = {
+  menu:  { bpm: 82, root: 45, scale: 'minor', prog: [0, 5, 2, 6], lead: 'triangle', bass: 'triangle', pad: 0.05, arp: 'sine', bell: 0.5, drum: 0, seed: 11, dens: 0.35 },
+  base:  { bpm: 96, root: 48, scale: 'major', prog: [0, 4, 5, 3], lead: 'square', bass: 'triangle', pad: 0.035, arp: 'triangle', bell: 0, drum: 1, seed: 23, dens: 0.45 },
+  sand:  { bpm: 112, root: 50, scale: 'phrydom', prog: [0, 1, 0, 6], lead: 'pluck', bass: 'square', pad: 0.02, arp: 0, bell: 0, drum: 2, seed: 31, dens: 0.5, amb: 'wind' },
+  frost: { bpm: 78, root: 52, scale: 'major', prog: [0, 3, 5, 4], lead: 'triangle', bass: 'sine', pad: 0.05, arp: 'sine', bell: 1, drum: 1, seed: 41, dens: 0.3 },
+  lava:  { bpm: 100, root: 36, scale: 'phryg', prog: [0, 1, 0, 5], lead: 'sawtooth', bass: 'sawtooth', pad: 0.03, arp: 0, bell: 0, drum: 3, seed: 53, dens: 0.4, amb: 'rumble' },
+  bog:   { bpm: 86, root: 41, scale: 'whole', prog: [0, 1, 0, 2], lead: 'wob', bass: 'triangle', pad: 0.04, arp: 'sine', bell: 0, drum: 1, seed: 61, dens: 0.35, amb: 'bubble' },
+  rock:  { bpm: 104, root: 43, scale: 'penta', prog: [0, 3, 0, 4], lead: 'square', bass: 'triangle', pad: 0.02, arp: 0, bell: 0, drum: 4, seed: 71, dens: 0.4 },
+  cryst: { bpm: 120, root: 59, scale: 'lydian', prog: [0, 1, 4, 3], lead: 'sine', bass: 'triangle', pad: 0.04, arp: 'sine', bell: 1, drum: 1, seed: 83, dens: 0.55 },
+  moth:  { bpm: 70, root: 44, scale: 'major', prog: [0, 5, 3, 4], lead: 'sine', bass: 'sine', pad: 0.06, arp: 'triangle', bell: 0.6, drum: 0, seed: 97, dens: 0.3 },
+  acidm: { bpm: 94, root: 49, scale: 'hmin', prog: [0, 5, 3, 4], lead: 'square', bass: 'sawtooth', pad: 0.03, arp: 'triangle', bell: 0, drum: 2, seed: 101, dens: 0.4, amb: 'rain' },
+  shade: { bpm: 68, root: 38, scale: 'locrian', prog: [0, 1, 0, 4], lead: 'triangle', bass: 'sine', pad: 0.05, arp: 0, bell: 0.3, drum: 0, seed: 113, dens: 0.22, amb: 'wind' },
+  volt:  { bpm: 128, root: 40, scale: 'minor', prog: [0, 5, 6, 4], lead: 'sawtooth', bass: 'square', pad: 0.02, arp: 'square', bell: 0, drum: 5, seed: 127, dens: 0.55, amb: 'zap' },
+  boss:  { bpm: 144, root: 45, scale: 'phryg', prog: [0, 1, 0, 6], lead: 'sawtooth', bass: 'sawtooth', pad: 0.03, arp: 'square', bell: 0, drum: 6, seed: 131, dens: 0.6 },
+};
+const mtof = m => 440 * Math.pow(2, (m - 69) / 12);
+function srand(seed) { let x = seed * 9301 + 49297; return () => ((x = (x * 9301 + 49297) % 233280) / 233280); }
+function compose(th) {
+  const r = srand(th.seed), sc = SCALES[th.scale], deg = d => { const o = Math.floor(d / sc.length), i = ((d % sc.length) + sc.length) % sc.length; return sc[i] + 12 * o; };
+  const phrase = () => { const notes = []; let p = 7 + Math.floor(r() * 4); for (let bar = 0; bar < 4; bar++) { const ch = th.prog[bar]; for (let s = 0; s < 16; s++) { const strong = s % 4 === 0, on = strong ? r() < th.dens + 0.35 : r() < th.dens * 0.6;
+    if (!on) { notes.push(null); continue; } if (strong) { const ct = [ch, ch + 2, ch + 4].map(x => x + 7); p = ct.reduce((a, b) => Math.abs(b - p) < Math.abs(a - p) ? b : a); } else p += [-2, -1, -1, 1, 1, 2][Math.floor(r() * 6)]; p = Math.max(3, Math.min(14, p));
+    const len = strong && r() < 0.5 ? 3 : 1; notes.push({ m: th.root + 12 + deg(p), len }); } } return notes; };
+  const A = phrase(), B = phrase(), A2 = A.map((n, i) => i >= 48 && n && r() < 0.5 ? { m: n.m + (r() < 0.5 ? 2 : -1), len: n.len } : n);
+  return { lead: [...A, ...A2, ...B, ...A], deg, sc };
 }
+const MUS = { cur: null, want: 'menu', step: 0, next: 0, song: null, th: null, fadeT: 0, intense: 0 };
+function musicWant() {
+  if (!$('menu').hidden) return 'menu';
+  if (G && G.running) { if (G.boss && G.enemies && G.enemies.includes(G.boss)) return 'boss'; const p = PLANETS[G.planet]; return THEMES[p && p.mon] ? p.mon : 'sand'; }
+  return 'base';
+}
+function mnote(f, t, d, type, v, opt = {}) {
+  const c = SND.ctx, g = c.createGain(); let src;
+  if (type === 'pluck' || type === 'wob') { src = c.createOscillator(); src.type = type === 'pluck' ? 'sawtooth' : 'triangle'; }
+  else { src = c.createOscillator(); src.type = type; }
+  src.frequency.setValueAtTime(f, t); if (opt.slide) src.frequency.exponentialRampToValueAtTime(Math.max(20, f * opt.slide), t + d);
+  if (type === 'wob') { const l = c.createOscillator(), lg = c.createGain(); l.frequency.value = 5; lg.gain.value = f * 0.03; l.connect(lg); lg.connect(src.frequency); l.start(t); l.stop(t + d + 0.1); }
+  const fl = c.createBiquadFilter(); fl.type = 'lowpass'; fl.frequency.setValueAtTime(opt.cut || (type === 'pluck' ? 2600 : type === 'sawtooth' || type === 'square' ? 2200 : 6000), t); if (type === 'pluck') fl.frequency.exponentialRampToValueAtTime(400, t + d);
+  const a = opt.att || 0.008; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(v, t + a); g.gain.setValueAtTime(v, t + Math.max(a, d * (opt.hold || 0.5))); g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+  src.connect(fl); fl.connect(g); g.connect(SND.musFade); if (opt.rv) { const s = c.createGain(); s.gain.value = opt.rv; g.connect(s); s.connect(SND.revSend); }
+  src.start(t); src.stop(t + d + 0.05);
+}
+function mdrum(kind, t, v) {
+  const c = SND.ctx;
+  if (kind === 'k') { const o = c.createOscillator(), g = c.createGain(); o.frequency.setValueAtTime(140, t); o.frequency.exponentialRampToValueAtTime(42, t + 0.12); g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.18); o.connect(g); g.connect(SND.musFade); o.start(t); o.stop(t + 0.2); return; }
+  if (!noiseBuf) { noiseBuf = c.createBuffer(1, c.sampleRate * 2, c.sampleRate); const a = noiseBuf.getChannelData(0); for (let i = 0; i < a.length; i++) a[i] = Math.random() * 2 - 1; }
+  const s = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain(); s.buffer = noiseBuf;
+  const d = kind === 's' ? 0.14 : kind === 'h' ? 0.035 : kind === 'o' ? 0.12 : 0.2; f.type = kind === 's' ? 'bandpass' : kind === 't' ? 'lowpass' : 'highpass'; f.frequency.value = kind === 's' ? 1800 : kind === 't' ? 500 : 7500; f.Q.value = 0.8;
+  g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(0.0001, t + d); s.connect(f); f.connect(g); g.connect(SND.musFade); if (kind === 's') { const r = c.createGain(); r.gain.value = 0.2; g.connect(r); r.connect(SND.revSend); } s.start(t, Math.random()); s.stop(t + d + 0.02);
+  if (kind === 's') { const o = c.createOscillator(), g2 = c.createGain(); o.type = 'triangle'; o.frequency.setValueAtTime(220, t); o.frequency.exponentialRampToValueAtTime(140, t + 0.08); g2.gain.setValueAtTime(v * 0.5, t); g2.gain.exponentialRampToValueAtTime(0.0001, t + 0.1); o.connect(g2); g2.connect(SND.musFade); o.start(t); o.stop(t + 0.12); }
+  if (kind === 't') { const o = c.createOscillator(), g2 = c.createGain(); o.frequency.setValueAtTime(110, t); o.frequency.exponentialRampToValueAtTime(70, t + 0.2); g2.gain.setValueAtTime(v, t); g2.gain.exponentialRampToValueAtTime(0.0001, t + 0.25); o.connect(g2); g2.connect(SND.musFade); o.start(t); o.stop(t + 0.27); }
+}
+const DRUMS = [null,
+  { k: [0, 8], s: [], h: [4, 12] },                                   // 1 가벼움
+  { k: [0, 6, 8], s: [4, 12], h: [0, 2, 4, 6, 8, 10, 12, 14] },       // 2 말 달리는 리듬
+  { k: [0, 3, 8, 11], s: [4, 12], h: [2, 6, 10, 14], t: [14] },       // 3 묵직
+  { k: [0, 10], s: [8], t: [4, 6, 12, 13, 14] },                      // 4 타악기
+  { k: [0, 4, 8, 12], s: [4, 12], h: [2, 6, 10, 14], o: [14] },       // 5 일렉트로
+  { k: [0, 2, 4, 6, 8, 10, 12, 14], s: [4, 12], h: [1, 3, 5, 7, 9, 11, 13, 15], t: [14, 15] }]; // 6 보스
+function musicTick() {
+  const c = SND.ctx; if (!c || c.state !== 'running') return;
+  if (!SND.on) { MUS.next = c.currentTime + 0.1; return; }
+  const want = musicWant(), now = c.currentTime;
+  if (want !== MUS.cur) {
+    if (!MUS.fadeT) { MUS.fadeT = now + 0.7; SND.musFade.gain.cancelScheduledValues(now); SND.musFade.gain.setValueAtTime(SND.musFade.gain.value, now); SND.musFade.gain.linearRampToValueAtTime(0.0001, now + 0.6); if (!MUS.cur) MUS.fadeT = now; }
+    if (now < MUS.fadeT) return;
+    MUS.cur = want; MUS.th = THEMES[want]; MUS.song = compose(MUS.th); MUS.step = 0; MUS.next = now + 0.05; MUS.fadeT = 0;
+    SND.musFade.gain.cancelScheduledValues(now); SND.musFade.gain.setValueAtTime(0.0001, now); SND.musFade.gain.linearRampToValueAtTime(1, now + 0.8);
+  }
+  const th = MUS.th, song = MUS.song, sd = 60 / th.bpm / 4; if (MUS.next < now) MUS.next = now + 0.02;
+  const inGame = G && G.running, wave = inGame && G.phase === 'wave', boss = MUS.cur === 'boss', calm = inGame && !wave && !boss;
+  while (MUS.next < now + 0.25) {
+    const t = MUS.next, st = MUS.step, s16 = st % 16, bar = Math.floor(st / 16) % 16, ch = th.prog[bar % 4], root = th.root + song.deg(ch);
+    // 베이스
+    const bpat = th.drum >= 3 || boss ? [0, 3, 6, 8, 11, 14] : [0, 8, 10];
+    if (bpat.includes(s16)) mnote(mtof(root - 12 + (s16 === 10 || s16 === 14 ? 7 : 0)), t, sd * (boss ? 1.6 : 3.2), th.bass, th.bass === 'sawtooth' ? 0.07 : 0.11, { cut: 900 });
+    // 패드 (마디 시작)
+    if (s16 === 0 && th.pad) for (const iv of [0, 2, 4]) { const f = mtof(th.root + 12 + song.deg(ch + iv)); mnote(f, t, sd * 16, 'sawtooth', th.pad * (calm ? 1 : 0.8), { att: 0.5, hold: 0.7, cut: 1100, rv: 0.6 }); mnote(f * 1.006, t, sd * 16, 'triangle', th.pad * 0.8, { att: 0.5, hold: 0.7, rv: 0.6 }); }
+    // 리드 멜로디 (원정 중 평소엔 2마디 쉬고 2마디)
+    const n = song.lead[st % song.lead.length], leadOn = !calm || Math.floor(st / 32) % 2 === 0;
+    if (n && leadOn) mnote(mtof(n.m), t, sd * n.len * 0.95, th.lead, th.lead === 'sawtooth' ? 0.045 : th.lead === 'square' ? 0.045 : 0.07, { rv: 0.3 });
+    // 아르페지오
+    if (th.arp && (wave || boss || MUS.cur === 'menu' || MUS.cur === 'cryst' || MUS.cur === 'frost') && s16 % 2 === 0) { const iv = [0, 2, 4, 7][(s16 / 2) % 4]; mnote(mtof(th.root + 24 + song.deg(ch + (iv === 7 ? 0 : iv)) + (iv === 7 ? 12 : 0)), t, sd * 0.9, th.arp, 0.025, { rv: 0.35 }); }
+    // 종소리
+    if (th.bell && s16 % 8 === 4 && Math.random() < th.bell * 0.5) { const f = mtof(th.root + 24 + song.deg(ch + [0, 2, 4][Math.floor(Math.random() * 3)])); mnote(f, t, 1.4, 'sine', 0.035, { att: 0.002, hold: 0.05, rv: 0.8 }); mnote(f * 3, t, 0.6, 'sine', 0.008, { att: 0.002, hold: 0.02, rv: 0.8 }); }
+    // 드럼 (원정 평상시엔 가볍게, 웨이브·보스면 전부)
+    const dp = DRUMS[th.drum]; if (dp && (!calm || th.drum === 1)) { const lv = wave || boss ? 1 : 0.55;
+      if ((dp.k || []).includes(s16)) mdrum('k', t, 0.32 * lv); if ((dp.s || []).includes(s16) && (wave || boss || !inGame)) mdrum('s', t, 0.12 * lv); if ((dp.h || []).includes(s16)) mdrum('h', t, 0.045 * lv); if ((dp.o || []).includes(s16)) mdrum('o', t, 0.05 * lv); if ((dp.t || []).includes(s16)) mdrum('t', t, 0.22 * lv); }
+    // 행성 분위기 소리
+    if (th.amb && s16 === 0 && bar % 2 === 0) { if (th.amb === 'wind') noise(sd * 30, 0.025, 500, t - now, 0.4, 0.3, 'bandpass', 300); else if (th.amb === 'rain') noise(sd * 30, 0.02, 5000, t - now, 0.3, 0.2, 'highpass'); else if (th.amb === 'rumble') noise(sd * 30, 0.04, 160, t - now, 0.6, 0.2, 'lowpass'); }
+    if (th.amb === 'bubble' && Math.random() < 0.05) tone(300 + Math.random() * 500, 0.08, 'sine', 0.015, 400, t - now, 0.3);
+    if (th.amb === 'zap' && Math.random() < 0.012) noise(0.06, 0.02, 6000, t - now, 1, 0.1, 'highpass');
+    MUS.next += sd; MUS.step++;
+  }
+}
+function startMusic() { setInterval(musicTick, 60); }
+document.addEventListener('input', e => { const t = e.target; if (t && t.id === 'volM') setVol('m', t.value / 100); else if (t && t.id === 'volS') { setVol('s', t.value / 100); sfx('coin'); } });
 const DIRS = [[1,0],[-1,0],[0,1],[0,-1]];
 
 // ===== 기지 행성: 행성 · 연구 · 저장 =====
@@ -964,17 +1083,19 @@ const RESEARCH = [
   { key: 'hold', name: '화물칸 증설', max: 2, cost: [80, 170], desc: l => `우주선 저장고 +${l * 20}`, apply: () => {} },
   { key: 'bay', name: '격납고 확장', max: 2, cost: [120, 240], desc: l => `파견 일꾼 ${3 + l}대`, apply: () => {} },
 ];
-const hireCost = () => { const n = Math.max(0, SAVE.workers.length - 1); return { cr: 80 + 40 * n, copper: 6 + 2 * n, iron: 2 + n }; };
+for (const r of RESEARCH) r.cost = r.cost.map(c => c * ECON);
+const hireCost = () => { const n = Math.max(0, SAVE.workers.length - 1); return { cr: 800 + 400 * n, copper: 6 + 2 * n, iron: 2 + n }; };
 const canHire = () => { const c = hireCost(); return SAVE.credits >= c.cr && amt(SAVE.home, 'copper') >= c.copper && amt(SAVE.home, 'iron') >= c.iron; };
 const HIRE = 60, MAX_WORKERS = 8, SAVE_KEY = 'coreRush.v2', LAB_SLOTS = 2, UP_MAX = 10;
 const UPS = { spd: { name: '이동', per: '단계당 이동 속도 +8%' }, dig: { name: '채굴', per: '단계당 채굴 속도 +15%' }, atk: { name: '전투', per: '단계당 공격력 +15%, 체력 +5' }, bld: { name: '건축', per: '단계당 건설·작업 속도 +20%' } };
 const supplyKit = () => ({ head: mkP('shead1'), body: mkP('sbody1'), armR: mkP('sdrill1'), armL: null, legs: mkP('slegs1'), back: null });
 const mkW = id => ({ id, name: `일꾼-${String(id).padStart(2, '0')}`, trips: 0, parts: supplyKit(), cores: [null, null], prio: 'ore', relic: null, gear: null });
 function freshSave() {
-  return { credits: 250, news: ['본부 통신: 새로 배치된 보급형 일꾼은 왼팔이 비어 있어요. 거래소(6)에서 구리와 철을 사고, 제작소(4)에서 블래스터를 만들어, 정비소(3)에서 일꾼의 왼팔에 달아 주세요.'], home: {}, ship: { copper: 6, iron: 2 }, homeUnknown: [], shipUnknown: [], lab: [], relics: [], gear: [], market: {}, mhist: {}, quests: [], news: [], qid: 1, parts: [], cores: [], bossMat: {}, bps: {}, trophies: {}, leader: { up: { rsp: 0, cmd: 0 }, parts: partKit(null), cores: [null, null], gear: null }, baseSlots: [null, null, null], leaderRelic: null,
+  return { econ10: true, credits: 2500, news: ['본부 통신: 새로 배치된 보급형 일꾼은 왼팔이 비어 있어요. 거래소(6)에서 구리와 철을 사고, 제작소(4)에서 블래스터를 만들어, 정비소(3)에서 일꾼의 왼팔에 달아 주세요.'], home: {}, ship: { copper: 6, iron: 2 }, homeUnknown: [], shipUnknown: [], lab: [], relics: [], gear: [], market: {}, mhist: {}, quests: [], news: [], qid: 1, parts: [], cores: [], bossMat: {}, bps: {}, trophies: {}, leader: { up: { rsp: 0, cmd: 0 }, parts: partKit(null), cores: [null, null], gear: null }, baseSlots: [null, null, null], leaderRelic: null,
     nextId: 2, rid: 1, research: {}, planet: 0, wins: 0, runs: 0, pick: [1], last: null, dex: { ore: {}, relic: {}, mon: {} }, workers: [mkW(1)] };
 }
-function loadSave() { try { const v = JSON.parse(localStorage.getItem(SAVE_KEY)); if (v && v.workers) return Object.assign(freshSave(), v); } catch (e) {} return freshSave(); }
+function mergeSave(v) { const o = Object.assign(freshSave(), v); if (!v.econ10) o.econ10 = false; return o; }
+function loadSave() { try { const v = JSON.parse(localStorage.getItem(SAVE_KEY)); if (v && v.workers) return mergeSave(v); } catch (e) {} return freshSave(); }
 let BOOT_FRESH = true; try { BOOT_FRESH = !localStorage.getItem(SAVE_KEY); } catch (e) {}
 function persist() { SAVE.savedAt = Date.now(); try { localStorage.setItem(SAVE_KEY, JSON.stringify(SAVE)); } catch (e) {} cloudQueue(); }
 const CLOUD = { ref: null, state: '확인 중', busy: false, again: false, t: 0 };
@@ -987,6 +1108,7 @@ function migrateParts() {
   if (!SAVE.leader.parts) SAVE.leader.parts = partKit(SAVE.leader.up);
   SAVE.cores = SAVE.cores || []; SAVE.bossMat = SAVE.bossMat || {}; SAVE.bps = SAVE.bps || {}; SAVE.trophies = SAVE.trophies || {};
   if (!SAVE.cleared) { SAVE.cleared = {}; PLANETS.forEach((p, k) => { if (k && SAVE.wins >= p.need) SAVE.cleared[k - 1] = 1; }); }
+  if (!SAVE.econ10) { SAVE.econ10 = true; SAVE.credits = Math.round((SAVE.credits || 0) * 10); for (const q of SAVE.quests || []) q.cr = Math.round(q.cr * 10); }
   SAVE.diff = SAVE.diff || {}; SAVE.hardOpen = SAVE.hardOpen || {}; SAVE.hardClear = SAVE.hardClear || {};
   SAVE.builds = SAVE.builds || {}; SAVE.hallLv = SAVE.hallLv || 0; for (const k of ['forge', 'cforge', 'hall', 'hallx']) SAVE.builds[k] = SAVE.builds[k] || { started: false, done: false, crew: [], prog: 0 }; SAVE.furn = SAVE.furn || []; SAVE.furnInv = SAVE.furnInv || {};
   const G2C = { drill: 'drill', shield: 'shield', jump: 'dash', aim: 'aim', bag: 'bag' }, R2C = { boots: ['boots', 1], pack: ['bag', 1], gloves: ['gloves', 1], circuit: ['circuit', 2], amulet: ['amulet', 3], blast: ['blast', 3] };
@@ -1100,6 +1222,9 @@ function applyGear(u, parts, cores) {
 }
 function featTick(u, dt) {
   const f = u.feat; if (!f) return; u.ftT = u.ftT || {}; for (const k in u.ftT) u.ftT[k] -= dt;
+  if (f.spider && !(u.ftT.web > 0)) { const ti = Math.max(0, TIER_MUL.indexOf(f.spider)), rr = [2.5, 3, 3.5][ti], sl = [0.4, 0.5, 0.6][ti]; let hit = 0;
+    for (const e of G.enemies) if (!(e.webImm > 0) && !(e.webT > 0) && Math.hypot(e.x - u.x, e.y - u.y) < rr) { e.webT = 2.5; e.webF = sl * (e.boss ? 0.5 : 1); hit++; G.tracers.push({ x1: u.x, y1: u.y - 0.3, x2: e.x, y2: e.y, t: 0.15, c: '#f2f4f8', w: 1 }); }
+    if (hit) { u.ftT.web = [7, 6, 5][ti]; float(u.x, u.y - 1, '거미줄!', '#e6edfb'); } else u.ftT.web = 0.5; }
   if (f.repair && !(u.ftT.rep > 0)) { u.ftT.rep = 1; const h = 2.5 * f.repair; let any = false;
     for (const o of G.units) if (!o.dead && !o.boarded && o.hp < o.max && Math.hypot(o.x - u.x, o.y - u.y) < 3) { o.hp = Math.min(o.max, o.hp + h); any = true; }
     for (const t of G.turrets) if (t.hp < t.max && Math.hypot(t.x + 0.5 - u.x, S - 1 - u.y) < 3) { t.hp = Math.min(t.max, t.hp + h); any = true; }
@@ -1368,7 +1493,7 @@ function kill(u) {
 function updEnemy(e, dt) {
   if (e.poison && e.poison.t > 0) { e.poison.t -= dt; e.hp -= e.poison.dps * dt; }
   if (e.under) { updUnder(e, dt); return; }
-  e.hit -= dt; e.cd -= dt; e.walk += dt * 9; e.slowT = (e.slowT || 0) - dt; e.lunge = Math.max(0, (e.lunge || 0) - dt);
+  e.hit -= dt; e.cd -= dt; e.walk += dt * 9; e.slowT = (e.slowT || 0) - dt; if (e.webT > 0) { e.webT -= dt; if (e.webT <= 0) e.webImm = 2; } else if (e.webImm > 0) e.webImm -= dt; e.lunge = Math.max(0, (e.lunge || 0) - dt);
   const cx = shipCX(); let tgt = null;
   const rc = e.boss ? 1.7 : 0.95, ru = e.boss ? 1.5 : 0.8;
   if (e.boss) { e.skT -= dt; e.chargeT = Math.max(0, (e.chargeT || 0) - dt); if (e.skT <= 0) { bossSkill(e); e.skT = 7; } }
@@ -1386,7 +1511,7 @@ function updEnemy(e, dt) {
     for (const t of [...G.turrets]) if (Math.abs(t.x + 0.5 - e.x) < 1.7) damage(t, e.dmg * 3);
     if (Math.abs(cx - e.x) < 2.6) damage('ship', e.dmg * 3); return; }
   if (tgt) { if (e.cd <= 0) { e.cd = C.enemy.rate * (e.boss ? 1.6 : 1); e.lunge = 0.15; damage(tgt, e.dmg * (e.chargeT > 0 ? 2 : 1)); e.chargeT = 0; if (tgt.cores && tgt.cores.shell) { e.hp -= e.dmg * 0.1 * tgt.cores.shell; e.hit = 0.06; } } }
-  else e.x += Math.sign(cx - e.x) * e.spd * (e.slowT > 0 ? 0.45 : 1) * (e.chargeT > 0 ? 4.5 : 1) * dt;
+  else e.x += Math.sign(cx - e.x) * e.spd * (e.slowT > 0 ? 0.45 : 1) * (e.webT > 0 ? 1 - e.webF : 1) * (e.chargeT > 0 ? 4.5 : 1) * dt;
 }
 function startWave() {
   G.phase = 'wave'; const bossW = BOSS_WAVES.includes(G.wave);
@@ -1948,6 +2073,7 @@ function drawEnemy(e, X, Y) {
     if (e.hit > 0) { ctx.globalAlpha = 0.6; ctx.globalCompositeOperation = 'lighter'; ctx.drawImage(sp.cv, -sp.ox * k, -sp.oy * k, sp.cv.width * k, sp.cv.height * k); ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1; }
     ctx.restore();
     if (e.slowT > 0) { ctx.globalAlpha = 0.3; ctx.fillStyle = '#9ff0ff'; ctx.fillRect(cx - r, cy - r * 0.6, r * 2, r * 1.2); ctx.globalAlpha = 1; }
+    if (e.webT > 0) { ctx.save(); ctx.globalAlpha = 0.85; ctx.strokeStyle = '#f2f4f8'; ctx.lineWidth = Math.max(1, T / 22); ctx.beginPath(); for (let k = 0; k < 4; k++) { const a = k * Math.PI / 4; ctx.moveTo(cx - Math.cos(a) * r, cy - Math.sin(a) * r * 0.8); ctx.lineTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r * 0.8); } ctx.stroke(); ctx.beginPath(); ctx.ellipse(cx, cy, r * 0.55, r * 0.42, 0, 0, 7); ctx.ellipse(cx, cy, r * 0.95, r * 0.75, 0, 0, 7); ctx.stroke(); ctx.restore(); }
     if (e.hp < e.max && !e.boss) hpBar(cx, cy - r - 6, T * 0.8, e.hp / e.max);
     if (e.boss) { ctx.fillStyle = '#ffd23f'; for (let q = -1; q <= 1; q++) { ctx.fillRect(Math.round(cx + q * r * 0.4 - T * 0.06), Math.round(cy - r * (1.05 + (q ? 0 : 0.2))), Math.round(T * 0.12), Math.round(T * 0.22)); } }
     if (e.size) ctx.restore();
@@ -1963,6 +2089,7 @@ function drawEnemy(e, X, Y) {
   ctx.globalAlpha = 0.28; ctx.fillStyle = m.eye; ctx.beginPath(); ctx.arc(ex, ey, r * 0.38, 0, 7); ctx.fill(); ctx.globalAlpha = 1;
   ctx.fillStyle = m.eye; ctx.fillRect(ex - r * 0.2, ey - 2, r * 0.16, 4); ctx.fillRect(ex + r * 0.05, ey - 2, r * 0.16, 4);
   if (e.slowT > 0) { ctx.globalAlpha = 0.35; ctx.fillStyle = '#9ff0ff'; ctx.beginPath(); ctx.ellipse(cx, cy, r * 1.05, r * 0.72, 0, 0, 7); ctx.fill(); ctx.globalAlpha = 1; }
+  if (e.webT > 0) { ctx.save(); ctx.globalAlpha = 0.85; ctx.strokeStyle = '#f2f4f8'; ctx.lineWidth = Math.max(1, T / 22); ctx.beginPath(); for (let k = 0; k < 4; k++) { const a = k * Math.PI / 4; ctx.moveTo(cx - Math.cos(a) * r, cy - Math.sin(a) * r * 0.8); ctx.lineTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r * 0.8); } ctx.stroke(); ctx.beginPath(); ctx.ellipse(cx, cy, r * 0.55, r * 0.42, 0, 0, 7); ctx.ellipse(cx, cy, r * 0.95, r * 0.75, 0, 0, 7); ctx.stroke(); ctx.restore(); }
   if (e.kind === 'fly') { const fl = Math.sin(G.time * 30) * 0.5 + 0.5; ctx.globalAlpha = 0.5; ctx.fillStyle = '#d8f0ff'; ctx.beginPath(); ctx.ellipse(cx - r * 0.3, cy - r * 0.7, r * 0.6, r * 0.25 * (0.3 + fl), -0.4, 0, 7); ctx.fill(); ctx.beginPath(); ctx.ellipse(cx + r * 0.3, cy - r * 0.7, r * 0.6, r * 0.25 * (0.3 + fl), 0.4, 0, 7); ctx.fill(); ctx.globalAlpha = 1; }
   else if (e.kind === 'spit') { ctx.fillStyle = '#7ad84a'; ctx.beginPath(); ctx.arc(cx - dir * r * 0.35, cy - r * 0.55, r * 0.34, 0, 7); ctx.fill(); ctx.fillStyle = '#c8ff9a'; ctx.beginPath(); ctx.arc(cx - dir * r * 0.42, cy - r * 0.66, r * 0.1, 0, 7); ctx.fill(); }
   else if (e.kind === 'bomb') { ctx.globalAlpha = 0.35 + 0.35 * Math.sin(G.time * 12); ctx.fillStyle = '#ff3a2a'; ctx.beginPath(); ctx.ellipse(cx, cy, r * 0.9, r * 0.62, 0, 0, 7); ctx.fill(); ctx.globalAlpha = 1; ctx.fillStyle = '#ffd23f'; ctx.fillRect(cx - 2, cy - r * 0.95, 4, r * 0.32); }
@@ -2421,6 +2548,7 @@ cv.addEventListener('pointerup', e => {
 cv.addEventListener('wheel', e => { e.preventDefault(); if (e.ctrlKey) { const old = T, mid = G.camT + H / T / 2; ZOOM = Math.max(0.5, Math.min(1, ZOOM * (e.deltaY > 0 ? 0.92 : 1.08))); resize(); G.camT = mid - H / T / 2; clampCam(); G.cam = G.camT; return; } G.camT += e.deltaY / T * 0.6; clampCam(); }, { passive: false });
 function unitAt(w) { let pick = null, pd = 0.75; for (const u of G.units) if (!u.dead && !u.boarded) { const d = Math.hypot(u.x - w.x, u.y - w.y); if (d < pd) { pd = d; pick = u; } } return pick; }
 function select(w, shift) {
+  G.detailHidden = false;
   const tx = Math.floor(w.x), ty = Math.floor(w.y);
   if (G.build) {
     const b = G.blueprints.find(b => b.x === tx);
@@ -2548,6 +2676,7 @@ function portrait(fn) {
 const unitPortrait = u => sz => { T = sz * 0.82; drawUnit({ ...u, digging: -1, hit: 0, bob: 0, hp: u.max, face: 1, cargo: {} }, () => sz / 2, () => sz * 0.56); };
 let hudT = 0, portraitKey = '';
 function hud(dt) {
+  { const dt2 = document.querySelector && document.querySelector('#side .detail'); if (dt2 && dt2.classList) dt2.classList.toggle('show', !!((G.sels.length || G.selTurret) && !G.detailHidden)); }
   toastT -= dt; if (toastT <= 0) $('toast').classList.remove('show');
   hudT -= dt; if (hudT > 0) return; hudT = 0.1;
   const used = sum(G.store), full = used >= C.shipCap;
@@ -2617,6 +2746,7 @@ $('buildPop').addEventListener('click', e => {
   const b = e.target.closest('[data-tt]'); if (!b || b.disabled) return;
   G.buildType = b.dataset.tt; G.pickOpen = false; G.build = true; G.camT = camHome(); toast(`${TURRETS[G.buildType].name} 설계도 배치 · 지상 빈칸을 클릭하세요`); hudT = 0;
 });
+$('detClose').onclick = () => { G.detailHidden = true; hudT = 0; };
 $('selRows').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
   if (b.dataset.gprio) {
@@ -2638,7 +2768,7 @@ $('selRows').addEventListener('click', e => {
   }
   hudT = 0;
 });
-$('units').addEventListener('click', e => { const b = e.target.closest('[data-k]'); if (!b) return; const u = G.units[+b.dataset.k]; if (!u.dead) { G.selTurret = null; G.sels = e.shiftKey ? [...new Set([...G.sels, u])] : [u]; focusOn(u); hudT = 0; } });
+$('units').addEventListener('click', e => { const b = e.target.closest('[data-k]'); if (!b) return; G.detailHidden = false; const u = G.units[+b.dataset.k]; if (!u.dead) { G.selTurret = null; G.sels = e.shiftKey ? [...new Set([...G.sels, u])] : [u]; focusOn(u); hudT = 0; } });
 
 // ---------- minimap ----------
 const mm = $('mm'), mctx = mm.getContext('2d'), mOff = document.createElement('canvas');
@@ -2696,7 +2826,7 @@ $('mQuit').onclick = () => menuMsg('브라우저 탭을 닫으면 게임이 종�
   const id = await user.id(); if (!id) { CLOUD.state = '로그인이 필요해요 (이 기기에만 저장)'; return; }
   const ref = db.collection('data/users/' + id).doc('save'); const snap = await ref.get(); CLOUD.ref = ref;
   const cd = snap.exists ? snap.data() : null;
-  if (cd && cd.json && (BOOT_FRESH || (cd.at || 0) > (SAVE.savedAt || 0))) { if (G.running || sortie) { CLOUD.state = '연결됨'; return; } const v = JSON.parse(cd.json); SAVE = Object.assign(freshSave(), v); migrateParts(); try { localStorage.setItem(SAVE_KEY, cd.json); } catch (e) {} CLOUD.state = '연결됨 · 클라우드 저장을 불러왔어요'; walkers.clear(); if (!$('base').hidden) { ensureQuests(); renderBase(); btoast('다른 기기의 클라우드 저장을 불러왔어요'); } else menuMsg('클라우드 저장을 불러왔어요'); }
+  if (cd && cd.json && (BOOT_FRESH || (cd.at || 0) > (SAVE.savedAt || 0))) { if (G.running || sortie) { CLOUD.state = '연결됨'; return; } const v = JSON.parse(cd.json); SAVE = mergeSave(v); migrateParts(); try { localStorage.setItem(SAVE_KEY, cd.json); } catch (e) {} CLOUD.state = '연결됨 · 클라우드 저장을 불러왔어요'; walkers.clear(); if (!$('base').hidden) { ensureQuests(); renderBase(); btoast('다른 기기의 클라우드 저장을 불러왔어요'); } else menuMsg('클라우드 저장을 불러왔어요'); }
   else { CLOUD.state = '연결됨'; cloudPush(); }
 } catch (e) { CLOUD.state = '연결 실패 (이 기기에만 저장)'; } })();
 function showCard(kind, r) {
@@ -2754,9 +2884,10 @@ const BNAMES = { ops: '관제실', cmd: '사령실', craft: '정비소', lab: '�
 const BUILDS = { forge: { name: '고급 공방', cost: { cr: 250, iron: 12, silver: 5 }, base: 3, unlock: 'Mk.II 파츠 제작법', desc: '합금을 다루는 공방이에요. 완공하면 제작소에서 Mk.II 파츠를 만들 수 있어요.' },
   cforge: { name: '코어 단조로', cost: { cr: 600, gold: 6, crystal: 4 }, mat: 2, base: 4, need: 'forge', unlock: 'Mk.III 파츠 제작법', desc: '코어석과 보스 소재를 녹여 최고급 부품을 두드려 만드는 화로예요. 완공하면 Mk.III 파츠를 만들 수 있어요.' },
   hallx: { name: '광장 확장', cost: { cr: 150, copper: 10, iron: 6 }, base: 2, need: 'hall', unlock: '광장 넓이 +12%', desc: '광장 오른쪽 암반을 더 파서 넓혀요.' },
-  hall: { name: '휴게 광장', cost: { cr: 200, copper: 20, iron: 8 }, base: 2, unlock: '지하 3층 꾸미기 공간', desc: '지하 3층 암반을 넓게 뚫어 일꾼들이 쉬는 광장을 만들어요. 거래소에서 산 가구로 꾸밀 수 있어요.' } };
+  hall: { name: '휴게 광장', cost: { cr: 200, copper: 20, iron: 8 }, base: 2, unlock: '지하 3층 꾸미기 공간', desc: '지하 3층 암반을 넓게 뚫어 일꾼들이 쉬는 광장을 만들어요. 거래소에서 산 가구로 꾸밀 수 있어요.' } };for (const b of Object.values(BUILDS)) b.cost.cr *= ECON;
+
 const hallFrac = () => 0.4 + 0.12 * Math.min(5, SAVE.hallLv || 0);
-function syncHallX() { const l = SAVE.hallLv || 0, B = BUILDS.hallx; B.name = `광장 확장 ${Math.min(5, l + 1)}단계`; B.cost = { cr: 150 + 100 * l, copper: 10 + 6 * l, iron: 6 + 4 * l }; B.base = 2 + Math.floor(l / 2); }
+function syncHallX() { const l = SAVE.hallLv || 0, B = BUILDS.hallx; B.name = `광장 확장 ${Math.min(5, l + 1)}단계`; B.cost = { cr: 1500 + 1000 * l, copper: 10 + 6 * l, iron: 6 + 4 * l }; B.base = 2 + Math.floor(l / 2); }
 const siteRoom = k => k === 'hallx' ? 'hall' : k;
 const bst = k => SAVE.builds[k], built = k => !!(SAVE.builds[k] && SAVE.builds[k].done);
 const bNeed = k => Math.max(1, BUILDS[k].base - Math.max(0, bst(k).crew.length - 1));
@@ -2764,15 +2895,37 @@ const builderOf = id => Object.keys(BUILDS).find(k => bst(k).started && !bst(k).
 const bAfford = k => { const c = BUILDS[k].cost; return SAVE.credits >= c.cr && Object.entries(c).every(([o, n]) => o === 'cr' || amt(SAVE.home, o) >= n) && (!BUILDS[k].mat || totalMat() >= BUILDS[k].mat); };
 const tierOpen = t => t === 1 || (t === 2 && built('forge')) || (t === 3 && built('cforge'));
 const FURN = { chair: { name: '의자', cr: 30, w: 6, h: 9 }, sofa: { name: '소파', cr: 120, w: 16, h: 9 }, table: { name: '테이블', cr: 60, w: 12, h: 7 }, lamp: { name: '스탠드 조명', cr: 50, w: 4, h: 16 }, plant: { name: '화분', cr: 40, w: 6, h: 11 }, vend: { name: '자판기', cr: 180, w: 9, h: 18 }, arcade: { name: '아케이드 게임기', cr: 220, w: 9, h: 18 }, poster: { name: '포스터', cr: 25, w: 8, h: 10, wall: true }, rug: { name: '러그', cr: 70, w: 18, h: 1 }, tank: { name: '수족관', cr: 260, w: 16, h: 12 }, trophy: { name: '트로피 장식장', cr: 300, w: 12, h: 18 } };
+for (const f of Object.values(FURN)) f.cr *= ECON;
 let decoMode = false, decoSel = null, labTab = 'res', makeTab = 'craft';
 const tabOf = k => k === 'forge' || k === 'cforge' ? 'make' : k;
 const deskLine = { trade: '어서 오세요!', ana: '어떤 물건을 가져오셨나요?' };
-const DESK = { trade: { name: '상인 로봇 메리', color: '#ffa62b' }, ana: { name: '감정사 로봇 오웬', color: '#46b8ff' } };
+const DESK = { trade: { name: '떠돌이 상인 메리', color: '#ffa62b' }, ana: { name: '감정사 로봇 오웬', color: '#46b8ff' } };
 const clerkSVG = c => `<svg viewBox="0 0 80 80" width="80" height="80" aria-hidden="true"><rect x="16" y="14" width="48" height="34" rx="8" fill="#e3e7ef"/><rect x="22" y="22" width="36" height="16" rx="4" fill="#121c34"/><rect x="28" y="27" width="7" height="7" fill="${c}"/><rect x="45" y="27" width="7" height="7" fill="${c}"/><rect x="38" y="4" width="4" height="10" fill="#9aa2b4"/><circle cx="40" cy="4" r="3" fill="${c}"/><rect x="20" y="50" width="40" height="30" rx="4" fill="#cfd4de"/><rect x="34" y="55" width="12" height="8" fill="${c}"/></svg>`;
-const deskHTML = k => `<div class="desk"><div class="clerk">${clerkSVG(DESK[k].color)}</div><div class="bubble"><b>${DESK[k].name}</b><span>${deskLine[k]}</span></div><div class="counter"></div></div>`;
+const marySVG = () => `<svg viewBox="0 0 96 96" width="96" height="96" shape-rendering="crispEdges" aria-hidden="true">
+  <rect x="22" y="4" width="44" height="6" fill="#5a2e1a"/><rect x="28" y="0" width="32" height="8" fill="#7a3e22"/><rect x="28" y="6" width="32" height="3" fill="#ffa62b"/><rect x="18" y="10" width="52" height="4" fill="#5a2e1a"/>
+  <rect x="20" y="14" width="48" height="34" rx="6" fill="#e3e7ef"/><rect x="26" y="20" width="36" height="20" rx="3" fill="#121c34"/>
+  <rect x="31" y="25" width="7" height="6" fill="#ffd23f"/><rect x="50" y="25" width="7" height="6" fill="#ffd23f"/><rect x="33" y="26" width="2" height="2" fill="#fff"/><rect x="52" y="26" width="2" height="2" fill="#fff"/>
+  <rect class="mmouth" x="39" y="34" width="10" height="3" fill="#ff8a9a"/><rect x="24" y="31" width="4" height="3" fill="#ff9aa9" opacity=".7"/><rect x="60" y="31" width="4" height="3" fill="#ff9aa9" opacity=".7"/>
+  <rect x="64" y="20" width="10" height="4" fill="#9aa2b4"/><rect x="72" y="16" width="4" height="12" fill="#c8cfdc"/>
+  <rect x="24" y="48" width="40" height="30" rx="4" fill="#c8cfdc"/><rect x="28" y="50" width="32" height="28" fill="#2f9a6a"/><rect x="30" y="52" width="28" height="3" fill="#58e08a"/>
+  <rect x="38" y="60" width="12" height="9" rx="2" fill="#1f6a48"/><text x="44" y="68" font-size="8" text-anchor="middle" fill="#ffd23f" font-family="monospace">₵</text>
+  <rect x="12" y="52" width="10" height="16" rx="3" fill="#c8cfdc"/><rect x="66" y="52" width="10" height="16" rx="3" fill="#c8cfdc"/>
+  <g class="mcoin"><circle cx="80" cy="50" r="6" fill="#ffd23f"/><circle cx="80" cy="50" r="4" fill="#ffa62b"/><rect x="79" y="47" width="2" height="6" fill="#ffd23f"/></g>
+  <rect x="4" y="62" width="14" height="14" rx="4" fill="#8a5a30"/><rect x="7" y="58" width="8" height="5" fill="#a8743a"/><circle cx="11" cy="70" r="3" fill="#ffd23f"/>
+</svg>`;
+const deskHTML = k => `<div class="desk${k === 'trade' ? ' mary' : ''}${k === 'trade' && maryTalk ? ' talk' : ''}"><div class="clerk">${k === 'trade' ? marySVG() : clerkSVG(DESK[k].color)}</div><div class="bubble"><b>${DESK[k].name}</b><span>${deskLine[k]}</span></div><div class="counter"></div></div>`;
+const MARY = {
+  mkt: [`어서 옵쇼~ 시세판 보러 오셨구먼? 원정 한 번 다녀오실 때마다 값이 요동쳐요. 기본가의 60%에서 160%까지 오르락내리락! 오를 때 파는 게 장사의 기본이죠~`, '시세는 바람 같은 거예요. 오늘 ▲ 뜬 광물이 있으면 그날이 대목! 사는 값은 제가 고정으로 모시니까 걱정 마시고요~', '흐흐, 손님 같은 큰손이 오면 제 눈이 반짝반짝해요. 그래프 쭉 보시고 팔 때를 잘 고르세요!'],
+  buy: ['광물 모자라셨구나? 걱정 마셔요, 메리 창고에 없는 게 없습니다요! 값은 시세 안 타는 고정가, 산 건 바로 개인 저장고로 쏙~', '이 철은 제가 우주 최저가로 모셨습니다요. 하나 더 얹어 드릴까? 아, 덤은 없어요. 히히.', '필요한 만큼만 콕 집어 사 가세요. 개수 칸에 숫자 넣고 탁! 그럼 끝이에요~'],
+  sell: ['자자, 캐 오신 거 다 꺼내 보셔요~ 개인 저장고에 있는 광물이랑 보스 소재, 메리가 섭섭지 않게 쳐 드립니다요!', '결정은 연구에 많이 쓰이니까 조금은 남겨 두시는 게 좋을걸요? 장사꾼이 이런 말 해 주는 거 흔치 않아요~', '보스 소재는 개당 1,500 크레딧 고정! 코어 만들 거 아니면 저한테 넘기셔요~'],
+  furn: ['광장 꾸미실 거죠? 소파에 자판기에 수족관까지! 우리 일꾼들도 쉬어야 일을 하죠~ 산 가구는 휴게 광장에서 꾸미기 모드로 놓으시면 돼요.', '이 아케이드 게임기 보셔요, 반짝반짝하죠? 일꾼들 눈이 돌아갈걸요. 광장이 아직 안 뚫렸으면 공사부터 하셔야 해요~', '인테리어는 마음의 여유! 하나씩 들여놓다 보면 기지가 집이 돼요~'],
+  quest: ['의뢰 게시판이에요. 다른 기지에서 광물 좀 보내 달라고 아우성이에요. 개인 저장고에 있는 걸로 납품하면 보상이 두둑~', '기한은 원정 한 번 다녀올 때마다 1씩 줄어요. 0 되면 휙 사라지니까 서두르셔요!', '납품 보상에 가끔 유물 상자도 끼어 있어요. 이런 건 놓치면 손해예요, 손해!'] };
+const MARY_POOR = ['에이~ 손님 지갑 사정 다 알아요. 조금만 더 캐 오시면 딱이에요~', '크레딧이 살짝 모자라네요? 외상은 안 됩니다요, 히히.'];
+function maryTab() { const pool = MARY[tradeTab] || MARY.mkt; deskLine.trade = pool[rnd(pool.length)]; maryTalk = 1; }
+let maryTalk = 0;
 function greet(k) {
   if (k === 'trade') { const best = ORES.filter(o => SAVE.dex.ore[o.key] || o.key === 'copper').reduce((a, o) => trendOf(o.key) > trendOf(a.key) ? o : a, OREKEY.copper);
-    const pool = ['어서 오세요! 오늘은 뭘 가져오셨나요?', `요즘 ${best.name} 시세가 좋아요. 팔 거 있으면 지금이에요!`, '의뢰 게시판도 한번 봐주세요. 보상이 짭짤해요.']; deskLine.trade = pool[rnd(pool.length)]; }
+    if (trendOf(best.key) > 0 && Math.random() < 0.5) { deskLine.trade = `어서 옵쇼~ 오늘 ${best.name} 시세가 아주 그냥 끝내줘요! 갖고 계시면 지금 파셔야 해요~`; maryTalk = 1; } else maryTab(); }
   if (k === 'lab' && labTab === 'ana') k = 'ana';
   if (k === 'ana') { const pool = SAVE.lab.some(l => l.left === 0) ? ['감정이 끝난 물건이 있어요. 확인해보세요!'] : ['어떤 물건을 가져오셨나요?', '오래된 물건일수록 감정에 시간이 걸려요.', '전설 등급은... 저도 몇 번 못 봤어요.']; deskLine.ana = pool[rnd(pool.length)]; }
 }
@@ -2790,7 +2943,7 @@ const buyPrice = k => Math.ceil(OREKEY[k].price * 2.5);
 const QFROM = ['본부 공병대', '이웃 채굴 기지', '연구 협회', '정비 길드', '행성 개척단'];
 function genQuest() {
   const pool = ORES.filter(o => SAVE.dex.ore[o.key] || o.key === 'copper' || o.key === 'iron'), o = pool[rnd(pool.length)];
-  const n = Math.max(2, Math.round(70 / o.price * (0.7 + Math.random() * 0.6))), cr = Math.round(n * o.price * (1.6 + Math.random() * 0.6));
+  const n = Math.max(2, Math.round(700 / o.price * (0.7 + Math.random() * 0.6))), cr = Math.round(n * o.price * (1.6 + Math.random() * 0.6));
   return { id: SAVE.qid++, ore: o.key, n, cr, box: Math.random() < 0.35 ? (Math.random() < 0.75 ? 1 : 2) : 0, left: 2 + rnd(3), from: QFROM[rnd(QFROM.length)] };
 }
 function ensureQuests() { while (SAVE.quests.length < 3) SAVE.quests.push(genQuest()); persist(); }
@@ -2882,7 +3035,7 @@ function cstatsHTML() {
     const f = v => isP ? pct(v) : v, d = b ? b[k] - a[k] : 0, good = k === 'armor' ? d > 0 : d > 0;
     return `<span>${k === 'armor' ? '피해 감소' : STATN[k]}</span><b>${f(a[k])}${b && Math.abs(d) > 0.001 ? ` <i style="color:${good ? 'var(--good)' : 'var(--bad)'}">→ ${f(b[k])}</i>` : ''}</b>`; }).join('');
 }
-let storeTab = 'arm', partTab = 'arm', fuseSel = [];
+let storeTab = 'arm', partTab = 'arm', fuseSel = [], stTab = 'all';
 const robPaint = () => { const o = craftSel === 'L' ? SAVE.leader : SAVE.workers.find(w => w.id === craftSel) || SAVE.leader; const P = o.paint || (o.paint = {});
   if (P.m != null || P.a != null) { const b = { m: P.m || 0, a: P.a || 0 }; delete P.m; delete P.a; for (const k of Object.keys(PSLOT)) P[k] = { ...b }; } return P; };
 const paintSlot = () => craftSlot.startsWith('core') ? 'body' : craftSlot;
@@ -2890,7 +3043,7 @@ const robPaintSlot = () => { const P = robPaint(), k = paintSlot(); return P[k] 
 const robCores = () => craftSel === 'L' ? SAVE.leader.cores : (SAVE.workers.find(w => w.id === craftSel) || {}).cores;
 const STIP = { speed: '이동: 걷고 오르는 속도예요.', dig: '채굴: 블록을 파는 속도예요.', dmg: '전투: 모든 공격의 피해량이에요.', build: '건축: 포탑을 짓고 고치는 속도예요.', hp: '체력: 버틸 수 있는 최대 체력이에요.', carry: '적재: 한 번에 들고 다니는 광물 수예요.', range: '사거리: 총의 사거리와 적을 알아채는 거리예요.', armor: '받는 피해: 적에게 맞을 때 줄어드는 피해예요.' };
 const WKIND = { shot: ['🎯', '단일 사격', '가장 가까운 적 한 마리를 멀리서 쏴요.'], missile: ['💥', '폭발 범위', '맞은 곳 주변 적까지 폭발로 피해를 줘요. 주변 적은 60% 피해예요.'], cone: ['🔥', '부채꼴 범위', '앞쪽 약 70° 부채꼴 안의 적을 모두 태워요.'], arc: ['⚔️', '반원 범위', '바라보는 쪽 반원 안의 적을 모두 베요.'], melee: ['👊', '근접 단일', '바로 앞의 적 한 마리를 공격해요.'] };
-const FTAG = { welder: [['돌 채굴 1.5배', '돌 블록을 1.5배 빠르게 녹여 파요.']], claw: [['넉백', '때린 적을 뒤로 밀쳐내요.']], shield: [['넉백', '방패로 적을 뒤로 밀쳐내요.']], hook: [['오를 때 빠름', '위로 올라갈 때 이동 속도가 1.6배 이상 빨라져요.']], magnet: [['광물 자동 회수', '바로 옆의 드러난 광물을 몇 초마다 자동으로 뜯어와요.']], repair: [['자동 수리', '3칸 안의 로봇, 포탑, 우주선을 1초마다 고쳐요.']], radar: [['광물 탐지', '주변의 숨은 광물, 둥지, 유물을 2초마다 드러내요.']], cmdr: [['지휘 오라', '4칸 안의 동료 채굴과 공격이 올라가요.']], visor: [['시야 확대', '어두운 땅속에서 더 넓게 봐요.']], reactive: [['반응 폭발', '맞으면 25% 확률로 터져 주변 적에게 피해를 줘요.']], digleg: [['아래로 빨리 파기', '발밑 블록을 1.4배 이상 빠르게 파요.']], wheel: [['땅속 느림', '땅속에서는 이동 속도가 0.55배로 느려져요.']], drone: [['추적 드론', '5칸 안의 적을 드론이 0.8초마다 쏴요.']], flare: [['조명탄', '땅속에서 16초마다 조명탄을 떨어뜨려 주변을 밝혀요.']], minit: [['임시 포탑', '웨이브 중 적이 가까우면 30초마다 미니 포탑을 세워요.']] };
+const FTAG = { welder: [['돌 채굴 1.5배', '돌 블록을 1.5배 빠르게 녹여 파요.']], claw: [['넉백', '때린 적을 뒤로 밀쳐내요.']], shield: [['넉백', '방패로 적을 뒤로 밀쳐내요.']], hook: [['오를 때 빠름', '위로 올라갈 때 이동 속도가 1.6배 이상 빨라져요.']], magnet: [['광물 자동 회수', '바로 옆의 드러난 광물을 몇 초마다 자동으로 뜯어와요.']], repair: [['자동 수리', '3칸 안의 로봇, 포탑, 우주선을 1초마다 고쳐요.']], radar: [['광물 탐지', '주변의 숨은 광물, 둥지, 유물을 2초마다 드러내요.']], cmdr: [['지휘 오라', '4칸 안의 동료 채굴과 공격이 올라가요.']], visor: [['시야 확대', '어두운 땅속에서 더 넓게 봐요.']], reactive: [['반응 폭발', '맞으면 25% 확률로 터져 주변 적에게 피해를 줘요.']], digleg: [['아래로 빨리 파기', '발밑 블록을 1.4배 이상 빠르게 파요.']], spider: [['거미줄', '주변 적 전부에게 거미줄을 쏴서 2.5초 동안 느리게 해요 (보스는 절반). Mk.I 40%·2.5칸·7초마다 / Mk.II 50%·3칸·6초마다 / Mk.III 60%·3.5칸·5초마다']], wheel: [['땅속 느림', '땅속에서는 이동 속도가 0.55배로 느려져요.']], drone: [['추적 드론', '5칸 안의 적을 드론이 0.8초마다 쏴요.']], flare: [['조명탄', '땅속에서 16초마다 조명탄을 떨어뜨려 주변을 밝혀요.']], minit: [['임시 포탑', '웨이브 중 적이 가까우면 30초마다 미니 포탑을 세워요.']] };
 function fmtStat(k, v) { if (k === 'hp') return [(v > 0 ? '+' : '') + Math.round(v), '']; if (k === 'carry' || k === 'range') return [(v > 0 ? '+' : '') + v.toFixed(1), '']; if (k === 'armor') return ['-' + Math.round(v * 100) + '%', '']; return [(v > 0 ? '+' : '') + Math.round(v * 100) + '%', '']; }
 function cmpTarget(it) { const P = PARTS[it.key], R = robParts && robParts(); if (!R) return null; const sl = P.slot === 'arm' ? (craftSlot && craftSlot.startsWith('arm') ? craftSlot : 'armR') : P.slot, cur = R[sl]; return cur && cur.id !== it.id && PARTS[cur.key] ? cur : null; }
 function partInfo(it, cmp) {
@@ -2903,7 +3056,7 @@ function partInfo(it, cmp) {
       h += `<div class="wline" data-tip="${nm}: ${tip}"><span class="wk">${ic} ${nm}</span><span>${r}${w.kind === 'cone' ? ' · 70°' : ''}${w.splash ? ` · 폭발 ${w.splash}칸` : ''}</span><span>피해 <b>${Math.round(w.dmg * 100)}%</b></span><span>공격 간격 <b>×${w.rate}</b> (${sp})</span></div>`; }
     else h += `<div class="wline" data-tip="보조 팔: 무기가 아니라 특수 기능을 해요. 다른 팔에 무기가 없으면 맨손으로 싸워요."><span class="wk">⚙️ 보조 팔</span><span>공격하지 않아요</span></div>`; }
   const tags = [...(FTAG[P.fam] || []), ...((WPN[P.fam] || {}).kb ? [] : []), ...(P.supply ? [['보급형', '강화할 수 없고, 다른 파츠를 끼우면 폐기돼요.']] : [])];
-  if (tags.length) h += `<div class="ftags">${tags.map(([n, t]) => `<span class="ftag" data-tip="${t}">✦ ${n}</span>`).join('')}</div>`;
+  if (tags.length) h += `<div class="ftags">${tags.map(([n, t]) => `<span class="ftag" data-tip="${t}${P.supply ? '' : ` (${PTN[P.tier - 1]} 효과${P.tier > 1 ? ` ×${TIER_MUL[P.tier - 1]}` : ''} · 강화로는 안 바뀌고 상위 등급에서 세져요)`}">✦ ${n}</span>`).join('')}</div>`;
   return h + `<p class="pdesc">${PFAM[P.fam].desc}</p>`;
 }
 function wkLabel(P) { const w = WPN[P.fam]; return w ? `${WKIND[w.kind][0]} ${WKIND[w.kind][1]}` : P.slot === 'arm' ? '⚙️ 보조 팔' : ''; }
@@ -2930,8 +3083,8 @@ function ptipHTML(code) { const [t, v] = code.split(':'), P = robParts(), CR = r
 function partRow(p, mode) {
   const P = PARTS[p.key], max = p.lv >= PMAX, c = max ? null : pUpCost(p), ok = !max && SAVE.credits >= c.cr && amt(SAVE.home, c.ore) >= c.n, can = mode === 'eq' && (craftSlot.startsWith('arm') || craftSlot === 'back');
   if (P.supply) return `<div class="item frame pitem"><div><h4>${pic(p.key, 40)} ${P.name} <span class="tierb" style="color:#a8743a">보급형</span></h4>${partInfo(p, false)}</div></div>`;
-  return `<div class="item frame pitem"${mode === 'spare' ? ` data-ph="${p.id}" data-ptip="sp:${p.id}"` : ''}><div><h4>${pic(p.key, 40)} ${P.name} ${tierB(P.tier)} <span class="num">Lv${p.lv}</span></h4>${partInfo(p, false)}${pips(p.lv, PMAX)}</div>
-    <div class="pbtns">${mode === 'spare' ? `<button class="act main" data-pequip="${p.id}">장착</button>` : ''}${can ? '<button class="act" data-punequip="1">해제</button>' : ''}<button class="act" data-pup="${p.id}" ${ok ? '' : 'disabled'}>${max ? '최대 강화' : `강화 ${c.cr} · ${OREKEY[c.ore].name} ${c.n}`}</button></div></div>`;
+  return `<div class="item frame pitem"${mode === 'spare' ? ` data-ph="${p.id}" data-ptip="sp:${p.id}"` : ''}><div><h4>${pic(p.key, 40)} ${P.name} ${tierB(P.tier)} ${P.slot === 'back' ? '' : `<span class="num">Lv${p.lv}</span>`}</h4>${partInfo(p, false)}${P.slot === 'back' ? '' : pips(p.lv, PMAX)}</div>
+    <div class="pbtns">${mode === 'spare' ? `<button class="act main" data-pequip="${p.id}">장착</button>` : ''}${can ? '<button class="act" data-punequip="1">해제</button>' : ''}${P.slot === 'back' ? '<span class="dim" style="font-size:12px">강화 불가 · 상위 등급으로 교체</span>' : `<button class="act" data-pup="${p.id}" ${ok ? '' : 'disabled'}>${max ? '최대 강화' : `강화 ${c.cr} · ${OREKEY[c.ore].name} ${c.n}`}</button>`}</div></div>`;
 }
 function coreRow(c, mode) {
   return `<div class="item frame"${mode === 'spare' ? ` data-ptip="sc:${c.id}"` : ''}><div><h4>${coreIcon(c, 34)} ${CORES[c.key].name} ${gradeB(c.g)}</h4><p>${CORES[c.key].desc(c.g)}</p></div><div class="pbtns">${mode === 'spare' ? `<button class="act main" data-cequip="${c.id}">장착</button>` : '<button class="act" data-cunequip="1">해제</button>'}</div></div>`;
@@ -2945,9 +3098,9 @@ function craftView() {
   const coreBtn = k => { const c = CR[k], lock = k >= nCore; return `<button class="pslot core${craftSlot === 'core' + k ? ' on' : ''}" data-cslot="core${k}" data-ptip="eqc:${k}" ${lock ? 'disabled' : ''}>${c && !lock ? coreIcon(c, 40) : `<span class="pempty">${lock ? '🔒' : '+'}</span>`}<b>코어 ${k + 1}</b><span>${lock ? 'Mk.III 몸통 필요' : c ? `${CORES[c.key].name} · ${CGRADE[c.g]}` : '비어 있음'}</span></button>`; };
   const cur = isCore ? CR[+craftSlot[4]] : P[craftSlot];
   const acts = cur ? (isCore ? '<button class="act" data-cunequip="1">해제</button>' : (() => { const PP = PARTS[cur.key], max = cur.lv >= PMAX, c = max ? null : pUpCost(cur), ok = !max && SAVE.credits >= c.cr && amt(SAVE.home, c.ore) >= c.n, can = !PP.supply && (craftSlot.startsWith('arm') || craftSlot === 'back');
-    return `${can ? '<button class="act" data-punequip="1">해제</button>' : ''}${PP.supply ? '<span class="dim" style="font-size:12px">보급형 · 강화 불가</span>' : `<button class="act" data-pup="${cur.id}" ${ok ? '' : 'disabled'}>${max ? '최대 강화' : `강화 ${c.cr} · ${OREKEY[c.ore].name} ${c.n}`}</button>`}`; })()) : '';
+    return `${can ? '<button class="act" data-punequip="1">해제</button>' : ''}${PP.supply ? '<span class="dim" style="font-size:12px">보급형 · 강화 불가</span>' : PP.slot === 'back' ? '<span class="dim" style="font-size:12px">등 장비 · 강화 불가</span>' : `<button class="act" data-pup="${cur.id}" ${ok ? '' : 'disabled'}>${max ? '최대 강화' : `강화 ${c.cr} · ${OREKEY[c.ore].name} ${c.n}`}</button>`}`; })()) : '';
   let left = `<div class="prio">${[['L', '대장'], ...SAVE.workers.map(w => [w.id, esc(w.name)])].map(([id, n]) => `<button class="mini${String(craftSel) === String(id) ? ' on' : ''}" data-csel="${id}">${n}</button>`).join('')}</div>
-    <div class="selact frame"><div class="selname"><small>${isCore ? `코어 ${+craftSlot[4] + 1}` : PSLOT[craftSlot]}</small><b>${cur ? (isCore ? `${CORES[cur.key].name} · ${CGRADE[cur.g]}` : `${PARTS[cur.key].name} Lv${cur.lv}`) : '비어 있음 · 오른쪽 보관함에서 장착'}</b></div><div class="selbtns">${acts}<button class="act${paintOpen ? ' main' : ''}" data-ptoggle="1">🎨 도색</button></div></div>
+    <div class="selact frame"><div class="selname"><small>${isCore ? `코어 ${+craftSlot[4] + 1}` : PSLOT[craftSlot]}</small><b>${cur ? (isCore ? `${CORES[cur.key].name} · ${CGRADE[cur.g]}` : `${PARTS[cur.key].name}${PARTS[cur.key].slot === 'back' ? '' : ` Lv${cur.lv}`}`) : '비어 있음 · 오른쪽 보관함에서 장착'}</b></div><div class="selbtns">${acts}<button class="act${paintOpen ? ' main' : ''}" data-ptoggle="1">🎨 도색</button></div></div>
     ${paintOpen ? `<div class="paintpop frame"><div class="paint"><span>${PSLOT[paintSlot()]} · 색</span>${PAINT_M.map((c, i) => `<button class="sw${(robPaintSlot().m || 0) === i ? ' on' : ''}" data-paint="m:${i}" style="background:${c || 'linear-gradient(135deg,#dde2ec 50%,#56506e 50%)'}" aria-label="몸 색 ${i ? i : '기본'}"></button>`).join('')}</div>
     <div class="paint"><span>${PSLOT[paintSlot()]} · 포인트</span>${PAINT_A.map((c, i) => `<button class="sw${(robPaintSlot().a || 0) === i ? ' on' : ''}" data-paint="a:${i}" style="background:${c || 'linear-gradient(135deg,#f29a2e 33%,#5cc8ff 33% 66%,#ff4fc0 66%)'}" aria-label="포인트 색 ${i ? i : '기본'}"></button>`).join('')}<button class="mini" data-paintall="1" style="margin-left:6px">전체 적용</button></div><p class="dim" style="font-size:11px;margin:4px 0 0">위쪽 부위 칸을 고르면 그 부위만 칠해요.</p></div>` : ''}
     <div class="craftwrap"><div><div class="doll">${['head', 'back', 'armR', 'body', 'armL', 'legs'].map(slotBtn).join('')}</div><div class="coreslots">${coreBtn(0)}${coreBtn(1)}</div></div>
@@ -2994,13 +3147,19 @@ function cmdView() {
       ${(() => { const c = hireCost(), miss = [SAVE.credits < c.cr ? `크레딧 ${c.cr - SAVE.credits}` : '', amt(SAVE.home, 'copper') < c.copper ? `구리 ${c.copper - amt(SAVE.home, 'copper')}` : '', amt(SAVE.home, 'iron') < c.iron ? `철 ${c.iron - amt(SAVE.home, 'iron')}` : ''].filter(Boolean); return `<button class="act" id="hire" ${!canHire() || SAVE.workers.length >= MAX_WORKERS ? 'disabled' : ''}>일꾼 고용 · ${c.cr} 크레딧 · ${gemDot(OREKEY.copper)}${c.copper} · ${gemDot(OREKEY.iron)}${c.iron}</button>${miss.length && SAVE.workers.length < MAX_WORKERS ? `<span class="row" style="color:var(--bad)">부족: ${miss.join(', ')} (개인 저장고 기준)</span>` : ''}`; })()}<span class="row">보유 ${SAVE.workers.length}/${MAX_WORKERS}대</span></div>
       <div class="crew">${leaderCard()}${SAVE.workers.map(crewCard).join('')}</div>`;
   } else if (cmdTab === 'store') {
-    const cap = shipCap(), used = sum(SAVE.ship), keys = ORES.map(o => o.key).filter(k => amt(SAVE.home, k) || amt(SAVE.ship, k));
-    h += `<p class="lead">우주선 저장고에 남긴 광물은 다음 원정에도 실려 가요. 원정 중 포탑을 지을 때 쓸 수 있지만, 우주선이 파괴되면 모두 잃어요. 판매와 연구에는 개인 저장고의 광물만 쓰여요.</p>
-      <div class="toolbar"><button class="act" id="unloadAll" ${used || SAVE.shipUnknown.length ? '' : 'disabled'}>우주선 전부 내리기</button><span style="font:18px var(--f-head)">우주선 저장고 <b class="num" style="font-size:24px;color:${used >= cap ? 'var(--bad)' : 'var(--amber)'}">${used}/${cap}</b></span></div>
-      <div class="tbl"><table><thead><tr><th>광물</th><th>개인 저장고</th><th>옮기기</th><th>우주선</th></tr></thead><tbody>${keys.length ? keys.map(k => { const o = OREKEY[k];
-        return `<tr><td>${gemDot(o)} ${o.name}</td><td class="num">${amt(SAVE.home, k)}</td><td><div class="mv"><button class="mini" data-mv="${k}:1:up">실기 1</button><button class="mini" data-mv="${k}:all:up">전부 실기</button><button class="mini" data-mv="${k}:1:down">내리기 1</button><button class="mini" data-mv="${k}:all:down">전부 내리기</button></div></td><td class="num">${amt(SAVE.ship, k)}</td></tr>`; }).join('')
-        : '<tr><td colspan="4" class="dim">저장된 광물이 없어요</td></tr>'}</tbody></table></div>
-      <div class="item frame" style="margin-top:12px"><div><h4>${boxIcon(2, 22)} 미확인 유물</h4><p>개인 저장고 ${SAVE.homeUnknown.length}개 · 우주선 ${SAVE.shipUnknown.length}개. 분석소에 맡기려면 개인 저장고로 옮겨야 해요.</p></div><button class="act" id="unloadRelic" ${SAVE.shipUnknown.length ? '' : 'disabled'}>개인 저장고로</button></div>`;
+    const cap = shipCap(), used = sum(SAVE.ship), pct = Math.min(100, used / cap * 100), keys = ORES.map(o => o.key).filter(k => amt(SAVE.home, k) || amt(SAVE.ship, k));
+    const ucnt = (arr, t) => arr.filter(u => u.tier === t).length, utiers = [1, 2, 3].filter(t => ucnt(SAVE.homeUnknown, t) || ucnt(SAVE.shipUnknown, t)), mats = Object.entries(SAVE.bossMat || {}).filter(([, n]) => n);
+    h += `<p class="lead" style="margin-bottom:6px">우주선에 실은 광물은 원정 중 포탑 건설에 쓰여요. 우주선이 부서지면 잃어요.</p>` + subTabs([['all', '전체'], ['ore', `광물 ${keys.length}`], ['relic', `유물 ${SAVE.homeUnknown.length + SAVE.shipUnknown.length}`], ['mat', `보스 소재 ${totalMat()}`]], stTab, 'sttab');
+    h += `<div class="sthead"><div class="stcol"><b>우주선 화물칸 <span class="num" style="color:${used >= cap ? 'var(--bad)' : 'var(--amber)'}">${used}/${cap}</span></b><div class="capbar${used >= cap ? ' full' : ''}"><i style="width:${pct}%"></i></div></div>
+        <div class="stmid"><button class="act" id="unloadAll" ${used || SAVE.shipUnknown.length ? '' : 'disabled'}>우주선 전부 내리기</button></div>
+        <div class="stcol right"><b>개인 저장고</b><span class="dim">판매·연구·제작에 쓰여요</span></div></div><div class="strows">`;
+    const row = (icon, name, sn, hn, btns, sub) => `<div class="strow frame"><div class="sside">${icon}<span class="sname">${name}</span><b class="num">${sn}</b></div><div class="sbtns">${btns}</div><div class="sside right">${sub ? `<small class="dim">${sub}</small>` : ''}<b class="num">${hn}</b><span class="sname">${name}</span>${icon}</div></div>`;
+    const arrows = (attr, sn, hn, canUp) => `<button class="mini" data-${attr}=":all:up" ${hn && canUp ? '' : 'disabled'} title="개인 → 우주선 전부">◀◀</button><button class="mini" data-${attr}=":1:up" ${hn && canUp ? '' : 'disabled'} title="개인 → 우주선 1개">◀</button><button class="mini" data-${attr}=":1:down" ${sn ? '' : 'disabled'} title="우주선 → 개인 1개">▶</button><button class="mini" data-${attr}=":all:down" ${sn ? '' : 'disabled'} title="우주선 → 개인 전부">▶▶</button>`;
+    let any = false;
+    if (stTab === 'all' || stTab === 'ore') for (const k of keys) { any = true; const o = OREKEY[k], hn = amt(SAVE.home, k), sn = amt(SAVE.ship, k); h += row(gemDot(o, 24), o.name, sn, hn, arrows('mv', sn, hn, used < cap).replace(/data-mv=":/g, `data-mv="${k}:`), `≈ ${(hn * price(k)).toLocaleString()} 크레딧`); }
+    if (stTab === 'all' || stTab === 'relic') for (const t of utiers) { any = true; const hn = ucnt(SAVE.homeUnknown, t), sn = ucnt(SAVE.shipUnknown, t); h += row(boxIcon(t, 24), `미확인 유물 · ${TIER[t]}`, sn, hn, arrows('umv', sn, hn, true).replace(/data-umv=":/g, `data-umv="${t}:`), '연구실에서 분석'); }
+    if (stTab === 'all' || stTab === 'mat') for (const [k, n] of mats) { any = true; h += row(matIcon(k, 24), BOSSMAT[k], '—', n, '<span class="dim" style="font-size:11px;padding:0 10px">개인 전용</span>', `≈ ${(n * MATP).toLocaleString()} 크레딧`); }
+    h += (any ? '' : '<p class="dim">이 분류에는 아직 아무것도 없어요.</p>') + '</div>';
   } else {
     const free = SAVE.baseSlots.findIndex(x => !x);
     const slotHTML = (r, un) => r ? `<div class="slot frame"><b>${relicIcon(r.key, 22)} ${RELICS[r.key].name} ${tierTag(RELICS[r.key].tier)}</b><p>${RELICS[r.key].desc}</p><button class="mini" data-unequip="${un}">해제</button></div>` : '<div class="slot frame"><span class="dim">빈 칸</span></div>';
@@ -3097,31 +3256,30 @@ function tradeView() {
     + `<div class="orebar frame"><span class="orechip cr">크레딧 <b class="num">${SAVE.credits}</b></span>${oreChips(ORES.filter(o => o.key === 'copper' || o.key === 'iron' || amt(SAVE.home, o.key)).map(o => o.key))}</div>`;
   if (tradeTab === 'sell') {
     const keys = ORES.filter(o => amt(SAVE.home, o.key));
-    h += `<p class="lead">개인 저장고의 광물을 팔아 크레딧으로 바꿔요. 결정은 연구에도 쓰이니 조금 남겨두세요.</p><div class="list">${keys.length ? keys.map(o => { const n = SAVE.home[o.key];
+    h += `<div class="list">${keys.length ? keys.map(o => { const n = SAVE.home[o.key];
       return `<div class="trow frame"><div class="ttop"><h4>${gemDot(o, 22)} ${o.name} ${trendTag(o.key)}</h4>${spark(o.key)}<div class="thave"><span>보유</span><b class="num">${n}</b><span>개</span></div></div><div class="tsub">개당 <b class="num">${price(o.key)}</b> 크레딧에 팔아요</div>${qtyCtl('sell', o.key)}</div>`; }).join('')
       : `<p class="dim">팔 광물이 없어요.${sum(SAVE.ship) ? ' 우주선에 실린 광물은 사령실 저장고에서 내려야 팔 수 있어요.' : ''}</p>`}</div>`;
     const mats = Object.entries(SAVE.bossMat || {}).filter(([, n]) => n > 0);
     h += `<h3 class="h3">보스 소재</h3><div class="list">${mats.length ? mats.map(([k, n]) => `<div class="trow frame"><div class="ttop"><h4>${matIcon(k, 22)} ${BOSSMAT[k]}</h4><div class="thave"><span>보유</span><b class="num">${n}</b><span>개</span></div></div><div class="tsub">개당 <b class="num">${MATP}</b> 크레딧 고정 · 코어 제작에도 쓰여요</div>${qtyCtl('mat', k)}</div>`).join('') : '<p class="dim">팔 보스 소재가 없어요.</p>'}</div>`;
   } else if (tradeTab === 'buy') {
     const ores = ORES.filter(o => SAVE.dex.ore[o.key] || o.key === 'copper' || o.key === 'iron');
-    h += `<p class="lead">부족한 광물을 살 수 있어요. 구매가는 시세와 상관없이 고정이에요. 파츠는 제작소에서 만들어요. 코어는 보스와 유물 상자에서만 얻어요. 산 것은 개인 저장고로 들어가요.</p>
+    h += `
       <h3 class="h3">광물 구매</h3><div class="list">${ores.map(o => { const pr = buyPrice(o.key);
         return `<div class="trow frame"><div class="ttop"><h4>${gemDot(o, 22)} ${o.name}</h4><div class="thave"><span>보유</span><b class="num">${amt(SAVE.home, o.key)}</b><span>개</span></div></div><div class="tsub">개당 <b class="num">${pr}</b> 크레딧 · 최대 ${Math.floor(SAVE.credits / pr)}개 살 수 있어요</div>${qtyCtl('buy', o.key)}</div>`; }).join('')}</div>
       <p class="dim" style="margin-top:10px">도감에 등록된 광물만 살 수 있어요.</p>`;
   } else if (tradeTab === 'mkt') {
     const list = ORES.filter(o => SAVE.dex.ore[o.key] || o.key === 'copper'), tr = o => { const h = SAVE.mhist[o.key] || []; return h.length < 2 ? 0 : (h[h.length - 1] - h[h.length - 2]) / h[h.length - 2]; };
     const up = list.slice().sort((a, b) => tr(b) - tr(a))[0], dn = list.slice().sort((a, b) => tr(a) - tr(b))[0];
-    h += `<p class="lead">원정을 다녀올 때마다 판매 시세가 바뀌어요. 기본 가격의 ${MK_LO * 100}%~${MK_HI * 100}% 사이에서 움직여요. 구매가는 변하지 않고 고정이에요.</p>`;
     if (up && tr(up) > 0) h += `<div class="mkhi frame"><span>가장 많이 오른 광물</span><b>${gemDot(up, 20)} ${up.name} ${trendTag(up.key)}</b></div>`;
     if (dn && tr(dn) < 0) h += `<div class="mkhi frame bad"><span>가장 많이 내린 광물</span><b>${gemDot(dn, 20)} ${dn.name} ${trendTag(dn.key)}</b></div>`;
     h += `<div class="list">${list.map(o => { const m = Math.max(MK_LO, Math.min(MK_HI, SAVE.market[o.key] || 1)), pos = (m - MK_LO) / (MK_HI - MK_LO) * 100;
       return `<div class="item frame mkrow"><div><h4>${gemDot(o, 22)} ${o.name} ${trendTag(o.key)}</h4><p>판매 <b class="num">${price(o.key)}</b> 크레딧 (기본 ${o.price} · ${Math.round(m * 100)}%) · 구매 <b class="num">${buyPrice(o.key)}</b> 고정 · 보유 ${amt(SAVE.home, o.key)}</p>
         <div class="mkbar"><i style="left:${pos}%"></i><span>${MK_LO * 100}%</span><span>기본</span><span>${MK_HI * 100}%</span></div></div><div>${spark(o.key) || '<span class="dim">기록 없음</span>'}</div></div>`; }).join('')}</div>`;
   } else if (tradeTab === 'furn') {
-    h += `<p class="lead">지하 3층 휴게 광장을 꾸밀 가구예요. 산 가구는 휴게 광장(7)에서 꾸미기 모드로 배치해요.${built('hall') ? '' : ' 광장은 먼저 공사해서 뚫어야 해요.'}</p><div class="list">${Object.entries(FURN).map(([k, f]) => { const own = amt(SAVE.furnInv, k), placed = SAVE.furn.filter(x => x.k === k).length;
+    h += `<div class="list">${Object.entries(FURN).map(([k, f]) => { const own = amt(SAVE.furnInv, k), placed = SAVE.furn.filter(x => x.k === k).length;
       return `<div class="item frame"><div><h4>${furnIcon(k, 34)} ${f.name}</h4><p>${f.wall ? '벽 장식' : '바닥 가구'} · 보관 ${own}개 · 배치 ${placed}개</p></div><button class="act${SAVE.credits >= f.cr ? ' main' : ''}" data-fbuy="${k}" ${SAVE.credits >= f.cr ? '' : 'disabled'}>${f.cr} 크레딧</button></div>`; }).join('')}</div>`;
   } else {
-    h += `<p class="lead">다른 기지에서 들어온 납품 의뢰예요. 개인 저장고의 광물로 납품하면 보상을 받아요. 기한은 원정을 다녀올 때마다 1씩 줄고, 0이 되면 의뢰가 사라져요.</p><div class="list">${SAVE.quests.map(q => { const o = OREKEY[q.ore], have = amt(SAVE.home, q.ore), ok = have >= q.n;
+    h += `<div class="list">${SAVE.quests.map(q => { const o = OREKEY[q.ore], have = amt(SAVE.home, q.ore), ok = have >= q.n;
       return `<div class="item frame"><div><h4>${gemDot(o, 22)} ${o.name} ${q.n}개 납품</h4><p>${q.from} · 보유 <b class="num" style="color:${ok ? 'var(--green,#58e08a)' : '#ff6b7f'}">${have}/${q.n}</b> · <span class="qdead${q.left <= 1 ? ' last' : ''}">기한: 원정 ${q.left}회 남음${q.left <= 1 ? ' (이번이 마지막)' : ''}</span></p><p style="color:var(--amber)">보상 ${q.cr} 크레딧${q.box ? ` + ${TIER[q.box]} 유물 상자` : ''}</p></div><button class="act${ok ? ' main' : ''}" data-qd="${q.id}" ${ok ? '' : 'disabled'}>납품</button></div>`; }).join('') || '<p class="dim">지금은 들어온 의뢰가 없어요. 원정을 다녀오면 새 의뢰가 들어와요.</p>'}</div>`;
   }
   return h;
@@ -3144,7 +3302,7 @@ function dexView() {
 let bToastT = null;
 function btoast(msg) { const el = $('bToast'); el.textContent = msg; el.classList.remove('show'); void el.offsetWidth; el.classList.add('show'); clearTimeout(bToastT); bToastT = setTimeout(() => el.classList.remove('show'), 2600); }
 let storeOpen = false; const QTY = { sell: {}, buy: {}, mat: {} };
-const MATP = 150; const qMax = (m, k) => m === 'sell' ? amt(SAVE.home, k) : m === 'mat' ? ((SAVE.bossMat || {})[k] || 0) : Math.floor(SAVE.credits / buyPrice(k));
+const MATP = 1500; const qMax = (m, k) => m === 'sell' ? amt(SAVE.home, k) : m === 'mat' ? ((SAVE.bossMat || {})[k] || 0) : Math.floor(SAVE.credits / buyPrice(k));
 const qGet = (m, k) => Math.max(1, Math.min(Math.max(1, qMax(m, k)), Math.floor(QTY[m][k] || 1)));
 const qLabel = (m, k, q) => m === 'sell' ? `${q}개 팔기 · +${q * price(k)}` : m === 'mat' ? `${q}개 팔기 · +${q * MATP}` : `${q}개 사기 · ${q * buyPrice(k)}`;
 function qtyCtl(m, k) { const q = qGet(m, k), ok = m === 'sell' ? amt(SAVE.home, k) >= q : m === 'mat' ? qMax('mat', k) >= q : SAVE.credits >= q * buyPrice(k);
@@ -3158,7 +3316,7 @@ function renderBase() { if (!BORDER.includes(baseTab)) baseTab = 'ops';
   $('pNav').innerHTML = BORDER.map((k, i) => `<button data-tab="${k}" class="${k === baseTab ? 'on' : ''}" title="${BNAMES[k]} (${i + 1})"><small>${i + 1}</small>${BSHORT[k]}</button>`).join('');
   const nw = $('news'); nw.hidden = newsHidden || !SAVE.news.length || panelOpen;
   if (!nw.hidden) nw.innerHTML = `<div class="row"><b style="font:400 17px var(--f-head);color:var(--glow)">본부 통신</b><button class="mini" id="newsX">닫기</button></div>${SAVE.news.map(t => `<p>${t}</p>`).join('')}`;
-  $('bSnd').textContent = SND.on ? '소리 켜짐' : '소리 꺼짐';
+  $('bSnd').textContent = SND.on ? '소리 켜짐' : '소리 꺼짐'; $('volM').value = Math.round(SND.mv * 100); $('volS').value = Math.round(SND.sv * 100);
   $('bRes').innerHTML = `<div class="rescell frame"><span class="k">크레딧</span><span class="n num" style="color:var(--amber)">${SAVE.credits}</span></div>` +
     `<div class="rescell frame">${gemDot(OREKEY.crystal)}<span class="k">결정</span><span class="n num">${amt(SAVE.home, 'crystal')}</span></div>` +
     `<div class="rescell frame storecell${storeOpen ? ' open' : ''}" id="storeCell" title="눌러서 종류별 보기"><span class="k">개인 저장고 ▾</span><span class="n num">${sum(SAVE.home)}</span><div class="storepop frame"><em>광물</em>${ORES.filter(o => amt(SAVE.home, o.key)).map(o => `<span>${gemDot(o, 16)} ${o.name}<b class="num">${amt(SAVE.home, o.key)}</b></span>`).join('') || '<span class="dim">비어 있어요</span>'}<em>보스 소재</em>${Object.entries(SAVE.bossMat || {}).filter(([, n]) => n).map(([k, n]) => `<span>${matIcon(k)} ${BOSSMAT[k]}<b class="num">${n}</b></span>`).join('') || '<span class="dim">없어요 · 보스를 잡으면 얻어요</span>'}</div></div>` +
@@ -3186,9 +3344,9 @@ function renderBase() { if (!BORDER.includes(baseTab)) baseTab = 'ops';
   else if (baseTab === 'craft') h += craftView();
   else if (baseTab === 'make') h += makeView();
   else h += buildView(baseTab);
-  const key = baseTab + (baseTab === 'trade' ? tradeTab : baseTab === 'make' ? makeTab + partTab : baseTab === 'lab' ? labTab : baseTab === 'cmd' ? cmdTab : ''); if (key !== lastPanelKey) { lastPanelKey = key; m.scrollTop = 0; }
+  const key = baseTab + (baseTab === 'cmd' && cmdTab === 'store' ? stTab : '') + (baseTab === 'trade' ? tradeTab : baseTab === 'make' ? makeTab + partTab : baseTab === 'lab' ? labTab : baseTab === 'cmd' ? cmdTab : ''); if (key !== lastPanelKey) { lastPanelKey = key; m.scrollTop = 0; }
   m.classList.toggle('fixed', baseTab === 'craft'); $('bPanel').classList.toggle('wide', baseTab === 'craft' || baseTab === 'lab');
-  m.innerHTML = h; paintIcons(m); paintFurn(m); { const pt = $('ptip'); if (pt && !pt.hidden) pt.hidden = true; }
+  m.innerHTML = h; maryTalk = 0; paintIcons(m); paintFurn(m); { const pt = $('ptip'); if (pt && !pt.hidden) pt.hidden = true; }
   const db = $('decoBar'); db.hidden = !decoMode; if (decoMode) { const inv = Object.entries(SAVE.furnInv).filter(([, n]) => n > 0); db.innerHTML = `<b>꾸미기 모드</b>${inv.map(([k, n]) => `<button class="dchip${decoSel === k ? ' on' : ''}" data-dsel="${k}">${furnIcon(k, 22)} ${FURN[k].name} ${n}</button>`).join('') || '<span class="dim">보관 중인 가구가 없어요 · 거래소 가구 탭에서 사세요</span>'}<button class="act main" id="decoOff">완료</button>`; paintFurn(db); }
   $('bSide').hidden = true;
   const P = PLANETS[SAVE.planet], crew = SAVE.workers.filter(w => SAVE.pick.includes(w.id)).slice(0, slots()), L = SAVE.last;
@@ -3235,7 +3393,7 @@ $('base').addEventListener('click', e => {
   else if (d.craftgo) { craftSel = d.craftgo === 'L' ? 'L' : +d.craftgo; baseTab = 'craft'; panelOpen = true; note = ''; }
   else if (d.pequip) { const i = SAVE.parts.findIndex(p => p.id === d.pequip), P = robParts(); if (i >= 0 && P) { const it = SAVE.parts[i], sl = hoverTarget(it); SAVE.parts.splice(i, 1); const old = P[sl]; if (old && !PARTS[old.key].supply) SAVE.parts.push(old); P[sl] = it; craftSlot = sl; craftHover = null; btoast(old && PARTS[old.key].supply ? `${PARTS[it.key].name} 장착 · ${PARTS[old.key].name}은 폐기됐어요` : `${PARTS[it.key].name} 장착 완료`); sfx('build'); const CR = robCores(); if (CR && coreSlots(P) < 2 && CR[1]) { SAVE.cores.push(CR[1]); CR[1] = null; btoast(`${PARTS[it.key].name} 장착 완료 · 코어 2칸이 닫혀 코어 하나를 보관함으로 옮겼어요`); } } }
   else if (d.punequip) { const P = robParts(); if (P && P[craftSlot] && !PARTS[P[craftSlot].key].supply && (craftSlot.startsWith('arm') || craftSlot === 'back')) { SAVE.parts.push(P[craftSlot]); P[craftSlot] = null; } }
-  else if (d.pup) { const it = findPart(d.pup); if (it && it.lv < PMAX) { const c = pUpCost(it); if (SAVE.credits >= c.cr && amt(SAVE.home, c.ore) >= c.n) { SAVE.credits -= c.cr; SAVE.home[c.ore] -= c.n; if (!SAVE.home[c.ore]) delete SAVE.home[c.ore]; it.lv++; btoast(`${PARTS[it.key].name} Lv${it.lv} 강화 완료`); sfx('coin'); } } }
+  else if (d.pup) { const it = findPart(d.pup); if (it && it.lv < PMAX && !noUp(PARTS[it.key])) { const c = pUpCost(it); if (SAVE.credits >= c.cr && amt(SAVE.home, c.ore) >= c.n) { SAVE.credits -= c.cr; SAVE.home[c.ore] -= c.n; if (!SAVE.home[c.ore]) delete SAVE.home[c.ore]; it.lv++; btoast(`${PARTS[it.key].name} Lv${it.lv} 강화 완료`); sfx('coin'); } } }
   else if (d.ltab) { labTab = d.ltab; greet('lab'); }
   else if (d.ptoggle) { paintOpen = !paintOpen; }
   else if (d.mtab) { makeTab = d.mtab; }
@@ -3256,7 +3414,7 @@ $('base').addEventListener('click', e => {
   else if (d.card) { if (e.target.closest('input,select')) return; const id = d.card === 'L' ? 'L' : +d.card; if (openCards.has(id)) openCards.delete(id); else openCards.add(id); renderBase(); return; }
   else if (d.tab) { if (panelOpen && baseTab === d.tab && !t.closest('#pNav')) panelOpen = false; else { baseTab = d.tab; panelOpen = true; greet(d.tab); } note = ''; }
   else if (d.cmd) cmdTab = d.cmd;
-  else if (d.trade) tradeTab = d.trade;
+  else if (d.trade) { tradeTab = d.trade; maryTab(); }
   else if (d.dex) dexTab = d.dex;
   else if (d.planet != null) SAVE.planet = +d.planet;
   else if (t.id === 'hire') { if (hireWorker(false)) { note = '새 일꾼을 고용했어요. 보급형이라 왼팔이 비어 있어요. 정비소에서 팔을 달아 주세요.'; sfx('build'); } }
@@ -3269,7 +3427,9 @@ $('base').addEventListener('click', e => {
   else if (d.eq) equipRelic(+d.eq, 'b');
   else if (d.mv) { const [k, n, dir] = d.mv.split(':'), q = n === 'all' ? Infinity : 1; const moved = dir === 'up' ? moveRes(SAVE.home, SAVE.ship, k, q, shipCap()) : moveRes(SAVE.ship, SAVE.home, k, q); if (!moved && dir === 'up') note = '우주선 저장고가 가득 찼어요.'; }
   else if (t.id === 'unloadAll') { for (const k of Object.keys(SAVE.ship)) moveRes(SAVE.ship, SAVE.home, k, Infinity); const nr = SAVE.shipUnknown.length; SAVE.homeUnknown.push(...SAVE.shipUnknown); SAVE.shipUnknown = []; note = `우주선의 광물${nr ? `과 미확인 유물 ${nr}개` : ''}를 모두 개인 저장고로 옮겼어요.`; }
-  else if (t.id === 'unloadRelic') { SAVE.homeUnknown.push(...SAVE.shipUnknown); SAVE.shipUnknown = []; note = '미확인 유물을 개인 저장고로 옮겼어요. 분석소에 맡겨보세요.'; }
+  else if (d.sttab) { stTab = d.sttab; }
+  else if (d.umv) { const [ts, n, dir] = d.umv.split(':'), t = +ts, from = dir === 'up' ? SAVE.homeUnknown : SAVE.shipUnknown, to = dir === 'up' ? SAVE.shipUnknown : SAVE.homeUnknown; let q = n === 'all' ? Infinity : 1; for (let i = from.length - 1; i >= 0 && q > 0; i--) if (from[i].tier === t) { to.push(from.splice(i, 1)[0]); q--; } }
+  else if (t.id === 'unloadRelic') { SAVE.homeUnknown.push(...SAVE.shipUnknown); SAVE.shipUnknown = []; note = '미확인 유물을 개인 저장고로 옮겼어요. 연구실 유물 분석에 맡겨 보세요.'; }
   else if (d.lab) { const i = SAVE.homeUnknown.findIndex(u => u.id === +d.lab); if (i >= 0 && SAVE.lab.length < LAB_SLOTS) { const u = SAVE.homeUnknown.splice(i, 1)[0]; SAVE.lab.push({ ...u, left: ANALYZE[u.tier] }); deskLine.ana = '맡아둘게요. 원정 다녀오시면 결과를 알려드릴게요.'; } }
   else if (d.open) { const i = SAVE.lab.findIndex(l => l.id === +d.open); if (i >= 0 && false) { const l = SAVE.lab.splice(i, 1)[0], c = { id: pid(), key: randomCore(), g: l.tier }; SAVE.cores.push(c); note = `감정 결과: 코어 「${CORES[c.key].name}」 (${CGRADE[c.g]}) · 정비소에서 장착하세요.`; showCoreReveal(c, true); deskLine.ana = '이건 유물이 아니라 코어네요! 귀한 물건이에요.'; }
     else if (i >= 0) { const l = SAVE.lab.splice(i, 1)[0], pool = Object.keys(RELICS).filter(k => RELICS[k].tier === l.tier), key = pool[rnd(pool.length)];
@@ -3279,10 +3439,10 @@ $('base').addEventListener('click', e => {
   else if (d.buy) { const g = GEAR[d.buy]; if (SAVE.credits >= g.cr && Object.entries(g.cost).every(([k, n]) => amt(SAVE.home, k) >= n)) { SAVE.credits -= g.cr; for (const [k, n] of Object.entries(g.cost)) { SAVE.home[k] -= n; if (!SAVE.home[k]) delete SAVE.home[k]; } SAVE.gear.push({ id: SAVE.rid++, key: d.buy }); deskLine.trade = '좋은 장비예요. 일꾼이 좋아할 거예요!'; note = `${g.name} 구매 완료 · 사령실 격납고에서 일꾼 카드를 펼쳐 장착하세요.`; } }
   else if (d.qstep) { const [m, k, dv] = d.qstep.split(':'); QTY[m][k] = Math.max(1, Math.min(Math.max(1, qMax(m, k)), qGet(m, k) + +dv)); }
   else if (d.qmax) { const [m, k] = d.qmax.split(':'); QTY[m][k] = Math.max(1, qMax(m, k)); }
-  else if (d.qsell) { const k = d.qsell, q = Math.min(qGet('sell', k), amt(SAVE.home, k)); if (q > 0) { SAVE.home[k] -= q; if (!SAVE.home[k]) delete SAVE.home[k]; SAVE.credits += q * price(k); btoast(`${OREKEY[k].name} ${q}개 판매 · +${q * price(k)} 크레딧`); deskLine.trade = ['좋은 거래였어요!', '감사합니다! 또 오세요.', '이 정도 품질이면 대환영이죠.'][rnd(3)]; sfx('coin'); QTY.sell[k] = 1; } }
+  else if (d.qsell) { const k = d.qsell, q = Math.min(qGet('sell', k), amt(SAVE.home, k)); if (q > 0) { SAVE.home[k] -= q; if (!SAVE.home[k]) delete SAVE.home[k]; SAVE.credits += q * price(k); btoast(`${OREKEY[k].name} ${q}개 판매 · +${q * price(k)} 크레딧`); deskLine.trade = ['캬~ 이 광택 좀 봐! 좋은 물건 감사합니다요!', '거래 끝! 크레딧은 바로 입금이요~', '이 정도 품질이면 대환영이죠. 또 캐 오셔요!'][rnd(3)]; maryTalk = 1; sfx('coin'); QTY.sell[k] = 1; } }
   else if (d.qmat) { const k = d.qmat, q = Math.min(qGet('mat', k), qMax('mat', k)); if (q > 0) { SAVE.bossMat[k] -= q; SAVE.credits += q * MATP; btoast(`${BOSSMAT[k]} ${q}개 판매 · +${q * MATP} 크레딧`); sfx('coin'); QTY.mat[k] = 1; } }
-  else if (d.qbuy) { const k = d.qbuy, q = qGet('buy', k), pr = buyPrice(k) * q; if (SAVE.credits >= pr) { SAVE.credits -= pr; SAVE.home[k] = amt(SAVE.home, k) + q; deskLine.trade = '잘 쓰세요! 필요하면 또 오세요.'; btoast(`${OREKEY[k].name} ${q}개 구매 완료 · 개인 저장고에 들어갔어요`); sfx('coin'); } }
-  else if (d.buyore) { const [k, n] = d.buyore.split(':'), q = +n, pr = buyPrice(k) * q; if (SAVE.credits >= pr) { SAVE.credits -= pr; SAVE.home[k] = amt(SAVE.home, k) + q; deskLine.trade = '잘 쓰세요! 필요하면 또 오세요.'; btoast(`${OREKEY[k].name} ${q}개 구매 완료 · 개인 저장고에 들어갔어요`); sfx('coin'); } }
+  else if (d.qbuy) { const k = d.qbuy, q = qGet('buy', k), pr = buyPrice(k) * q; if (SAVE.credits >= pr) { SAVE.credits -= pr; SAVE.home[k] = amt(SAVE.home, k) + q; deskLine.trade = ['감사합니다요~ 잘 쓰시고 또 오셔요!', '거래 성사! 메리 장부에 한 줄 추가요~', '좋은 선택! 이 물건 아주 튼튼해요.'][rnd(3)]; maryTalk = 1; btoast(`${OREKEY[k].name} ${q}개 구매 완료 · 개인 저장고에 들어갔어요`); sfx('coin'); } }
+  else if (d.buyore) { const [k, n] = d.buyore.split(':'), q = +n, pr = buyPrice(k) * q; if (SAVE.credits >= pr) { SAVE.credits -= pr; SAVE.home[k] = amt(SAVE.home, k) + q; deskLine.trade = ['감사합니다요~ 잘 쓰시고 또 오셔요!', '거래 성사! 메리 장부에 한 줄 추가요~', '좋은 선택! 이 물건 아주 튼튼해요.'][rnd(3)]; maryTalk = 1; btoast(`${OREKEY[k].name} ${q}개 구매 완료 · 개인 저장고에 들어갔어요`); sfx('coin'); } }
   else if (d.ungear) { const w = SAVE.workers.find(w => w.id === +d.ungear); if (w && w.gear) { SAVE.gear.push(w.gear); w.gear = null; } }
   else if (d.qd) { const i = SAVE.quests.findIndex(q => q.id === +d.qd); if (i >= 0) { const q = SAVE.quests[i]; if (amt(SAVE.home, q.ore) >= q.n) {
     SAVE.home[q.ore] -= q.n; if (!SAVE.home[q.ore]) delete SAVE.home[q.ore]; SAVE.credits += q.cr; if (q.box) SAVE.homeUnknown.push({ id: SAVE.rid++, tier: q.box });
