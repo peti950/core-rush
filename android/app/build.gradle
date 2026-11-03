@@ -1,4 +1,5 @@
 plugins { id 'com.android.application' }
+def buildNo = System.getenv('GITHUB_RUN_NUMBER') ?: '1'
 android {
     namespace 'com.peti5.corerush'
     compileSdk 34
@@ -6,8 +7,8 @@ android {
         applicationId 'com.peti5.corerush'
         minSdk 24
         targetSdk 34
-        versionCode (System.getenv('GITHUB_RUN_NUMBER') ?: '1') as int
-        versionName "1.0.${System.getenv('GITHUB_RUN_NUMBER') ?: '0'}"
+        versionCode Integer.parseInt(buildNo)
+        versionName '1.0.' + buildNo
     }
     signingConfigs {
         game {   // 테스트용 고정 서명 키 (앱 업데이트 시 같은 키로 덮어 설치되도록)
