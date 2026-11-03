@@ -190,8 +190,14 @@ body{background:var(--void);color:var(--text);font:14px var(--f-ui);overflow:hid
 .cmdbtn.on{border-color:var(--amber);background:linear-gradient(180deg,#43300f,#1d1508)}
 .cmdbtn:disabled{opacity:.35;cursor:not-allowed}
 .cmdbtn.lift{border-color:#2f6aa8;background:linear-gradient(180deg,#14335a,#0b1a30)}
+.item.dimmed{opacity:.55}
 .pop{position:absolute;z-index:5;padding:12px;min-width:250px;max-width:calc(100% - 20px);display:grid;gap:6px}
 #storePop{top:10px;left:10px}
+#unitPop{top:10px;right:10px;left:auto;width:min(440px,calc(100% - 20px));max-height:calc(100% - 20px);overflow:auto;z-index:20}
+#unitPop h4{margin:4px 0 0;font:15px var(--f-head);color:var(--glow)}
+#unitPop .uslot{border-top:1px solid #ffffff18;padding-top:6px;display:grid;gap:4px}
+#unitPop .uslot>b{font-size:14px}
+#unitPop .ush{display:flex;justify-content:space-between;align-items:center}
 #buildPop{bottom:10px;right:10px}
 .pop h4{margin:0 0 4px;font:400 18px var(--f-head)}
 .poprow{display:flex;align-items:center;gap:8px;font-size:13px}
@@ -512,6 +518,7 @@ body{background:var(--void);color:var(--text);font:14px var(--f-ui);overflow:hid
       <div id="bossBar" class="frame" hidden><b id="bossName"></b><div class="bb"><i id="bossFill"></i></div></div>
       <div id="storePop" class="pop frame" hidden></div>
       <div id="buildPop" class="pop frame" hidden></div>
+      <div id="unitPop" class="pop frame" hidden></div>
     </main>
     <aside id="mini" aria-label="미니맵"><canvas id="mm"></canvas></aside>
   </div>
@@ -595,7 +602,7 @@ const CONFIG = {
   repair: { copper: 5, amount: 30 },
   enemy:  { hp: 7.5, hpGrowth: 0.3, speed: 1.5, dmg: 2.5, rate: 1.0, count: 20, countGrowth: 10, spawnGap: 0.22 },  // 물량형: 많이, 약하게
   recoverRadius: 3.6,
-  shipCap: 80, revealR: 2, shipRegen: 0, oreMult: 1, turretMul: 1,
+  shipCap: 150, revealR: 2, shipRegen: 0, oreMult: 1, turretMul: 1,
 };
 // =============================================
 
@@ -625,6 +632,16 @@ const RELICS = {
   dowse: { name: '수맥 탐지기', tier: 2, slot: 'base', desc: '블록을 부술 때 주변이 두 배로 넓게 드러나요' },
   nano: { name: '수리 나노봇', tier: 2, slot: 'base', desc: '채굴 시간 동안 우주선이 초당 1씩 회복돼요' },
   greed: { name: '탐욕의 심장', tier: 3, slot: 'base', desc: '광물을 2배로 캐지만 생물 체력 +30%' },
+  lens: { name: '조준 렌즈', tier: 1, slot: 'base', desc: '모든 포탑 사거리 +1칸' },
+  battery: { name: '보조 배터리', tier: 1, slot: 'base', desc: '첫 웨이브 전 채굴 시간 +15초' },
+  kit: { name: '정비 키트', tier: 1, slot: 'base', desc: '모든 로봇 체력 +15%' },
+  turbine: { name: '터빈 엔진', tier: 2, slot: 'base', desc: '모든 로봇 이동 속도 +10%' },
+  ledger: { name: '거래 장부', tier: 2, slot: 'base', desc: '광물 판매가 +10%' },
+  bulwark: { name: '방벽 발전기', tier: 2, slot: 'base', desc: '포탑 체력 +50%' },
+  diamond: { name: '다이아 드릴날', tier: 2, slot: 'base', desc: '모든 로봇 채굴 속도 +20%' },
+  bighold: { name: '대형 화물칸', tier: 3, slot: 'base', desc: '우주선 저장고 +100' },
+  overclock: { name: '과부하 회로', tier: 3, slot: 'base', desc: '포탑 공격력 +40%, 대신 포탑 체력 -20%' },
+  aegis: { name: '수호 방벽', tier: 3, slot: 'base', desc: '우주선이 받는 피해 -30%' },
 };
 const CGRADE = ['', '일반', '희귀', '영웅', '전설'], CGC = ['', '#b4bfd4', '#46b8ff', '#c27bff', '#ffa62b'], FUSE_P = [0, 0.6, 0.4, 0.2];
 const CORES = {
@@ -825,6 +842,16 @@ function relicIcon(k, sz) {
     hold: `<rect x="3" y="8" width="18" height="12" fill="${c}"/><path d="M3 12h18M12 8v12" stroke="${ink}" stroke-width="2"/><path d="M6 4h12l3 4H3z" fill="${c}" opacity=".7"/>`,
     dowse: `<circle cx="12" cy="12" r="9" fill="none" stroke="${c}" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="${c}" stroke-width="2"/><path d="M12 12l6-6" stroke="${c}" stroke-width="2"/><circle cx="17" cy="15" r="1.8" fill="${c}"/>`,
     nano: `<circle cx="7" cy="7" r="2.6" fill="${c}"/><circle cx="17" cy="7" r="2.6" fill="${c}"/><circle cx="12" cy="12" r="2.6" fill="${c}"/><circle cx="7" cy="17" r="2.6" fill="${c}"/><circle cx="17" cy="17" r="2.6" fill="${c}"/>`,
+    lens: `<circle cx="12" cy="12" r="8" fill="none" stroke="${c}" stroke-width="2.4"/><circle cx="12" cy="12" r="3" fill="${c}"/><path d="M12 1v5M12 18v5M1 12h5M18 12h5" stroke="${c}" stroke-width="2"/>`,
+    battery: `<rect x="4" y="7" width="15" height="11" rx="2" fill="${c}"/><rect x="19" y="10" width="2.5" height="5" fill="${c}"/><path d="M12 8l-3 5h3l-1 4 4-6h-3l1-3z" fill="${ink}"/>`,
+    kit: `<rect x="3" y="7" width="18" height="13" rx="2" fill="${c}"/><path d="M9 7V4h6v3" fill="none" stroke="${c}" stroke-width="2"/><path d="M12 10v7M8.5 13.5h7" stroke="${ink}" stroke-width="2.4"/>`,
+    turbine: `<circle cx="12" cy="12" r="9" fill="none" stroke="${c}" stroke-width="2"/><path d="M12 12l0-8a5 5 0 0 1 4 6zM12 12l7 4a5 5 0 0 1-7 2zM12 12l-7 4a5 5 0 0 1 0-7z" fill="${c}"/>`,
+    ledger: `<rect x="5" y="3" width="14" height="18" rx="1.5" fill="${c}"/><path d="M8 8h8M8 12h8M8 16h5" stroke="${ink}" stroke-width="1.8"/>`,
+    bulwark: `<rect x="3" y="10" width="18" height="11" fill="${c}"/><path d="M3 10V6h3v4M9 10V6h3v4M15 10V6h3v4" fill="${c}"/><path d="M12 13v5" stroke="${ink}" stroke-width="2"/>`,
+    diamond: `<path d="M3 12l7-5v10z" fill="#9aa2b4"/><path d="M10 7h5l6 5-6 5h-5z" fill="${c}"/><path d="M14 9l3 3-3 3" stroke="#fff" stroke-width="1.4" fill="none"/>`,
+    bighold: `<rect x="2" y="7" width="20" height="14" fill="${c}"/><path d="M2 11h20M8 7v14M16 7v14" stroke="${ink}" stroke-width="1.8"/><path d="M5 3h14l3 4H2z" fill="${c}" opacity=".7"/>`,
+    overclock: `<rect x="6" y="6" width="12" height="12" fill="${c}"/><path d="M12 7l-3 6h3l-1 4 4-6h-3l1-4z" fill="${ink}"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4" stroke="${c}" stroke-width="1.6"/>`,
+    aegis: `<path d="M12 2l9 4v6c0 6-5 9-9 10-4-1-9-4-9-10V6z" fill="${c}"/><path d="M12 6l5 2v4c0 3-2 5-5 6-3-1-5-3-5-6V8z" fill="${ink}"/><circle cx="12" cy="12" r="2.4" fill="${c}"/>`,
     greed: `<path d="M12 21L4 13a5 5 0 0 1 8-6 5 5 0 0 1 8 6z" fill="${c}"/><path d="M7 10a2.5 2.5 0 0 1 4-1" stroke="#fff" stroke-width="1.5" fill="none"/>`,
     amulet: `<path d="M8 2l4 6 4-6" fill="none" stroke="${c}" stroke-width="2"/><path d="M12 8l6 7-6 7-6-7z" fill="${c}"/><circle cx="12" cy="15" r="2" fill="${ink}"/>`,
     blast: `<path d="M3 8c5-5 13-5 18 0-5-2-13-2-18 0z" fill="${c}"/><path d="M11 6h2l1 16h-4z" fill="#9aa2b4"/><path d="M18 13l1 3 3 1-3 1-1 3-1-3-3-1 3-1z" fill="#fff"/>`,
@@ -853,7 +880,14 @@ function turretIcon(k, sz) {
   return SVG(base + top, sz);
 }
 const monIcon = (k, sz) => { const m = MON[k]; return SVG(`<path d="M6 17l-2 4M10 18l-1 3M14 18l1 3M18 17l2 4" stroke="${m.body}" stroke-width="1.6"/><ellipse cx="12" cy="13" rx="8" ry="5.5" fill="${m.body}"/><path d="M6 9l2-4 2 4M11 8l2-4 2 4" fill="${m.hi}"/><rect x="15" y="11" width="2" height="2" fill="${m.eye}"/><rect x="18" y="11" width="2" height="2" fill="${m.eye}"/>`, sz); };
+const resCy = (r, l) => r.cy === false ? 0 : l * 2;
+function resCard(r) {
+  const l = lv(r.key), max = l >= r.max, lock = r.req && !lv(r.req), cr = max ? 0 : r.cost[l], cy = max ? 0 : resCy(r, l), ok = !max && !lock && SAVE.credits >= cr && amt(SAVE.home, 'crystal') >= cy;
+  return `<div class="item frame${lock ? ' dimmed' : ''}"><div><h4>${resIcon(r.key, 22)} ${r.name}</h4><p>${lock ? `${RESEARCH.find(x => x.key === r.req).name}를 먼저 연구하세요` : max ? `연구 완료 · ${r.desc(l)}` : `현재 ${r.desc(l)} → ${r.desc(l + 1)}`}</p>${r.max > 1 ? pips(l, r.max) : ''}</div>
+    <button class="act" data-res="${r.key}" ${ok ? '' : 'disabled'}>${max ? '완료' : lock ? '잠김' : `${cr.toLocaleString()} 크레딧${cy ? ` · 결정 ${cy}` : ''}`}</button></div>`;
+}
 function resIcon(k, sz) {
+  if (k.startsWith('tu_')) return turretIcon({ gun: 'gun', can: 'cannon', las: 'laser', fro: 'frost' }[k.split('_')[1]], sz);
   if (k.startsWith('t_')) return turretIcon(k.slice(2), sz);
   if (k === 'drill') return gearIcon('drill', sz);
   if (k === 'cargo') return gearIcon('bag', sz);
@@ -864,6 +898,14 @@ function resIcon(k, sz) {
     hull: `<path d="M12 2l8 3v7c0 5-4 8-8 10-4-2-8-5-8-10V5z" fill="#46b8ff"/><path d="M12 6v12" stroke="#0c1427" stroke-width="2"/>`,
     tools: `<path d="M14 3a5 5 0 0 0-4 7l-7 7 3 3 7-7a5 5 0 0 0 7-4l-3 2-3-3z" fill="#9aa2b4"/>`,
     hold: `<rect x="3" y="8" width="18" height="12" fill="#b58c60"/><path d="M3 12h18M12 8v12" stroke="#6b4a2a" stroke-width="2"/>`,
+    regen: `<path d="M12 2l8 3v7c0 5-4 8-8 10-4-2-8-5-8-10V5z" fill="#3ddc97"/><path d="M12 7v10M7 12h10" stroke="#0c1427" stroke-width="2.6"/>`,
+    precise: `<path d="M12 3l6 9-6 9-6-9z" fill="#5cc8ff"/><path d="M12 3v18" stroke="#e6f6ff" stroke-width="1.2"/><circle cx="19" cy="5" r="2.4" fill="#ffd27a"/>`,
+    thrust: `<path d="M3 9h11l3 3-3 3H3z" fill="#9aa2b4"/><path d="M17 9l4 3-4 3z" fill="#ffa62b"/><path d="M1 12h3" stroke="#ffa62b" stroke-width="2"/>`,
+    armor: `<path d="M6 3h12l2 5-3 13H7L4 8z" fill="#8a92a6"/><path d="M8 8h8M9 13h6" stroke="#0c1427" stroke-width="2"/>`,
+    early: `<circle cx="12" cy="13" r="8" fill="none" stroke="#ffd27a" stroke-width="2.4"/><path d="M12 8v5l3 2" stroke="#ffd27a" stroke-width="2.2" fill="none"/><path d="M9 2h6" stroke="#ffd27a" stroke-width="2.4"/>`,
+    anal: `<circle cx="10" cy="10" r="6" fill="none" stroke="#c27bff" stroke-width="2.6"/><path d="M14.5 14.5L21 21" stroke="#c27bff" stroke-width="3"/>`,
+    nego: `<circle cx="12" cy="12" r="9" fill="#ffd27a"/><path d="M12 6v12M9 9h5a2 2 0 0 1 0 4h-4a2 2 0 0 0 0 4h5" stroke="#6b4a2a" stroke-width="1.8" fill="none"/>`,
+    insur: `<path d="M12 2l8 3v7c0 5-4 8-8 10-4-2-8-5-8-10V5z" fill="#46b8ff"/><path d="M8 12l3 3 5-6" stroke="#fff" stroke-width="2.2" fill="none"/>`,
   }[k] || '<circle cx="12" cy="12" r="8" fill="#46b8ff"/>', sz);
 }
 
@@ -878,8 +920,8 @@ function audioInit() {
     SND.out = c.createGain(); SND.out.gain.value = SND.on ? 0.9 : 0; SND.out.connect(comp); comp.connect(c.destination);
     SND.sfxBus = c.createGain(); SND.sfxBus.gain.value = SND.sv; const tame = c.createBiquadFilter(); tame.type = 'lowpass'; tame.frequency.value = 9000; SND.sfxBus.connect(tame); tame.connect(SND.out);
     SND.musBus = c.createGain(); SND.musBus.gain.value = SND.mv; SND.musFade = c.createGain(); SND.musFade.gain.value = 1; SND.musFade.connect(SND.musBus); SND.musBus.connect(SND.out);
-    SND.rev = c.createConvolver(); SND.rev.buffer = makeImpulse(c, 2.4, 2.6); const rg = c.createGain(); rg.gain.value = 0.55; SND.rev.connect(rg); rg.connect(SND.out);
-    SND.revSend = c.createGain(); SND.revSend.gain.value = 1; SND.revSend.connect(SND.rev);
+    const ir = makeImpulse(c, 2.4, 2.6), mkRev = bus => { const cv = c.createConvolver(); cv.buffer = ir; const rg = c.createGain(); rg.gain.value = 0.55; cv.connect(rg); rg.connect(bus); const snd = c.createGain(); snd.connect(cv); return snd; };
+    SND.revSfx = mkRev(SND.sfxBus); SND.revSend = mkRev(SND.musFade);
     startMusic(); } catch (e) {}
 }
 function setSound(on) { SND.on = on; try { localStorage.setItem('coreRush.sound', on ? 'on' : 'off'); } catch (e) {} if (SND.out) SND.out.gain.value = on ? 0.9 : 0; }
@@ -891,7 +933,7 @@ function tone(f, d, type = 'square', v = 0.15, slide = 0, delay = 0, rv = 0.12, 
   const t = c.currentTime + delay, o = c.createOscillator(), g = c.createGain();
   o.type = type; o.frequency.setValueAtTime(f, t); if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(30, f + slide), t + d);
   env(g, t, 0.005, d, v); let node = o; if (lp || type === 'square' || type === 'sawtooth') { const fl = c.createBiquadFilter(); fl.type = 'lowpass'; fl.frequency.value = lp || Math.min(8000, f * 6); o.connect(fl); node = fl; }
-  node.connect(g); g.connect(SND.sfxBus); if (rv) { const s = c.createGain(); s.gain.value = rv; g.connect(s); s.connect(SND.revSend); } o.start(t); o.stop(t + d + 0.05);
+  const mu = SND.route === 'm'; node.connect(g); g.connect(mu ? SND.musFade : SND.sfxBus); if (rv) { const s = c.createGain(); s.gain.value = rv; g.connect(s); s.connect(mu ? SND.revSend : SND.revSfx); } o.start(t); o.stop(t + d + 0.05);
 }
 let noiseBuf = null;
 function noise(d, v = 0.15, freq = 1200, delay = 0, q = 0.8, rv = 0.08, type = 'bandpass', sweep = 0) {
@@ -899,7 +941,7 @@ function noise(d, v = 0.15, freq = 1200, delay = 0, q = 0.8, rv = 0.08, type = '
   if (!noiseBuf) { noiseBuf = c.createBuffer(1, c.sampleRate * 2, c.sampleRate); const a = noiseBuf.getChannelData(0); for (let i = 0; i < a.length; i++) a[i] = Math.random() * 2 - 1; }
   const t = c.currentTime + Math.max(0, delay), s = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain();
   s.buffer = noiseBuf; f.type = type; f.frequency.setValueAtTime(freq, t); if (sweep) f.frequency.exponentialRampToValueAtTime(Math.max(40, freq + sweep), t + d); f.Q.value = q; env(g, t, 0.004, d, v);
-  s.connect(f); f.connect(g); g.connect(SND.sfxBus); if (rv) { const r = c.createGain(); r.gain.value = rv; g.connect(r); r.connect(SND.revSend); } s.start(t, Math.random() * 1.2); s.stop(t + d + 0.05);
+  const mu = SND.route === 'm'; s.connect(f); f.connect(g); g.connect(mu ? SND.musFade : SND.sfxBus); if (rv) { const r = c.createGain(); r.gain.value = rv; g.connect(r); r.connect(mu ? SND.revSend : SND.revSfx); } s.start(t, Math.random() * 1.2); s.stop(t + d + 0.05);
 }
 const thump = (f, d, v, delay = 0) => tone(f, d, 'sine', v, -f * 0.6, delay, 0.1);
 function sfx(name) {
@@ -1036,10 +1078,12 @@ function musicTick() {
     // 드럼 (원정 평상시엔 가볍게, 웨이브·보스면 전부)
     const dp = DRUMS[th.drum]; if (dp && (!calm || th.drum === 1)) { const lv = wave || boss ? 1 : 0.55;
       if ((dp.k || []).includes(s16)) mdrum('k', t, 0.32 * lv); if ((dp.s || []).includes(s16) && (wave || boss || !inGame)) mdrum('s', t, 0.12 * lv); if ((dp.h || []).includes(s16)) mdrum('h', t, 0.045 * lv); if ((dp.o || []).includes(s16)) mdrum('o', t, 0.05 * lv); if ((dp.t || []).includes(s16)) mdrum('t', t, 0.22 * lv); }
-    // 행성 분위기 소리
+    // 행성 분위기 소리 (음악 볼륨을 따름)
+    SND.route = 'm';
     if (th.amb && s16 === 0 && bar % 2 === 0) { if (th.amb === 'wind') noise(sd * 30, 0.025, 500, t - now, 0.4, 0.3, 'bandpass', 300); else if (th.amb === 'rain') noise(sd * 30, 0.02, 5000, t - now, 0.3, 0.2, 'highpass'); else if (th.amb === 'rumble') noise(sd * 30, 0.04, 160, t - now, 0.6, 0.2, 'lowpass'); }
     if (th.amb === 'bubble' && Math.random() < 0.05) tone(300 + Math.random() * 500, 0.08, 'sine', 0.015, 400, t - now, 0.3);
     if (th.amb === 'zap' && Math.random() < 0.012) noise(0.06, 0.02, 6000, t - now, 1, 0.1, 'highpass');
+    SND.route = '';
     MUS.next += sd; MUS.step++;
   }
 }
@@ -1070,18 +1114,35 @@ const PLANETS = [
   { name: 'MG-8 자기 폭풍 행성', tag: '극한', danger: 5, enemy: 6, hard: 1.7, rich: { core: 3, crystal: 2.2, gold: 1.5 }, mon: 'volt', need: 22, feature: 'magnet', fdesc: '자기 폭풍: 주기적으로 포탑이 몇 초씩 멈춰요.', desc: '코어 광석의 보고. 자기 폭풍이 기계를 마비시켜요.',
     strata: [[0, [80, 100, 130]], [12, [62, 82, 116]], [26, [48, 66, 100]], [46, [36, 50, 84]], [71, [26, 36, 64]]], sky: ['#020a14', '#06182e', '#123058'] },
 ];
+// cat: mech = 기체 연구, tur = 포탑 연구 · cy: 결정 필요 여부 · req: 먼저 필요한 연구 · tt: 포탑 그룹
 const RESEARCH = [
-  { key: 'lift', name: '이륙 엔진', max: 3, cost: [80, 160, 280], desc: l => `이륙 준비 ${25 - l * 5}초`, apply: (c, l) => { c.liftoffTime = 25 - l * 5; } },
-  { key: 'hull', name: '선체 보강', max: 3, cost: [60, 130, 220], desc: l => `우주선 내구도 ${160 + l * 40}`, apply: (c, l) => { c.shipHP += l * 40; } },
-  { key: 'drill', name: '드릴 개량', max: 3, cost: [70, 150, 260], desc: l => `채굴 속도 +${l * 25}%`, apply: (c, l) => { c.leader.dig *= 1 + l * 0.25; c.worker.dig *= 1 + l * 0.25; } },
-  { key: 'cargo', name: '적재함 확장', max: 2, cost: [60, 140], desc: l => `일꾼 적재량 ${6 + l * 2}`, apply: (c, l) => { c.worker.carry += l * 2; c.leader.carry += l * 2; } },
-  { key: 'gun', name: '포탑 화력', max: 3, cost: [70, 150, 260], desc: l => `포탑 공격력 +${l * 30}%`, apply: (c, l) => { c.turretMul = 1 + l * 0.3; } },
-  { key: 'tools', name: '건설 공구', max: 2, cost: [60, 130], desc: l => `건설 속도 +${l * 50}%`, apply: (c, l) => { c.leader.build *= 1 + l * 0.5; c.worker.build *= 1 + l * 0.5; } },
-  { key: 't_cannon', name: '대포 설계도', max: 1, cost: [120], desc: l => l ? '대포 해금됨' : '대포 잠김', apply: () => {} },
-  { key: 't_laser', name: '레이저 설계도', max: 1, cost: [180], desc: l => l ? '레이저 해금됨' : '레이저 잠김', apply: () => {} },
-  { key: 't_frost', name: '냉각탑 설계도', max: 1, cost: [150], desc: l => l ? '냉각탑 해금됨' : '냉각탑 잠김', apply: () => {} },
-  { key: 'hold', name: '화물칸 증설', max: 2, cost: [80, 170], desc: l => `우주선 저장고 +${l * 20}`, apply: () => {} },
-  { key: 'bay', name: '격납고 확장', max: 2, cost: [120, 240], desc: l => `파견 일꾼 ${3 + l}대`, apply: () => {} },
+  { key: 'lift', cat: 'mech', name: '이륙 엔진', max: 3, cost: [160, 450, 1200], desc: l => `이륙 준비 ${25 - l * 5}초`, apply: (c, l) => { c.liftoffTime = 25 - l * 5; } },
+  { key: 'hull', cat: 'mech', name: '선체 보강', max: 5, cost: [120, 330, 900, 2400, 6000], desc: l => `우주선 내구도 ${160 + l * 40}`, apply: (c, l) => { c.shipHP += l * 40; } },
+  { key: 'regen', cat: 'mech', name: '선체 자가 수리', max: 3, cost: [900, 2700, 8000], desc: l => l ? `원정 중 우주선 초당 ${(l * 0.5).toFixed(1)} 회복` : '자가 수리 없음', apply: (c, l) => { c.shipRegen += l * 0.5; } },
+  { key: 'drill', cat: 'mech', name: '드릴 개량', max: 5, cost: [140, 380, 1000, 2700, 7000], desc: l => `채굴 속도 +${l * 25}%`, apply: (c, l) => { c.leader.dig *= 1 + l * 0.25; c.worker.dig *= 1 + l * 0.25; } },
+  { key: 'precise', cat: 'mech', name: '정밀 굴착', max: 5, cost: [150, 400, 1100, 3000, 8000], desc: l => `광물을 캘 때 ${l * 8}% 확률로 1개 더`, apply: (c, l) => { c.bonusOre = l * 0.08; } },
+  { key: 'cargo', cat: 'mech', name: '적재함 확장', max: 4, cost: [120, 330, 900, 2400], desc: l => `일꾼 적재량 ${6 + l * 2}`, apply: (c, l) => { c.worker.carry += l * 2; c.leader.carry += l * 2; } },
+  { key: 'thrust', cat: 'mech', name: '이동 추진기', max: 5, cost: [150, 400, 1100, 3000, 8000], desc: l => `로봇 이동 속도 +${l * 5}%`, apply: (c, l) => { c.leader.speed *= 1 + l * 0.05; c.worker.speed *= 1 + l * 0.05; } },
+  { key: 'armor', cat: 'mech', name: '일꾼 장갑', max: 5, cost: [150, 400, 1100, 3000, 8000], desc: l => `로봇이 받는 피해 -${l * 5}%`, apply: (c, l) => { c.unitArmor = 1 - l * 0.05; } },
+  { key: 'tools', cat: 'mech', name: '건설 공구', max: 3, cost: [120, 330, 900], desc: l => `건설 속도 +${l * 50}%`, apply: (c, l) => { c.leader.build *= 1 + l * 0.5; c.worker.build *= 1 + l * 0.5; } },
+  { key: 'hold', cat: 'mech', name: '화물칸 증설', max: 5, cy: false, cost: [160, 400, 1000, 2500, 6000], desc: l => `우주선 저장고 +${l * 30}`, apply: () => {} },
+  { key: 'early', cat: 'mech', name: '조기 착륙', max: 3, cost: [150, 400, 1100], desc: l => `첫 웨이브 전 채굴 시간 +${l * 10}초`, apply: (c, l) => { c.firstMiningTime += l * 10; } },
+  { key: 'bay', cat: 'mech', name: '격납고 확장', max: 2, cost: [240, 700], desc: l => `파견 일꾼 ${3 + l}대`, apply: () => {} },
+  { key: 'anal', cat: 'mech', name: '분석 장비', max: 2, cost: [300, 900], desc: l => `유물 분석 칸 ${2 + l}개`, apply: () => {} },
+  { key: 'nego', cat: 'mech', name: '협상 기술', max: 5, cost: [200, 550, 1500, 4000, 10000], desc: l => `광물 판매가 +${l * 5}%`, apply: () => {} },
+  { key: 'insur', cat: 'mech', name: '보험 할인', max: 3, cost: [150, 400, 1100], desc: l => `보험료 -${l * 15}%`, apply: () => {} },
+  { key: 'gun', cat: 'tur', tt: 'all', name: '포탑 화력', max: 3, cost: [140, 380, 1000], desc: l => `모든 포탑 공격력 +${l * 30}%`, apply: (c, l) => { c.turretMul = 1 + l * 0.3; } },
+  { key: 'tu_gun_d', cat: 'tur', tt: 'gun', name: '기관포 탄두', max: 3, cost: [150, 400, 1000], desc: l => `기관포 공격력 +${l * 15}%`, apply: () => {} },
+  { key: 'tu_gun_r', cat: 'tur', tt: 'gun', name: '기관포 급탄기', max: 3, cost: [150, 400, 1000], desc: l => `기관포 연사 속도 +${l * 12}%`, apply: () => {} },
+  { key: 't_cannon', cat: 'tur', tt: 'cannon', name: '대포 설계도', max: 1, cost: [240], desc: l => l ? '대포 해금됨' : '대포 잠김', apply: () => {} },
+  { key: 'tu_can_s', cat: 'tur', tt: 'cannon', req: 't_cannon', name: '대포 고폭탄', max: 3, cost: [180, 480, 1200], desc: l => `대포 폭발 범위 +${(l * 0.3).toFixed(1)}칸`, apply: () => {} },
+  { key: 'tu_can_d', cat: 'tur', tt: 'cannon', req: 't_cannon', name: '대포 강화 포신', max: 3, cost: [180, 480, 1200], desc: l => `대포 공격력 +${l * 15}%`, apply: () => {} },
+  { key: 't_laser', cat: 'tur', tt: 'laser', name: '레이저 설계도', max: 1, cost: [360], desc: l => l ? '레이저 해금됨' : '레이저 잠김', apply: () => {} },
+  { key: 'tu_las_d', cat: 'tur', tt: 'laser', req: 't_laser', name: '레이저 집속 렌즈', max: 3, cost: [200, 520, 1300], desc: l => `레이저 공격력 +${l * 15}%`, apply: () => {} },
+  { key: 'tu_las_r', cat: 'tur', tt: 'laser', req: 't_laser', name: '레이저 증폭기', max: 3, cost: [200, 520, 1300], desc: l => `레이저 사거리 +${l}칸`, apply: () => {} },
+  { key: 't_frost', cat: 'tur', tt: 'frost', name: '냉각탑 설계도', max: 1, cost: [300], desc: l => l ? '냉각탑 해금됨' : '냉각탑 잠김', apply: () => {} },
+  { key: 'tu_fro_p', cat: 'tur', tt: 'frost', req: 't_frost', name: '냉각탑 압축기', max: 3, cost: [180, 480, 1200], desc: l => `둔화 강도 ${55 + l * 7}%`, apply: () => {} },
+  { key: 'tu_fro_t', cat: 'tur', tt: 'frost', req: 't_frost', name: '냉각탑 냉매', max: 3, cost: [180, 480, 1200], desc: l => `둔화 시간 ${(1.2 + l * 0.5).toFixed(1)}초`, apply: () => {} },
 ];
 for (const r of RESEARCH) r.cost = r.cost.map(c => c * ECON);
 const hireCost = () => { const n = Math.max(0, SAVE.workers.length - 1); return { cr: 800 + 400 * n, copper: 6 + 2 * n, iron: 2 + n }; };
@@ -1094,7 +1155,7 @@ function freshSave() {
   return { econ10: true, credits: 2500, news: ['본부 통신: 새로 배치된 보급형 일꾼은 왼팔이 비어 있어요. 거래소(6)에서 구리와 철을 사고, 제작소(4)에서 블래스터를 만들어, 정비소(3)에서 일꾼의 왼팔에 달아 주세요.'], home: {}, ship: { copper: 6, iron: 2 }, homeUnknown: [], shipUnknown: [], lab: [], relics: [], gear: [], market: {}, mhist: {}, quests: [], news: [], qid: 1, parts: [], cores: [], bossMat: {}, bps: {}, trophies: {}, leader: { up: { rsp: 0, cmd: 0 }, parts: partKit(null), cores: [null, null], gear: null }, baseSlots: [null, null, null], leaderRelic: null,
     nextId: 2, rid: 1, research: {}, planet: 0, wins: 0, runs: 0, pick: [1], last: null, dex: { ore: {}, relic: {}, mon: {} }, workers: [mkW(1)] };
 }
-function mergeSave(v) { const o = Object.assign(freshSave(), v); if (!v.econ10) o.econ10 = false; return o; }
+function mergeSave(v) { const o = Object.assign(freshSave(), v); if (!v.econ10) o.econ10 = false; if (o.shipUnknown && o.shipUnknown.length) { o.homeUnknown = [...(o.homeUnknown || []), ...o.shipUnknown]; o.shipUnknown = []; } return o; }
 function loadSave() { try { const v = JSON.parse(localStorage.getItem(SAVE_KEY)); if (v && v.workers) return mergeSave(v); } catch (e) {} return freshSave(); }
 let BOOT_FRESH = true; try { BOOT_FRESH = !localStorage.getItem(SAVE_KEY); } catch (e) {}
 function persist() { SAVE.savedAt = Date.now(); try { localStorage.setItem(SAVE_KEY, JSON.stringify(SAVE)); } catch (e) {} cloudQueue(); }
@@ -1122,8 +1183,10 @@ function migrateParts() {
 migrateParts();
 const lv = k => SAVE.research[k] || 0;
 const hasBase = k => SAVE.baseSlots.some(r => r && r.key === k);
-const shipCap = () => CONFIG.shipCap + lv('hold') * 20 + (hasBase('hold') ? 30 : 0);
+const shipCap = () => CONFIG.shipCap + lv('hold') * 30 + (hasBase('hold') ? 30 : 0) + (hasBase('bighold') ? 100 : 0);
 const slots = () => 3 + lv('bay');
+const labSlots = () => LAB_SLOTS + lv('anal');
+const sellMul = () => 1 + lv('nego') * 0.05 + (hasBase('ledger') ? 0.1 : 0);
 const idx = (x, y) => y * C.cols + x;
 const inb = (x, y) => x >= 0 && y >= 0 && x < C.cols && y < C.rows;
 const rnd = n => Math.floor(Math.random() * n);
@@ -1135,6 +1198,7 @@ let G = null;
 
 // ---------- world ----------
 function newGame(pi = SAVE.planet) {
+  { const up = $('unitPop'); if (up) up.hidden = true; }
   if (!PLANETS[pi] || !planetOpen(pi)) pi = 0;
   const P = PLANETS[pi];
   C = structuredClone(CONFIG);
@@ -1145,8 +1209,16 @@ function newGame(pi = SAVE.planet) {
   if (hasBase('coil')) C.liftoffTime -= 5;
   C.liftoffTime = Math.max(5, C.liftoffTime);
   if (hasBase('dowse')) C.revealR = 4;
-  if (hasBase('nano')) C.shipRegen = 1;
+  if (hasBase('nano')) C.shipRegen += 1;
   if (hasBase('greed')) { C.oreMult = 2; C.enemy.hp *= 1.3; }
+  if (hasBase('lens')) C.turretRange = 1;
+  if (hasBase('battery')) C.firstMiningTime += 15;
+  if (hasBase('kit')) { C.leader.hp = Math.round(C.leader.hp * 1.15); C.worker.hp = Math.round(C.worker.hp * 1.15); }
+  if (hasBase('turbine')) { C.leader.speed *= 1.1; C.worker.speed *= 1.1; }
+  if (hasBase('diamond')) { C.leader.dig *= 1.2; C.worker.dig *= 1.2; }
+  C.turretHp = (hasBase('bulwark') ? 1.5 : 1) * (hasBase('overclock') ? 0.8 : 1);
+  if (hasBase('overclock')) C.turretMul = (C.turretMul || 1) * 1.4;
+  if (hasBase('aegis')) C.shipDef = 0.7;
   C.shipCap = shipCap();
   STRATA = P.strata; SKY = P.sky; rowCache.length = 0;
   const g = {
@@ -1212,11 +1284,12 @@ function reveal(x, y, r) {
 const load = u => sum(u.cargo);
 const coreSlots = parts => parts && parts.body && PARTS[parts.body.key] && PARTS[parts.body.key].tier === 3 ? 2 : 1;
 function applyGear(u, parts, cores) {
+  u.gear = { parts, cores };
   const s = u.st; applyParts(u, parts);
   const cc = u.cores = {}; for (const c of (cores || []).slice(0, coreSlots(parts))) if (c && CORES[c.key]) cc[c.key] = Math.max(cc[c.key] || 0, c.g);
   if (cc.boots) s.speed *= 1 + 0.15 * cc.boots;
   if (cc.gloves) s.build *= 1 + 0.4 * cc.gloves;
-  u.armor = (1 - (u.pArmor || 0)) * (cc.shell ? 1 - (0.1 + 0.08 * cc.shell) : 1);
+  u.armor = (C.unitArmor || 1) * (1 - (u.pArmor || 0)) * (cc.shell ? 1 - (0.1 + 0.08 * cc.shell) : 1);
   u.amulet = cc.amulet ? (cc.amulet >= 4 ? 2 : 1) : 0; u.blast = cc.blast || 0; u.ccd = {};
   u.hp = u.max = s.hp;
 }
@@ -1329,7 +1402,7 @@ function breakTile(i, u) {
   sfx(o ? 'pickup' : t === RELIC ? 'relic' : 'break');
   if (o) {
     if (!SAVE.dex.ore[o.key]) { SAVE.dex.ore[o.key] = 1; G.newDex.push({ icon: gemDot(o), name: o.name }); toast(`새 광물 발견: ${o.name} · 도감에 등록됐어요`); }
-    const n = Math.min(C.oreMult + (PLANETS[G.planet].feature === 'crystal' ? 1 : 0), u.st.carry - load(u));
+    const n = Math.min(C.oreMult + (PLANETS[G.planet].feature === 'crystal' ? 1 : 0) + (Math.random() < (C.bonusOre || 0) ? 1 : 0), u.st.carry - load(u));
     if (n > 0) { if (u.stat) u.stat.mined += n; u.cargo[o.key] = amt(u.cargo, o.key) + n; float(x + 0.5, y + 0.2, `+${n} ${o.name}`, o.hi); }
     else float(x + 0.5, y + 0.2, '가득 참', '#ff8a80');
   }
@@ -1421,7 +1494,7 @@ function hitE(src, e, dm, kind, primary) {
   const cc = src.cores || {};
   dm *= armorF(e, kind);
   if (cc.aim && Math.random() < 0.1 + 0.1 * cc.aim) { dm *= 3; float(e.x, e.y - 0.9, '치명타!', '#ffd23f'); }
-  if (cc.acid) { e.slowT = Math.max(e.slowT || 0, 1 + cc.acid * 0.5); e.poison = { t: 1 + cc.acid * 0.5, dps: cc.acid * 2 }; }
+  if (cc.acid) { e.slowT = Math.max(e.slowT || 0, 1 + cc.acid * 0.5); e.slowF = Math.min(e.slowF || 0.45, 0.45); e.poison = { t: 1 + cc.acid * 0.5, dps: cc.acid * 2 }; }
   e.hp -= dm; e.hit = 0.12; e.lastHit = src; dmgNum(e.x, e.y - 0.5, dm);
   if (primary && cc.circuit) { let n = cc.circuit; for (const o of G.enemies) { if (n <= 0) break; if (o !== e && Math.hypot(o.x - e.x, o.y - e.y) < 2.2) { o.hp -= dm * 0.5; o.hit = 0.1; o.lastHit = src; G.tracers.push({ x1: e.x, y1: e.y, x2: o.x, y2: o.y, t: 0.12, c: '#9ff0ff' }); n--; } } }
 }
@@ -1462,7 +1535,7 @@ function fire(src, x, y, range, dmg, rate) {
   if (!best) return;
   let dm = dmg; const cc = src.cores || {};
   if (cc.aim && Math.random() < 0.1 + 0.1 * cc.aim) { dm *= 3; float(best.x, best.y - 0.9, '치명타!', '#ffd23f'); }
-  if (cc.acid) { best.slowT = Math.max(best.slowT || 0, 1 + cc.acid * 0.5); best.poison = { t: 1 + cc.acid * 0.5, dps: cc.acid * 2 }; }
+  if (cc.acid) { best.slowT = Math.max(best.slowT || 0, 1 + cc.acid * 0.5); best.slowF = Math.min(best.slowF || 0.45, 0.45); best.poison = { t: 1 + cc.acid * 0.5, dps: cc.acid * 2 }; }
   if (cc.circuit) { let n = cc.circuit; for (const e of G.enemies) { if (n <= 0) break; if (e !== best && Math.hypot(e.x - best.x, e.y - best.y) < 2.2) { e.hp -= dm * 0.5; e.hit = 0.1; G.tracers.push({ x1: best.x, y1: best.y, x2: e.x, y2: e.y, t: 0.12, c: '#9ff0ff' }); n--; } } }
   best.hp -= dm; best.hit = 0.12; src.cd = rate; dmgNum(best.x, best.y - 0.5, dm); sfx('shoot'); src.aim = Math.atan2(best.y - y, best.x - x); src.flash = 0.06; src.aimAt = G.time; if (src.face !== undefined && best.x !== x) src.face = Math.sign(best.x - x);
   G.tracers.push({ x1: x, y1: y - 0.1, x2: best.x, y2: best.y, t: 0.08 });
@@ -1471,7 +1544,7 @@ function fire(src, x, y, range, dmg, rate) {
 function damage(tgt, dmg) {
   if (tgt === 'ship') {
     if (G.phase === 'launch') return;
-    G.ship -= dmg; G.shake = 0.25; sfx('hit'); burst(shipCX() + (Math.random() - 0.5) * 2, S - 1.2, '#ffb36b', 6, 3);
+    G.ship -= dmg * (C.shipDef || 1); G.shake = 0.25; sfx('hit'); burst(shipCX() + (Math.random() - 0.5) * 2, S - 1.2, '#ffb36b', 6, 3);
     if (G.ship <= 0) { G.ship = 0; endGame(false); }
   } else if (tgt.kind === 'turret') {
     tgt.hp -= dmg; if (tgt.hp <= 0) { G.turrets.splice(G.turrets.indexOf(tgt), 1); burst(tgt.x + 0.5, S - 0.5, '#c9cdd6', 18, 4); toast('포탑이 파괴됐어요', true); }
@@ -1511,7 +1584,7 @@ function updEnemy(e, dt) {
     for (const t of [...G.turrets]) if (Math.abs(t.x + 0.5 - e.x) < 1.7) damage(t, e.dmg * 3);
     if (Math.abs(cx - e.x) < 2.6) damage('ship', e.dmg * 3); return; }
   if (tgt) { if (e.cd <= 0) { e.cd = C.enemy.rate * (e.boss ? 1.6 : 1); e.lunge = 0.15; damage(tgt, e.dmg * (e.chargeT > 0 ? 2 : 1)); e.chargeT = 0; if (tgt.cores && tgt.cores.shell) { e.hp -= e.dmg * 0.1 * tgt.cores.shell; e.hit = 0.06; } } }
-  else e.x += Math.sign(cx - e.x) * e.spd * (e.slowT > 0 ? 0.45 : 1) * (e.webT > 0 ? 1 - e.webF : 1) * (e.chargeT > 0 ? 4.5 : 1) * dt;
+  else e.x += Math.sign(cx - e.x) * e.spd * (e.slowT > 0 ? (e.slowF || 0.45) : 1) * (e.webT > 0 ? 1 - e.webF : 1) * (e.chargeT > 0 ? 4.5 : 1) * dt;
 }
 function startWave() {
   G.phase = 'wave'; const bossW = BOSS_WAVES.includes(G.wave);
@@ -1580,7 +1653,7 @@ function recordRun(won, back, haul) {
   const alive = won ? back.filter(u => !u.leader).map(u => u.wid) : [];
   const before = sum(SAVE.ship), relicsBefore = SAVE.shipUnknown.length;
   SAVE.runs++;
-  if (won) { SAVE.wins++; SAVE.ship = haul; SAVE.shipUnknown = G.unknown.map(t => ({ id: SAVE.rid++, tier: t })); }
+  if (won) { SAVE.wins++; SAVE.ship = haul; SAVE.homeUnknown.push(...G.unknown.map(t => ({ id: SAVE.rid++, tier: t }))); SAVE.shipUnknown = []; }
   else { SAVE.ship = {}; SAVE.shipUnknown = []; }
   const lostIds = sent.filter(id => !alive.includes(id)), extra = [];
   let insBack = 0; for (const id of lostIds) { const w = SAVE.workers.find(w => w.id === id); if (!w || !(SAVE.insured || []).includes(id)) continue; for (const it of Object.values(w.parts || {})) if (it && PARTS[it.key] && !PARTS[it.key].supply) { SAVE.parts.push(mkP(it.key, 1)); insBack++; } }
@@ -1607,14 +1680,14 @@ function recordRun(won, back, haul) {
 function finishBlueprint(b) {
   G.blueprints.splice(G.blueprints.indexOf(b), 1);
   const d = TURRETS[b.type];
-  G.turrets.push({ kind: 'turret', type: b.type, x: b.x, lv: 1, hp: d.hp, max: d.hp, cd: 0, aim: -Math.PI / 2, spent: { ...d.cost }, job: null, prog: 0 });
+  G.turrets.push({ kind: 'turret', type: b.type, x: b.x, lv: 1, hp: d.hp * (C.turretHp || 1), max: d.hp * (C.turretHp || 1), cd: 0, aim: -Math.PI / 2, spent: { ...d.cost }, job: null, prog: 0 });
   burst(b.x + 0.5, S - 0.5, d.color, 16, 3); toast(`${d.name} 건설 완료`); sfx('build');
 }
 function finishTJob(t) {
   const d = TURRETS[t.type];
   if (t.job === 'up') {
     t.lv++; for (const k in t.jobCost) t.spent[k] = amt(t.spent, k) + t.jobCost[k];
-    const m = d.hp * (1 + 0.3 * (t.lv - 1)); t.hp += m - t.max; t.max = m;
+    const m = d.hp * (C.turretHp || 1) * (1 + 0.3 * (t.lv - 1)); t.hp += m - t.max; t.max = m;
     burst(t.x + 0.5, S - 0.6, d.color, 16, 3); toast(`${d.name} Lv.${t.lv} 강화 완료`); sfx('build');
   } else {
     G.turrets.splice(G.turrets.indexOf(t), 1); const back = {};
@@ -1626,7 +1699,11 @@ function finishTJob(t) {
 }
 const turretUnlocked = k => k === 'gun' || lv('t_' + k) > 0;
 const upCostT = t => Object.fromEntries(Object.entries(TURRETS[t.type].cost).map(([k, n]) => [k, n * t.lv]));
-function tStat(t) { const d = TURRETS[t.type]; return { dmg: d.dmg * (C.turretMul || 1) * (1 + 0.4 * (t.lv - 1)), range: d.range + 0.5 * (t.lv - 1), rate: d.rate }; }
+function tStat(t) { const d = TURRETS[t.type], ty = t.type;
+  const dm = 1 + 0.15 * (ty === 'gun' ? lv('tu_gun_d') : ty === 'cannon' ? lv('tu_can_d') : ty === 'laser' ? lv('tu_las_d') : 0);
+  return { dmg: d.dmg * (C.turretMul || 1) * dm * (1 + 0.4 * (t.lv - 1)), range: d.range + 0.5 * (t.lv - 1) + (C.turretRange || 0) + (ty === 'laser' ? lv('tu_las_r') : 0),
+    rate: d.rate / (ty === 'gun' ? 1 + 0.12 * lv('tu_gun_r') : 1), splash: d.splash ? d.splash + 0.3 * lv('tu_can_s') : 0,
+    slowF: 0.45 - 0.07 * lv('tu_fro_p'), slowT: 1.2 + 0.5 * lv('tu_fro_t') }; }
 function turretFire(t) {
   if (t.cd > 0) return;
   const d = TURRETS[t.type], st = tStat(t), x = t.x + 0.5, y = S - 1.55;
@@ -1634,14 +1711,14 @@ function turretFire(t) {
   for (const e of G.enemies) { if (e.under) continue; const dd = Math.hypot(e.x - x, e.y - y); if (dd < bd) { bd = dd; best = e; } }
   if (!best) return;
   t.cd = st.rate; t.aim = Math.atan2(best.y - y, best.x - x); t.flash = 0.08; sfx(t.type === 'gun' ? 'gun' : t.type);
-  if (d.aoe) { for (const e of G.enemies) if (!e.under && Math.hypot(e.x - x, e.y - y) < st.range) { e.hp -= st.dmg * armorF(e, 'shot'); e.slowT = 1.2; e.hit = 0.06; } G.rings.push({ x, y, r: st.range, t: 0.35, max: 0.35, c: d.color }); return; }
+  if (d.aoe) { for (const e of G.enemies) if (!e.under && Math.hypot(e.x - x, e.y - y) < st.range) { e.hp -= st.dmg * armorF(e, 'shot'); e.slowT = st.slowT; e.slowF = st.slowF; e.hit = 0.06; } G.rings.push({ x, y, r: st.range, t: 0.35, max: 0.35, c: d.color }); return; }
   let hits = [best];
-  if (d.splash) hits = G.enemies.filter(e => !e.under && Math.hypot(e.x - best.x, e.y - best.y) < d.splash);
+  if (d.splash) hits = G.enemies.filter(e => !e.under && Math.hypot(e.x - best.x, e.y - best.y) < st.splash);
   const dir = Math.sign(best.x - x) || 1;
   if (d.pierce) hits = G.enemies.filter(e => !e.under && Math.sign(e.x - x) === dir && Math.abs(e.x - x) < st.range);
   for (const e of hits) { e.hp -= st.dmg * armorF(e, 'shot'); e.hit = 0.12; if (hits.length < 5) dmgNum(e.x, e.y - 0.5, st.dmg); }
   G.tracers.push({ x1: x, y1: y - 0.1, x2: d.pierce ? x + dir * st.range : best.x, y2: best.y, t: d.pierce ? 0.15 : 0.08, c: d.color, w: d.pierce ? 3 : 2 });
-  if (d.splash) { G.flash = 0.05; burst(best.x, best.y, d.color, 12, 4); G.rings.push({ x: best.x, y: best.y, r: d.splash, t: 0.25, max: 0.25, c: d.color }); }
+  if (d.splash) { G.flash = 0.05; burst(best.x, best.y, d.color, 12, 4); G.rings.push({ x: best.x, y: best.y, r: st.splash, t: 0.25, max: 0.25, c: d.color }); }
   else burst(best.x, best.y, '#ffd27a', 2, 2);
 }
 function startLaunch() {
@@ -2589,6 +2666,7 @@ function toggleFull() {
   try { if (document.fullscreenElement) document.exitFullscreen(); else { const p = document.documentElement.requestFullscreen(); if (p && p.catch) p.catch(() => btoast('이 화면에서는 브라우저가 전체화면을 막고 있어요')); } } catch (e) { btoast('이 화면에서는 브라우저가 전체화면을 막고 있어요'); }
 }
 addEventListener('keydown', e => {
+  if (e.key === 'Escape' && !$('unitPop').hidden) { closeUnitInfo(); return; }
   if (e.key === 'Escape' && !$('dexOv').hidden) { $('dexOv').hidden = true; return; }
   if (e.key === 'Escape' && decoMode) { decoMode = false; decoSel = null; renderBase(); return; }
   if (e.key === 'Escape') { if (!$('reveal').hidden) { $('reveal').hidden = true; return; } if (!$('bSetPop').hidden) { $('bSetPop').hidden = true; return; } if (!$('base').hidden) { if (sortie) { endSortie(); return; } if (panelOpen) { panelOpen = false; renderBase(); } return; } }
@@ -2707,7 +2785,7 @@ function hud(dt) {
   } else if (sel.length === 1) {
     const u = sel[0], cg = Object.entries(u.cargo).filter(([, n]) => n);
     $('selName').textContent = u.name; $('selHp').style.width = u.hp / u.max * 100 + '%';
-    setHTML('selRows', `${u.leader ? '' : `<div class="prio"><button class="mini${u.lock ? ' on' : ''}" data-ulock="1">${u.lock ? '🔒 작업 고정 켜짐' : '작업 고정 꺼짐'}</button></div>`}${u.task === 'stay' ? '<div class="prio"><button class="mini" data-resume="1">자동 작업으로 (A)</button></div>' : ''}${u.boarded ? `<div class="prio"><button class="mini" data-unboard="1" ${u.locked ? 'disabled' : ''}>${u.locked ? '이륙 대기 중 · 하선 불가' : '하선'}</button></div>` : ''}<div class="row"><span>상태</span><b>${stateOf(u)}</b></div><div class="row"><span>짐 ${load(u)}/${u.st.carry}</span>${u.relics.length ? `<b style="color:var(--amber)">유물 ${u.relics.length}</b>` : ''}</div>` +
+    setHTML('selRows', `<div class="prio"><button class="mini" data-uinfo="1">🔍 ${u.leader ? '대장' : '일꾼'} 정보 보기</button></div>${u.leader ? '' : `<div class="prio"><button class="mini${u.lock ? ' on' : ''}" data-ulock="1">${u.lock ? '🔒 작업 고정 켜짐' : '작업 고정 꺼짐'}</button></div>`}${u.task === 'stay' ? '<div class="prio"><button class="mini" data-resume="1">자동 작업으로 (A)</button></div>' : ''}${u.boarded ? `<div class="prio"><button class="mini" data-unboard="1" ${u.locked ? 'disabled' : ''}>${u.locked ? '이륙 대기 중 · 하선 불가' : '하선'}</button></div>` : ''}<div class="row"><span>상태</span><b>${stateOf(u)}</b></div><div class="row"><span>짐 ${load(u)}/${u.st.carry}</span>${u.relics.length ? `<b style="color:var(--amber)">유물 ${u.relics.length}</b>` : ''}</div>` +
       (cg.length ? cg.map(([k, n]) => `<div class="cg-row">${gemDot(OREKEY[k])}<span>${OREKEY[k].name} ${n}</span><button class="mini" data-cdrop="${k}">버리기</button></div>`).join('') : '') +
       (u.leader ? '' : `<div class="row"><span>우선순위</span></div>${prioBtns(u.prio)}`));
     const key = 'u' + u.name; if (key !== portraitKey) { portraitKey = key; portrait(unitPortrait(u)); }
@@ -2749,6 +2827,7 @@ $('buildPop').addEventListener('click', e => {
 $('detClose').onclick = () => { G.detailHidden = true; hudT = 0; };
 $('selRows').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.uinfo) { const u = G.sels.find(o => !o.dead); if (u) openUnitInfo(u); return; }
   if (b.dataset.gprio) {
     for (const u of G.sels) if (!u.leader && !u.dead) {
       u.prio = b.dataset.gprio; const w = SAVE.workers.find(w => w.id === u.wid); if (w) w.prio = u.prio;
@@ -2929,7 +3008,7 @@ function greet(k) {
   if (k === 'lab' && labTab === 'ana') k = 'ana';
   if (k === 'ana') { const pool = SAVE.lab.some(l => l.left === 0) ? ['감정이 끝난 물건이 있어요. 확인해보세요!'] : ['어떤 물건을 가져오셨나요?', '오래된 물건일수록 감정에 시간이 걸려요.', '전설 등급은... 저도 몇 번 못 봤어요.']; deskLine.ana = pool[rnd(pool.length)]; }
 }
-const price = k => Math.max(1, Math.round(OREKEY[k].price * Math.max(MK_LO, Math.min(MK_HI, SAVE.market[k] || 1))));
+const price = k => Math.max(1, Math.round(OREKEY[k].price * Math.max(MK_LO, Math.min(MK_HI, SAVE.market[k] || 1)) * sellMul()));
 const trendOf = k => { const h = SAVE.mhist[k] || []; return h.length < 2 ? 0 : h[h.length - 1] - h[h.length - 2]; };
 const trendTag = k => { const h = SAVE.mhist[k] || [], t = trendOf(k); if (h.length < 2 || !t) return '<span class="trend" style="color:var(--dim)">– 변동 없음</span>'; const pct = Math.round(t / h[h.length - 2] * 100); return `<span class="trend" style="color:${t > 0 ? 'var(--good)' : 'var(--bad)'}">${t > 0 ? '▲' : '▼'} ${Math.abs(pct)}%</span>`; };
 function spark(k) { const h = SAVE.mhist[k] || []; if (h.length < 2) return ''; const mx = Math.max(...h), mn = Math.min(...h), r = mx - mn || 1;
@@ -3046,6 +3125,20 @@ const WKIND = { shot: ['🎯', '단일 사격', '가장 가까운 적 한 마리
 const FTAG = { welder: [['돌 채굴 1.5배', '돌 블록을 1.5배 빠르게 녹여 파요.']], claw: [['넉백', '때린 적을 뒤로 밀쳐내요.']], shield: [['넉백', '방패로 적을 뒤로 밀쳐내요.']], hook: [['오를 때 빠름', '위로 올라갈 때 이동 속도가 1.6배 이상 빨라져요.']], magnet: [['광물 자동 회수', '바로 옆의 드러난 광물을 몇 초마다 자동으로 뜯어와요.']], repair: [['자동 수리', '3칸 안의 로봇, 포탑, 우주선을 1초마다 고쳐요.']], radar: [['광물 탐지', '주변의 숨은 광물, 둥지, 유물을 2초마다 드러내요.']], cmdr: [['지휘 오라', '4칸 안의 동료 채굴과 공격이 올라가요.']], visor: [['시야 확대', '어두운 땅속에서 더 넓게 봐요.']], reactive: [['반응 폭발', '맞으면 25% 확률로 터져 주변 적에게 피해를 줘요.']], digleg: [['아래로 빨리 파기', '발밑 블록을 1.4배 이상 빠르게 파요.']], spider: [['거미줄', '주변 적 전부에게 거미줄을 쏴서 2.5초 동안 느리게 해요 (보스는 절반). Mk.I 40%·2.5칸·7초마다 / Mk.II 50%·3칸·6초마다 / Mk.III 60%·3.5칸·5초마다']], wheel: [['땅속 느림', '땅속에서는 이동 속도가 0.55배로 느려져요.']], drone: [['추적 드론', '5칸 안의 적을 드론이 0.8초마다 쏴요.']], flare: [['조명탄', '땅속에서 16초마다 조명탄을 떨어뜨려 주변을 밝혀요.']], minit: [['임시 포탑', '웨이브 중 적이 가까우면 30초마다 미니 포탑을 세워요.']] };
 function fmtStat(k, v) { if (k === 'hp') return [(v > 0 ? '+' : '') + Math.round(v), '']; if (k === 'carry' || k === 'range') return [(v > 0 ? '+' : '') + v.toFixed(1), '']; if (k === 'armor') return ['-' + Math.round(v * 100) + '%', '']; return [(v > 0 ? '+' : '') + Math.round(v * 100) + '%', '']; }
 function cmpTarget(it) { const P = PARTS[it.key], R = robParts && robParts(); if (!R) return null; const sl = P.slot === 'arm' ? (craftSlot && craftSlot.startsWith('arm') ? craftSlot : 'armR') : P.slot, cur = R[sl]; return cur && cur.id !== it.id && PARTS[cur.key] ? cur : null; }
+function openUnitInfo(u) {
+  const el = $('unitPop'); if (!el) return; G.uinfo = u;
+  const st = u.st, g = u.gear || {}, parts = g.parts || {}, cores = (g.cores || []).slice(0, coreSlots(parts)).filter(c => c && CORES[c.key]);
+  const row = (a, b) => `<div class="row"><span>${a}</span><b>${b}</b></div>`;
+  let h = `<div class="ush"><h3 style="margin:0">${esc(u.name)}${u.leader ? ' · 대장' : ''}</h3><button class="mini" id="uiClose">✕</button></div>`;
+  h += `<h4>능력치</h4>` + row('체력', `${Math.ceil(u.hp)} / ${u.max}`) + row('공격력', st.dmg.toFixed(1)) + row('사거리', st.range.toFixed(1)) + row('이동 속도', st.speed.toFixed(2)) + row('채굴력', st.dig.toFixed(2)) + row('건설 속도', st.build.toFixed(2)) + row('적재량', `${load(u)} / ${st.carry}`) + row('방어', Math.round((u.pArmor || 0) * 100) + '%');
+  h += `<h4>이번 원정 기록</h4>` + row('채굴', u.stat.mined) + row('처치', u.stat.kills) + row('받은 피해', Math.round(u.stat.taken));
+  h += `<h4>코어</h4>` + (cores.length ? cores.map(c => `<div class="uslot"><b style="color:${CGC[c.g]}">${CORES[c.key].name} · ${CGRADE[c.g]}</b><span class="dim" style="font-size:13px">${CORES[c.key].desc(c.g)}</span></div>`).join('') : '<div class="row"><span class="dim">장착한 코어 없음</span></div>');
+  h += `<h4>파츠</h4>` + Object.keys(PSLOT).map(k => { const it = parts[k]; if (!it || !PARTS[it.key]) return `<div class="uslot"><b class="dim">${PSLOT[k]} · 비어 있음</b></div>`; const P = PARTS[it.key];
+    return `<div class="uslot"><b>${PSLOT[k]} · <span style="color:${PCOL[P.tier - 1]}">${P.name} ${PTN[P.tier - 1]}</span>${it.lv ? ` +${it.lv}` : ''}</b>${partInfo(it)}</div>`; }).join('');
+  el.innerHTML = h; el.hidden = false; sfx('click'); if (matchMedia('(max-height:540px)').matches) { G.detailHidden = true; hudT = 0; }
+}
+function closeUnitInfo() { const el = $('unitPop'); if (el) el.hidden = true; if (typeof G === 'object' && G) G.uinfo = null; }
+document.addEventListener('click', e => { if (e.target && e.target.id === 'uiClose') closeUnitInfo(); });
 function partInfo(it, cmp) {
   const P = PARTS[it.key], e = pEff(it), cur = cmp ? cmpTarget(it) : null, ce = cur ? pEff(cur) : {}, keys = [...new Set([...Object.keys(e), ...Object.keys(ce)])];
   let h = `<div class="schips">${keys.map(k => { const v = e[k] || 0, d = cur ? v - (ce[k] || 0) : 0, good = k === 'armor' ? v > 0 : v > 0, [t] = fmtStat(k, v);
@@ -3147,6 +3240,7 @@ function cmdView() {
       ${(() => { const c = hireCost(), miss = [SAVE.credits < c.cr ? `크레딧 ${c.cr - SAVE.credits}` : '', amt(SAVE.home, 'copper') < c.copper ? `구리 ${c.copper - amt(SAVE.home, 'copper')}` : '', amt(SAVE.home, 'iron') < c.iron ? `철 ${c.iron - amt(SAVE.home, 'iron')}` : ''].filter(Boolean); return `<button class="act" id="hire" ${!canHire() || SAVE.workers.length >= MAX_WORKERS ? 'disabled' : ''}>일꾼 고용 · ${c.cr} 크레딧 · ${gemDot(OREKEY.copper)}${c.copper} · ${gemDot(OREKEY.iron)}${c.iron}</button>${miss.length && SAVE.workers.length < MAX_WORKERS ? `<span class="row" style="color:var(--bad)">부족: ${miss.join(', ')} (개인 저장고 기준)</span>` : ''}`; })()}<span class="row">보유 ${SAVE.workers.length}/${MAX_WORKERS}대</span></div>
       <div class="crew">${leaderCard()}${SAVE.workers.map(crewCard).join('')}</div>`;
   } else if (cmdTab === 'store') {
+    if (SAVE.shipUnknown.length) { SAVE.homeUnknown.push(...SAVE.shipUnknown); SAVE.shipUnknown = []; }
     const cap = shipCap(), used = sum(SAVE.ship), pct = Math.min(100, used / cap * 100), keys = ORES.map(o => o.key).filter(k => amt(SAVE.home, k) || amt(SAVE.ship, k));
     const ucnt = (arr, t) => arr.filter(u => u.tier === t).length, utiers = [1, 2, 3].filter(t => ucnt(SAVE.homeUnknown, t) || ucnt(SAVE.shipUnknown, t)), mats = Object.entries(SAVE.bossMat || {}).filter(([, n]) => n);
     h += `<p class="lead" style="margin-bottom:6px">우주선에 실은 광물은 원정 중 포탑 건설에 쓰여요. 우주선이 부서지면 잃어요.</p>` + subTabs([['all', '전체'], ['ore', `광물 ${keys.length}`], ['relic', `유물 ${SAVE.homeUnknown.length + SAVE.shipUnknown.length}`], ['mat', `보스 소재 ${totalMat()}`]], stTab, 'sttab');
@@ -3157,7 +3251,7 @@ function cmdView() {
     const arrows = (attr, sn, hn, canUp) => `<button class="mini" data-${attr}=":all:up" ${hn && canUp ? '' : 'disabled'} title="개인 → 우주선 전부">◀◀</button><button class="mini" data-${attr}=":1:up" ${hn && canUp ? '' : 'disabled'} title="개인 → 우주선 1개">◀</button><button class="mini" data-${attr}=":1:down" ${sn ? '' : 'disabled'} title="우주선 → 개인 1개">▶</button><button class="mini" data-${attr}=":all:down" ${sn ? '' : 'disabled'} title="우주선 → 개인 전부">▶▶</button>`;
     let any = false;
     if (stTab === 'all' || stTab === 'ore') for (const k of keys) { any = true; const o = OREKEY[k], hn = amt(SAVE.home, k), sn = amt(SAVE.ship, k); h += row(gemDot(o, 24), o.name, sn, hn, arrows('mv', sn, hn, used < cap).replace(/data-mv=":/g, `data-mv="${k}:`), `≈ ${(hn * price(k)).toLocaleString()} 크레딧`); }
-    if (stTab === 'all' || stTab === 'relic') for (const t of utiers) { any = true; const hn = ucnt(SAVE.homeUnknown, t), sn = ucnt(SAVE.shipUnknown, t); h += row(boxIcon(t, 24), `미확인 유물 · ${TIER[t]}`, sn, hn, arrows('umv', sn, hn, true).replace(/data-umv=":/g, `data-umv="${t}:`), '연구실에서 분석'); }
+    if (stTab === 'all' || stTab === 'relic') for (const t of utiers) { any = true; const hn = ucnt(SAVE.homeUnknown, t), sn = ucnt(SAVE.shipUnknown, t); h += row(boxIcon(t, 24), `미확인 유물 · ${TIER[t]}`, '—', hn, '<span class="dim" style="font-size:11px;padding:0 10px">개인 전용</span>', '연구실에서 분석'); }
     if (stTab === 'all' || stTab === 'mat') for (const [k, n] of mats) { any = true; h += row(matIcon(k, 24), BOSSMAT[k], '—', n, '<span class="dim" style="font-size:11px;padding:0 10px">개인 전용</span>', `≈ ${(n * MATP).toLocaleString()} 크레딧`); }
     h += (any ? '' : '<p class="dim">이 분류에는 아직 아무것도 없어요.</p>') + '</div>';
   } else {
@@ -3176,10 +3270,10 @@ function cmdView() {
 }
 function anaView() {
   return deskHTML('ana') + `<h2>분석소</h2><p class="lead">미확인 유물을 맡기면 원정을 다녀올 때마다 분석이 진행돼요. 일반은 1회, 희귀는 2회, 전설은 3회가 걸려요.</p>
-    <h3 class="h3">분석 중 ${SAVE.lab.length}/${LAB_SLOTS}</h3><div class="slots">${Array.from({ length: LAB_SLOTS }, (_, i) => { const l = SAVE.lab[i];
+    <h3 class="h3">분석 중 ${SAVE.lab.length}/${labSlots()}</h3><div class="slots">${Array.from({ length: labSlots() }, (_, i) => { const l = SAVE.lab[i];
       if (!l) return '<div class="slot frame"><span class="dim">빈 칸</span></div>';
       return `<div class="slot frame"><b>${boxIcon(l.tier, 22)} 미확인 유물 ${tierTag(l.tier)}</b>${l.left > 0 ? `<p>원정 ${l.left}회 남음</p>${pips(ANALYZE[l.tier] - l.left, ANALYZE[l.tier])}` : `<p>분석 완료</p><button class="act main" data-open="${l.id}">결과 확인</button>`}</div>`; }).join('')}</div>
-    <h3 class="h3">개인 저장고의 미확인 유물</h3><div class="list">${SAVE.homeUnknown.length ? SAVE.homeUnknown.map(u => `<div class="item frame"><div><h4>${boxIcon(u.tier, 22)} 미확인 유물 ${tierTag(u.tier)}</h4><p>분석에 원정 ${ANALYZE[u.tier]}회</p></div><button class="act" data-lab="${u.id}" ${SAVE.lab.length >= LAB_SLOTS ? 'disabled' : ''}>분석 맡기기</button></div>`).join('')
+    <h3 class="h3">개인 저장고의 미확인 유물</h3><div class="list">${SAVE.homeUnknown.length ? SAVE.homeUnknown.map(u => `<div class="item frame"><div><h4>${boxIcon(u.tier, 22)} 미확인 유물 ${tierTag(u.tier)}</h4><p>분석에 원정 ${ANALYZE[u.tier]}회</p></div><button class="act" data-lab="${u.id}" ${SAVE.lab.length >= labSlots() ? 'disabled' : ''}>분석 맡기기</button></div>`).join('')
       : `<p class="dim">없어요.${SAVE.shipUnknown.length ? ` 우주선에 ${SAVE.shipUnknown.length}개가 실려 있어요. 사령실 저장고에서 옮기세요.` : ''}</p>`}</div>`;
 }
 function furnIcon(k, s = 30) { return `<canvas class="furnic" data-furn="${k}" width="${s}" height="${s}" style="width:${s}px;height:${s}px;vertical-align:middle;image-rendering:pixelated"></canvas>`; }
@@ -3333,11 +3427,10 @@ function renderBase() { if (!BORDER.includes(baseTab)) baseTab = 'ops';
         <span class="row">${lock ? `${PLANETS[k - 1].name} 5웨이브 보스 처치 필요` : p.desc}</span>${SAVE.hardClear[k] ? '<span class="row" style="color:#ff6b7f">👑 심연 원정 클리어</span>' : SAVE.hardOpen[k] ? '<span class="row" style="color:#ff9aa9">심연 원정 열림</span>' : ''}${lock ? '' : `<span class="row" style="color:var(--glow)">${p.fdesc || ''}</span>`}</button>`; }).join('')}</div>`;
   } else if (baseTab === 'cmd') h += cmdView();
   else if (baseTab === 'lab') {
-    h += `<h2>연구실</h2>` + subTabs([['res', '기체 연구'], ['ana', `유물 분석${SAVE.lab.some(l => l.left === 0) ? ' ●' : ''}`], ['rfuse', `유물 결합 ${SAVE.relics.length}`]], labTab === 'core' ? (labTab = 'res') : labTab, 'ltab');
-    if (labTab === 'res') h += `<p class="lead">크레딧과 개인 저장고의 결정으로 영구 업그레이드를 연구해요. 효과는 다음 원정부터 적용돼요.</p><div class="list">${RESEARCH.map(r => {
-      const l = lv(r.key), max = l >= r.max, cr = max ? 0 : r.cost[l], cy = max ? 0 : l * 2, ok = !max && SAVE.credits >= cr && amt(SAVE.home, 'crystal') >= cy;
-      return `<div class="item frame"><div><h4>${resIcon(r.key, 22)} ${r.name}</h4><p>${max ? `연구 완료 · ${r.desc(l)}` : `현재 ${r.desc(l)} → ${r.desc(l + 1)}`}</p>${pips(l, r.max)}</div>
-        <button class="act" data-res="${r.key}" ${ok ? '' : 'disabled'}>${max ? '완료' : `${cr} 크레딧${cy ? ` · 결정 ${cy}` : ''}`}</button></div>`; }).join('')}</div>`;
+    h += `<h2>연구실</h2>` + subTabs([['res', '기체 연구'], ['tur', '포탑 연구'], ['ana', `유물 분석${SAVE.lab.some(l => l.left === 0) ? ' ●' : ''}`], ['rfuse', `유물 결합 ${SAVE.relics.length}`]], labTab === 'core' ? (labTab = 'res') : labTab, 'ltab');
+    if (labTab === 'res') h += `<p class="lead">우주선과 로봇을 영구히 강화해요. 크레딧과 개인 저장고의 결정이 들어가고, 효과는 다음 원정부터 적용돼요.</p><div class="list">${RESEARCH.filter(r => r.cat === 'mech').map(resCard).join('')}</div>`;
+    else if (labTab === 'tur') h += `<p class="lead">설계도를 사면 그 포탑을 원정에서 지을 수 있고, 그 포탑 전용 강화가 열려요. 원정 중 강화(Lv)와는 따로 쌓이는 영구 강화예요.</p>` +
+      [['all', '공통'], ['gun', TURRETS.gun.name], ['cannon', TURRETS.cannon.name], ['laser', TURRETS.laser.name], ['frost', TURRETS.frost.name]].map(([tt, nm]) => `<h3 class="h3">${tt === 'all' ? '' : turretIcon(tt, 22) + ' '}${nm}</h3><div class="list">${RESEARCH.filter(r => r.cat === 'tur' && r.tt === tt).map(resCard).join('')}</div>`).join('');
     else if (labTab === 'rfuse') h += rfuseView();
     else h += anaView();
   } else if (baseTab === 'trade') h += tradeView();
@@ -3430,7 +3523,7 @@ $('base').addEventListener('click', e => {
   else if (d.sttab) { stTab = d.sttab; }
   else if (d.umv) { const [ts, n, dir] = d.umv.split(':'), t = +ts, from = dir === 'up' ? SAVE.homeUnknown : SAVE.shipUnknown, to = dir === 'up' ? SAVE.shipUnknown : SAVE.homeUnknown; let q = n === 'all' ? Infinity : 1; for (let i = from.length - 1; i >= 0 && q > 0; i--) if (from[i].tier === t) { to.push(from.splice(i, 1)[0]); q--; } }
   else if (t.id === 'unloadRelic') { SAVE.homeUnknown.push(...SAVE.shipUnknown); SAVE.shipUnknown = []; note = '미확인 유물을 개인 저장고로 옮겼어요. 연구실 유물 분석에 맡겨 보세요.'; }
-  else if (d.lab) { const i = SAVE.homeUnknown.findIndex(u => u.id === +d.lab); if (i >= 0 && SAVE.lab.length < LAB_SLOTS) { const u = SAVE.homeUnknown.splice(i, 1)[0]; SAVE.lab.push({ ...u, left: ANALYZE[u.tier] }); deskLine.ana = '맡아둘게요. 원정 다녀오시면 결과를 알려드릴게요.'; } }
+  else if (d.lab) { const i = SAVE.homeUnknown.findIndex(u => u.id === +d.lab); if (i >= 0 && SAVE.lab.length < labSlots()) { const u = SAVE.homeUnknown.splice(i, 1)[0]; SAVE.lab.push({ ...u, left: ANALYZE[u.tier] }); deskLine.ana = '맡아둘게요. 원정 다녀오시면 결과를 알려드릴게요.'; } }
   else if (d.open) { const i = SAVE.lab.findIndex(l => l.id === +d.open); if (i >= 0 && false) { const l = SAVE.lab.splice(i, 1)[0], c = { id: pid(), key: randomCore(), g: l.tier }; SAVE.cores.push(c); note = `감정 결과: 코어 「${CORES[c.key].name}」 (${CGRADE[c.g]}) · 정비소에서 장착하세요.`; showCoreReveal(c, true); deskLine.ana = '이건 유물이 아니라 코어네요! 귀한 물건이에요.'; }
     else if (i >= 0) { const l = SAVE.lab.splice(i, 1)[0], pool = Object.keys(RELICS).filter(k => RELICS[k].tier === l.tier), key = pool[rnd(pool.length)];
     SAVE.relics.push({ id: l.id, key }); const fresh = !SAVE.dex.relic[key]; SAVE.dex.relic[key] = 1; note = `감정 결과: ${RELICS[key].name} (${TIER[l.tier]})${fresh ? ' · 도감에 등록됐어요' : ''}. 사령실 유물 탭에서 기지에 놓으세요.`; showReveal(l.tier, key); deskLine.ana = '여기 있습니다. 조심해서 다뤄주세요.'; } }
@@ -3448,7 +3541,7 @@ $('base').addEventListener('click', e => {
     SAVE.home[q.ore] -= q.n; if (!SAVE.home[q.ore]) delete SAVE.home[q.ore]; SAVE.credits += q.cr; if (q.box) SAVE.homeUnknown.push({ id: SAVE.rid++, tier: q.box });
     SAVE.quests.splice(i, 1); deskLine.trade = '덕분에 살았어요. 보상 여기 있어요!'; note = ''; btoast(`의뢰 완료 · ${q.cr} 크레딧${q.box ? ' + 유물 상자' : ''}을 받았어요`); sfx('coin'); } } }
   else if (d.sell) { const [k, n] = d.sell.split(':'), q = n === 'all' ? amt(SAVE.home, k) : Math.min(1, amt(SAVE.home, k)); SAVE.home[k] -= q; if (!SAVE.home[k]) delete SAVE.home[k]; SAVE.credits += q * price(k); if (q) { btoast(`${OREKEY[k].name} ${q}개 판매 · +${q * price(k)} 크레딧`); deskLine.trade = ['좋은 거래였어요!', '감사합니다! 또 오세요.', '이 정도 품질이면 대환영이죠.'][rnd(3)]; sfx('coin'); } }
-  else if (d.res) { const r = RESEARCH.find(x => x.key === d.res), l = lv(r.key); if (l < r.max && SAVE.credits >= r.cost[l] && amt(SAVE.home, 'crystal') >= l * 2) { SAVE.credits -= r.cost[l]; if (l) { SAVE.home.crystal -= l * 2; if (!SAVE.home.crystal) delete SAVE.home.crystal; } SAVE.research[r.key] = l + 1; } }
+  else if (d.res) { const r = RESEARCH.find(x => x.key === d.res), l = lv(r.key), cy = resCy(r, l); if (l < r.max && (!r.req || lv(r.req)) && SAVE.credits >= r.cost[l] && amt(SAVE.home, 'crystal') >= cy) { SAVE.credits -= r.cost[l]; if (cy) { SAVE.home.crystal -= cy; if (!SAVE.home.crystal) delete SAVE.home.crystal; } SAVE.research[r.key] = l + 1; sfx('build'); } }
   else if (t.id === 'decoOn') { decoMode = true; decoSel = null; panelOpen = false; bScrollT = -99999; }
   else if (t.id === 'decoOff') { decoMode = false; decoSel = null; }
   else if (d.dsel) { decoSel = decoSel === d.dsel ? null : d.dsel; }
@@ -3643,7 +3736,7 @@ function roomSprite(k, f, stage) { return pcache(`room|${k}|${f}|${stage}`, () =
   return M.img(RW + 4, RH + 4, 0, 0); }); }
 let sortie = null, homeCrew = [], homeAnim = null; const LIFT = { lv: 2, target: 2, state: 'idle', t: 0, door: 0, riders: [], swapped: false };
 const prepCrew = () => SAVE.workers.filter(w => SAVE.pick.includes(w.id) && !builderOf(w.id)).slice(0, slots());
-const insFee = w => Math.round(Object.values(w.parts || {}).reduce((a, it) => a + (it && PARTS[it.key] && !PARTS[it.key].supply ? PARTS[it.key].cr * (1 + 0.5 * (it.lv - 1)) : 0), 0) * 0.1);
+const insFee = w => Math.round((1 - lv('insur') * 0.15) * Object.values(w.parts || {}).reduce((a, it) => a + (it && PARTS[it.key] && !PARTS[it.key].supply ? PARTS[it.key].cr * (1 + 0.5 * (it.lv - 1)) : 0), 0) * 0.1);
 function showPrep() { const r = $('reveal'), crew = prepCrew(), pick = SAVE.insPick || []; const fee = crew.filter(w => pick.includes(w.id)).reduce((a, w) => a + insFee(w), 0), ok = SAVE.credits >= fee;
   r.hidden = false; r.innerHTML = `<div class="prep frame"><h3>출격 준비 · ${PLANETS[SAVE.planet].name}</h3><p class="dim">보험에 든 일꾼을 잃으면, 그 일꾼이 끼고 있던 파츠를 Lv1로 보관함에 돌려받아요. 보급형 파츠, 코어, 유물, 들고 있던 광물은 보험 대상이 아니에요.</p>
     <div class="prow lead2"><span>대장 로봇</span><span class="dim">항상 출격 · 보험 필요 없음 (쓰러져도 재가동)</span></div>
