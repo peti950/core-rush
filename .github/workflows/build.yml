@@ -7,8 +7,6 @@ on:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 jobs:
   apk:
@@ -19,12 +17,11 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - uses: android-actions/setup-android@v3
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.7'
       - name: Copy game files into the app
-        run: cp web/index.html web/title.jpg android/app/src/main/assets/
+        run: cp docs/index.html docs/title.jpg android/app/src/main/assets/
       - name: Build release APK
         run: gradle -p android assembleRelease --no-daemon
       - name: Rename APK
@@ -42,19 +39,3 @@ jobs:
           files: CoreRush.apk
           make_latest: true
 
-  pages:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
-        with:
-          enablement: true
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: web
-      - id: deploy
-        uses: actions/deploy-pages@v4
