@@ -21,7 +21,7 @@ jobs:
         with:
           gradle-version: '8.7'
       - name: Copy game files into the app
-        run: cp docs/index.html docs/title.jpg android/app/src/main/assets/
+        run: cp -r docs/. android/app/src/main/assets/
       - name: Build release APK
         run: gradle -p android assembleRelease --no-daemon --stacktrace 2>&1 | tee build.log; exit ${PIPESTATUS[0]}
       - name: Save build log
